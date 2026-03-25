@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Benettcar dark theme — graphite base, neon-blue accent */
+    --background: 240 14% 7%;
+    --foreground: 0 0% 100%;
+    --muted: 240 16% 12%;
+    --muted-foreground: 230 4% 69%;
+    --surface: 240 16% 12%;
+    --border: 240 10% 28%;
+    --accent: 183 100% 44%;
+    --accent-foreground: 240 14% 7%;
+    --destructive: 0 65% 33%;
+    --destructive-foreground: 0 0% 100%;
+  }
+
+  [data-color-scheme="dark"] {
+    --background: 240 14% 7%;
+    --foreground: 0 0% 100%;
+    --muted: 240 16% 12%;
+    --muted-foreground: 230 4% 69%;
+    --surface: 240 16% 12%;
+    --border: 240 10% 28%;
+    --accent: 183 100% 44%;
+    --accent-foreground: 240 14% 7%;
+    --destructive: 0 65% 33%;
+    --destructive-foreground: 0 0% 100%;
+  }
+}

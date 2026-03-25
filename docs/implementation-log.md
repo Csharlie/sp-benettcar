@@ -227,3 +227,39 @@ clients/benettcar/
 **Fájl:** `tailwind.config.ts`
 
 **Státusz:** ✅ Kész
+
+---
+
+## 8. index.css (semantic token CSS vars + dark)
+
+**Dátum:** 2025-03-25
+**Commit:** #6 – `ef71956`
+
+**Cél:** CSS custom property-k definiálása a platform semantic token rendszerhez, a Benettcar dark theme konkrét HSL értékeivel.
+
+**Miért:**
+- A platform `basePreset`-ben a semantic tokenek (`bg-background`, `text-foreground`, `text-accent` stb.) CSS custom property-kre mutatnak: `hsl(var(--background) / <alpha-value>)`.
+- A konkrét HSL értékeket a kliens `index.css`-ében kell megadni — ez a kliens vizuális identitásának "becsatlakozási pontja" a platformba.
+- A Benettcar eleve dark theme → a `:root` IS a dark értékeket kapja (graphite-950 háttér, neon-blue accent).
+
+**Hogyan:**
+- A starter app `index.css` struktúráját követtük (`:root` + `[data-color-scheme="dark"]` override).
+- A Benettcar hex színeit (#0f0f14, #1a1a24, #40404f, #adaeb3, #00D4E0, #8B1C1C) HSL-re konvertáltuk.
+- Token mapping:
+  - `--background` → graphite-950 (240 14% 7%)
+  - `--foreground` → fehér (0 0% 100%)
+  - `--muted` / `--surface` → graphite-900 (240 16% 12%)
+  - `--muted-foreground` → graphite-300 (230 4% 69%)
+  - `--border` → graphite-800 (240 10% 28%)
+  - `--accent` → neon-blue (183 100% 44%)
+  - `--accent-foreground` → graphite-950 (sötét szöveg világos accenten)
+  - `--destructive` → red-accent (0 65% 33%)
+
+**Döntések:**
+- A `:root` és `[data-color-scheme="dark"]` értékei megegyeznek — a Benettcar mindig dark, de a platform `data-color-scheme` szelektort is ki kell szolgálni a komponensek kompatibilitása miatt.
+- Nincs light mode override — a Benettcar brand identitás kizárólag dark.
+- Nem használunk `@apply` hack-eket vagy direkt color class-okat a CSS-ben — a platform standardot követjük.
+
+**Fájl:** `src/index.css`
+
+**Státusz:** ✅ Kész
