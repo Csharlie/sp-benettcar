@@ -196,3 +196,34 @@ clients/benettcar/
 **Fájl:** `src/theme/bc-theme.ts`
 
 **Státusz:** ✅ Kész
+
+---
+
+## 7. tailwind.config.ts (bcPreset + helyes útvonalak)
+
+**Dátum:** 2025-03-25
+**Commit:** #5 – `8ad4e82`
+
+**Cél:** Tailwind konfiguráció a Benettcar preset-tel és a platform csomagok content path-jaival.
+
+**Miért:**
+- A Tailwind-nek tudnia kell, hol keresse a utility classokat. Ha a platform komponensek (`NavigationBar`, `FooterBlock`, `LandingTemplate` stb.) forráskódját nem látja, nem generálja a szükséges osztályokat.
+- A kliens a `clients/benettcar/` alatt van, a platform a `platform/` alatt — a relatív utak `../../platform/packages/...` formátumúak.
+
+**Hogyan:**
+- A starter app `tailwind.config.ts` mintáját követtük, de:
+  - `starterPreset` → `bcPreset` (a saját theme preset)
+  - `../../packages/...` → `../../platform/packages/...` (A kliens a platform mellett van, nem benne.)
+- Content paths:
+  - `./index.html` + `./src/**/*.{ts,tsx}` — kliens saját fájlok
+  - `../../platform/packages/components/src/**/*.{ts,tsx}` — platform UI komponensek
+  - `../../platform/packages/templates/src/**/*.{ts,tsx}` — platform template-ek
+
+**Döntések:**
+- A `sections` csomag NEM kell a content path-ba, mert minden section `bc-*` prefixű és a kliens `src/sections/` alatt él (azt a `./src/**` már lefedi).
+- `satisfies Config` — típusbiztos, a platform mintáját követve.
+- A `bcPreset` importja relatív (`./src/theme/bc-theme`) — nem `@spektra/*`, ez kliens kód.
+
+**Fájl:** `tailwind.config.ts`
+
+**Státusz:** ✅ Kész
