@@ -165,3 +165,34 @@ clients/benettcar/
 **Fájl:** `postcss.config.js`
 
 **Státusz:** ✅ Kész
+
+---
+
+## 6. bc-theme.ts (basePreset extend)
+
+**Dátum:** 2025-03-25
+**Commit:** #4 – `9c29a01`
+
+**Cél:** Benettcar-specifikus Tailwind preset létrehozása, amely a platform `basePreset`-et bővíti a kliens saját színpalettájával.
+
+**Miért:**
+- A platform `basePreset` adja a semantic token bridge-et (background, foreground, accent, stb. → CSS custom properties) és az alap tipográfiát.
+- A kliens erre építi rá a saját palettát — a graphite, neon-blue, red-accent színek a Benettcar vizuális identitásához kellenek.
+- Nem írjuk felül a semantic tokeneket (azok CSS custom property-ken keresztül jönnek az `index.css`-ből), csak kiegészítő utility színeket adunk hozzá.
+
+**Hogyan:**
+- A `starterPreset` mintáját követtük: `presets: [basePreset]` → extend colors.
+- A meglévő `sp-benettcar-consumer/tailwind.config.js`-ből vettük át a pontos színkódokat:
+  - `graphite` 50–950 skála (dark theme alap)
+  - `neon-blue` DEFAULT/light/dark (#00D4E0 központi)
+  - `red-accent` DEFAULT/light/dark (#8B1C1C központi)
+- A `primary` és `secondary` palettákat NEM duplikáljuk — azok a `basePreset`-ből jönnek.
+
+**Döntések:**
+- `satisfies Partial<Config>` — típusbiztos Tailwind config, a platform mintáját követve.
+- A preset fájl a `src/theme/bc-theme.ts`-ben él, a `tailwind.config.ts` innen importálja.
+- Csak kiegészítő színek — a semantic tokenek (bg-background, text-foreground) a `basePreset`-ből jönnek, az értékeket az `index.css` CSS custom property-k adják.
+
+**Fájl:** `src/theme/bc-theme.ts`
+
+**Státusz:** ✅ Kész
