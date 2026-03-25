@@ -13,6 +13,7 @@
 | 3 | 9baf655 | chore: add postcss.config.js (#5) | #5 postcss |
 | 8 | be28099 | feat: add registry.ts — 10 bc-* section registry (#10) | #10 registry |
 | 9 | 3891000 | feat: add data/site.ts — SiteData mock, WP-kompatibilis (#11) | #11 site data |
+| 10 | 54efbac | feat: add shell/Header.tsx + Footer.tsx — DI shell (#12) | #12 shell |
 
 ---
 
@@ -363,5 +364,35 @@ clients/benettcar/
 **10 section sorrend:** hero → brand → gallery → services → service → about → team → assistance → contact → map
 
 **Fájl:** `src/data/site.ts`
+
+**Státusz:** ✅ Kész
+
+---
+
+## 12. shell/Header.tsx + shell/Footer.tsx (DI)
+
+**Dátum:** 2025-03-25
+**Commit:** #10 – `54efbac`
+
+**Cél:** A LandingTemplate header/footer dependency injection komponenseinek létrehozása.
+
+**Miért:**
+- A `LandingTemplate` nem importálhat közvetlenül `@spektra/components`-ből (boundary rule) — a header/footer ComponentType<TemplateShellProps> prop-ként érkezik.
+- A shell komponensek a DI bridge: a template `siteData`-t injektál, a shell leképezi a `NavigationBar` / `FooterBlock` props-jaira.
+- A kliens dönti el, milyen navigációt, logót, CTA-t és footer struktúrát használ — nem a platform.
+
+**Hogyan:**
+- A starter app `shell.tsx` mintáját követtük, de Benettcar-specifikus testreszabással:
+- **Header:** `NavigationBar` dark variánssal + "Kapcsolat" CTA gomb (smooth scroll `#contact`-ra). A navigációs linkek a `siteData.navigation.primary`-ból jönnek.
+- **Footer:** `FooterBlock` dark colorScheme + a flat `NavItem[]` footer linkeket 3 csoportba szervezzük (Szolgáltatások / Információ / Jogi) — a csoportosítás itt történik, nem az adatban.
+- **Barrel:** `shell/index.ts` — `AppHeader` és `AppFooter` exportok az `App.tsx` számára.
+
+**Döntések:**
+- `variant="dark"` a Header-en — a Benettcar mindig dark theme, a `transparent` vagy `light` variáns nem releváns.
+- A CTA gomb szövege hardcoded "Kapcsolat" — ez nem a `siteData`-ból jön, hanem a kliens design döntése (az 5 nav link mellett külön kiemelés).
+- A footer csoportosítás href-alapú filter — egyszerű, de ha a footer linkek változnak a `site.ts`-ben, a filtert is frissíteni kell. Ez tudatos trade-off: a footer struktúra ritkán változik.
+- `\u00a9` (©) escape a copyright-ban — encoding-biztos.
+
+**Fájlok:** `src/shell/Header.tsx`, `src/shell/Footer.tsx`, `src/shell/index.ts`
 
 **Státusz:** ✅ Kész
