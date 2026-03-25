@@ -11,13 +11,13 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@spektra/types": "file:../../platform/packages/types",
-    "@spektra/data": "file:../../platform/packages/data",
-    "@spektra/runtime": "file:../../platform/packages/runtime",
-    "@spektra/components": "file:../../platform/packages/components",
-    "@spektra/sections": "file:../../platform/packages/sections",
-    "@spektra/themes": "file:../../platform/packages/themes",
-    "@spektra/templates": "file:../../platform/packages/templates",
+    "@spektra/types": "link:../../platform/packages/types",
+    "@spektra/data": "link:../../platform/packages/data",
+    "@spektra/runtime": "link:../../platform/packages/runtime",
+    "@spektra/components": "link:../../platform/packages/components",
+    "@spektra/sections": "link:../../platform/packages/sections",
+    "@spektra/themes": "link:../../platform/packages/themes",
+    "@spektra/templates": "link:../../platform/packages/templates",
     "lucide-react": "^0.263.1",
     "react": "^18.3.0",
     "react-dom": "^18.3.0"
@@ -31,5 +31,15 @@
     "tailwindcss": "^3.4.0",
     "typescript": "^5.5.0",
     "vite": "^5.4.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "@spektra/types": "link:../../platform/packages/types",
+      "@spektra/data": "link:../../platform/packages/data",
+      "@spektra/runtime": "link:../../platform/packages/runtime",
+      "@spektra/components": "link:../../platform/packages/components",
+      "@spektra/sections": "link:../../platform/packages/sections",
+      "@spektra/templates": "link:../../platform/packages/templates"
+    }
   }
 }
