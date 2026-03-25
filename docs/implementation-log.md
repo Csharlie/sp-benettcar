@@ -15,6 +15,7 @@
 | 9 | 3891000 | feat: add data/site.ts — SiteData mock, WP-kompatibilis (#11) | #11 site data |
 | 10 | 54efbac | feat: add shell/Header.tsx + Footer.tsx — DI shell (#12) | #12 shell |
 | 11 | 8501202 | feat: add App.tsx — adapter + provider + template (#13) | #13 App |
+| 12 | 619cec1 | feat: add 10 bc-* sections with data-ui compliance (#14-#15) | #14 sections + #15 audit |
 
 ---
 
@@ -424,5 +425,86 @@ clients/benettcar/
 - Nincs `pageSlug` — egyetlen page (`home`) van, a template az elsőt veszi automatikusan.
 
 **Fájl:** `src/App.tsx`
+
+**Státusz:** ✅ Kész
+
+---
+
+## 14. 10 bc-* section (40 fájl)
+
+**Dátum:** 2026-03-26
+**Commit:** #12 – `619cec1`
+
+**Cél:** Mind a 10 Benettcar section teljes implementációja — schema, component, definition, index barrel — a platform `SectionDefinition<T>` rendszerrel kompatibilisen.
+
+**Miért:**
+- A `registry.ts` (#10) már importálja a 10 `bcXxxDefinition`-t — most ezek mögé kerül a tényleges kód.
+- Minden section kliensoldali (`bc-*` prefix), a platform ZERO ismerettel bír róluk.
+- A `site.ts` (#11) mock adat ↔ schema prop-ok 1:1 leképezése biztosítja a WP-adapter kompatibilitást.
+
+**Hogyan:**
+- Batch módszerrel: 10 schema → 10 component → 10 definition → 10 index barrel = 40 fájl.
+- Fájlminta szekciónként:
+  - `bc-<name>.schema.ts` — `BcXxxData` interface (+ támogató típusok: `BcXxxItem`, stb.)
+  - `bc-<name>.component.tsx` — function component (nem React.FC), props = BcXxxData
+  - `bc-<name>.definition.ts` — `SectionDefinition<BcXxxData>` export
+  - `index.ts` — barrel re-export (type + component + definition)
+
+**10 section:**
+
+| # | Szekció | Schema | Role | Főbb jellemzők |
+|---|---------|--------|------|-----------------|
+| 1 | bc-hero | BcHeroData | hero | Full-width bg overlay, 2 CTA (ArrowRight), h1 |
+| 2 | bc-brand | BcBrandData | brand-bar | Uppercase text badges, flex wrap |
+| 3 | bc-gallery | BcGalleryData | gallery | useState filter, 4-col grid, hover caption |
+| 4 | bc-services | BcServicesData | service-list | Lucide icon map, 3-col card grid |
+| 5 | bc-service | BcServiceData | service-detail | Centered text + brand name badges |
+| 6 | bc-about | BcAboutData | about | Split layout (text+image), stats grid, CTA |
+| 7 | bc-team | BcTeamData | team | Member cards, Phone/Mail icons, tel/mailto |
+| 8 | bc-assistance | BcAssistanceData | cta | Phone CTA, service area info |
+| 9 | bc-contact | BcContactData | contact | Form (4 mező) + info sidebar, submitted state |
+| 10 | bc-map | BcMapData | map | Google Maps iframe, encodeURIComponent |
+
+**Konvenciók:**
+- `BcXxxData` (nem Props) — az adat sémát tükrözi, nem React-specifikus
+- Function component (nem React.FC) — egyszerűbb, forward ref kompatibilis
+- `cn()` utility `@spektra/components`-ból
+- Semantic HTML: `<section>`, `<h2>`, `<figure>/<figcaption>`, `aria-label`
+- `lucide-react` ikonok: ArrowRight, Phone, Mail, MapPin, Wrench, DollarSign, AlertCircle
+
+**Státusz:** ✅ Kész
+
+---
+
+## 15. data-ui standard compliance audit
+
+**Dátum:** 2026-03-26
+**Commit:** #12 – `619cec1` (közös commit a #14-gyel)
+
+**Cél:** A 10 section data-ui attribútumainak teljes §5.1–§5.4 compliance-re hozása, és a standard bővítése ahol szükséges.
+
+**Miért:**
+- A §5.1 kötelezővé teszi: `data-ui-id` + `data-ui-role` + `data-ui-component` minden section root-on.
+- A `call`, `email`, `reset` action-ök nem voltak a kanonikus §7 listában, de szemantikailag indokoltak.
+- A `data-ui-role` generikus `region` értéke nem fejezi ki az egyes szekciók tényleges funkcióját.
+- A bc-contact `<form>` és input mezői nem feleltek meg a §5.3/§5.4 szabályoknak.
+
+**Javítások:**
+
+1. **Section root `data-ui-id`** — mind a 10 section: `section-bc-*` minta
+2. **`data-ui-role` specifikus értékek** — §5.7 kanonikus lista felvétele:
+   - ARIA landmark: banner, navigation, main, complementary, contentinfo, region
+   - Section semantic: hero, brand-bar, gallery, service-list, service-detail, about, team, cta, contact, map
+3. **Standard bővítés (§7)** — 3 új kanonikus action: `call`, `email`, `reset`
+4. **bc-contact form compliance:**
+   - `<form>`: `data-ui-id` + `type="form"` + `action="submit-form"` + `trigger="submit"`
+   - Submit button: `action="submit"` → `action="submit-form"`
+   - Textarea: `type="input"` → `type="textarea"`
+   - Minden input: `data-ui-format` hozzáadva (text/tel/email)
+
+**Frissített fájlok:**
+- `platform/docs/data-ui-standard.md` — §5.7 + §7 bővítés
+- `spektra-dev/data-ui-standard.md` — §5.6 + §7 bővítés
+- 10 section component fájl
 
 **Státusz:** ✅ Kész
