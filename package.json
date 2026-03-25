@@ -1,0 +1,35 @@
+{
+  "name": "benettcar",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Benett Car Business — Spektra platform client",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "eslint src/"
+  },
+  "dependencies": {
+    "@spektra/types": "file:../../platform/packages/types",
+    "@spektra/data": "file:../../platform/packages/data",
+    "@spektra/runtime": "file:../../platform/packages/runtime",
+    "@spektra/components": "file:../../platform/packages/components",
+    "@spektra/sections": "file:../../platform/packages/sections",
+    "@spektra/themes": "file:../../platform/packages/themes",
+    "@spektra/templates": "file:../../platform/packages/templates",
+    "lucide-react": "^0.263.1",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.5.0",
+    "vite": "^5.4.0"
+  }
+}
