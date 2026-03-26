@@ -63,7 +63,6 @@ export const siteData: SiteData = {
               src: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1920&auto=format&fit=crop&q=80',
               alt: 'Autószerviz műhely',
             },
-            colorScheme: 'dark' as const,
           },
         },
 

@@ -16,6 +16,8 @@
 | 10 | 54efbac | feat: add shell/Header.tsx + Footer.tsx — DI shell (#12) | #12 shell |
 | 11 | 8501202 | feat: add App.tsx — adapter + provider + template (#13) | #13 App |
 | 12 | 619cec1 | feat: add 10 bc-* sections with data-ui compliance (#14-#15) | #14 sections + #15 audit |
+| 13 | add8e3e | fix: switch file: to link: protocol + pnpm overrides (#16) | #16 link protocol |
+| 14 | dfb5cd2 | feat: hero visual alignment with legacy PremiumHero (#17) | #17 hero visual |
 
 ---
 

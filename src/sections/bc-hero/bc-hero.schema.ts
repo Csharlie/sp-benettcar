@@ -7,5 +7,4 @@ export interface BcHeroData {
   primaryCTA?: CallToAction
   secondaryCTA?: CallToAction
   backgroundImage?: Media
-  colorScheme?: 'light' | 'dark'
 }
