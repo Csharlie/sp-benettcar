@@ -16,7 +16,7 @@ export function BcHero({
       data-ui-role="hero"
       data-ui-state="default"
       data-ui-variant="primary"
-      className="relative min-h-[90vh] -mt-[7.5rem] pt-[7.5rem] flex items-center overflow-hidden"
+      className="relative min-h-screen pt-24 pb-20 flex items-center overflow-hidden"
     >
       {/* Background image */}
       <div className="absolute inset-0">
@@ -32,7 +32,7 @@ export function BcHero({
       </div>
 
       {/* Content — left-aligned */}
-      <div className="container mx-auto px-6 pt-16 md:pt-20 pb-16 relative z-10 max-w-7xl">
+      <div className="container mx-auto px-6 relative z-10 max-w-7xl">
         <div className="max-w-3xl">
           {/* Subtitle — neon-blue accent, uppercase tracking */}
           {subtitle && (
@@ -77,7 +77,7 @@ export function BcHero({
                 data-ui-action="navigate"
                 data-ui-trigger="click"
                 data-ui-role="primary-cta"
-                className="px-10 py-5 text-graphite-950 font-bold text-lg rounded transition-all bg-neon-blue hover:bg-neon-blue-light border border-white/30 hover:border-white/50"
+                className="inline-flex items-center justify-center px-8 py-4 text-graphite-950 font-bold text-lg rounded transition-all bg-neon-blue hover:bg-neon-blue-light border border-white/30 hover:border-white/50"
               >
                 {primaryCTA.text}
               </a>
@@ -91,7 +91,7 @@ export function BcHero({
                 data-ui-action="navigate"
                 data-ui-trigger="click"
                 data-ui-role="secondary-cta"
-                className="px-6 py-3 text-gray-300 font-normal text-base rounded transition-all border border-gray-600 hover:border-gray-400 hover:text-white"
+                className="inline-flex items-center justify-center px-8 py-4 text-gray-300 font-normal text-base rounded transition-all border border-gray-600 hover:border-gray-400 hover:text-white"
               >
                 {secondaryCTA.text}
               </a>
