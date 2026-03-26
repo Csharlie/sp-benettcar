@@ -24,13 +24,29 @@ export function BcContact({
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           {subtitle && (
-            <p className="text-muted-foreground font-semibold text-lg mb-2">
+            <p
+              data-ui-id="contact-subtitle"
+              data-ui-role="section-subtitle"
+              className="text-muted-foreground font-semibold text-lg mb-2"
+            >
               {subtitle}
             </p>
           )}
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">{title}</h2>
+          <h2
+            data-ui-id="contact-title"
+            data-ui-role="section-title"
+            className="text-4xl md:text-5xl font-bold mb-4"
+          >
+            {title}
+          </h2>
           {description && (
-            <p className="text-lg text-muted-foreground">{description}</p>
+            <p
+              data-ui-id="contact-description"
+              data-ui-role="section-description"
+              className="text-lg text-muted-foreground"
+            >
+              {description}
+            </p>
           )}
         </div>
 
@@ -169,8 +185,18 @@ export function BcContact({
             </form>
           ) : (
             <div className="flex flex-col items-center justify-center text-center p-8 rounded-2xl border border-border bg-muted/50">
-              <p className="text-2xl font-bold mb-2">Köszönjük az üzenetet!</p>
-              <p className="text-muted-foreground mb-6">
+              <p
+                data-ui-id="contact-success-title"
+                data-ui-role="feedback-title"
+                className="text-2xl font-bold mb-2"
+              >
+                Köszönjük az üzenetet!
+              </p>
+              <p
+                data-ui-id="contact-success-message"
+                data-ui-role="feedback-description"
+                className="text-muted-foreground mb-6"
+              >
                 Hamarosan felvesszük Önnel a kapcsolatot.
               </p>
               <button

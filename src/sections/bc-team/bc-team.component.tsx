@@ -14,13 +14,27 @@ export function BcTeam({ title, subtitle, description, members }: BcTeamData) {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           {subtitle && (
-            <p className="text-muted-foreground font-semibold text-lg mb-2">
+            <p
+              data-ui-id="team-subtitle"
+              data-ui-role="section-subtitle"
+              className="text-muted-foreground font-semibold text-lg mb-2"
+            >
               {subtitle}
             </p>
           )}
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">{title}</h2>
+          <h2
+            data-ui-id="team-title"
+            data-ui-role="section-title"
+            className="text-4xl md:text-5xl font-bold mb-4"
+          >
+            {title}
+          </h2>
           {description && (
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p
+              data-ui-id="team-description"
+              data-ui-role="section-description"
+              className="text-lg text-muted-foreground max-w-2xl mx-auto"
+            >
               {description}
             </p>
           )}
@@ -43,8 +57,18 @@ export function BcTeam({ title, subtitle, description, members }: BcTeamData) {
                   loading="lazy"
                 />
               )}
-              <h3 className="text-lg font-bold mb-1">{member.name}</h3>
-              <p className="text-muted-foreground text-sm mb-4">
+              <h3
+                data-ui-id={`team-member-name-${member.name.toLowerCase().replace(/\s+/g, '-')}`}
+                data-ui-role="item-title"
+                className="text-lg font-bold mb-1"
+              >
+                {member.name}
+              </h3>
+              <p
+                data-ui-id={`team-member-role-${member.name.toLowerCase().replace(/\s+/g, '-')}`}
+                data-ui-role="item-description"
+                className="text-muted-foreground text-sm mb-4"
+              >
                 {member.role}
               </p>
 

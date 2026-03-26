@@ -20,11 +20,21 @@ export function BcServices({ title, subtitle, services }: BcServicesData) {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           {subtitle && (
-            <p className="text-muted-foreground font-semibold text-lg mb-2">
+            <p
+              data-ui-id="services-subtitle"
+              data-ui-role="section-subtitle"
+              className="text-muted-foreground font-semibold text-lg mb-2"
+            >
               {subtitle}
             </p>
           )}
-          <h2 className="text-4xl md:text-5xl font-bold">{title}</h2>
+          <h2
+            data-ui-id="services-title"
+            data-ui-role="section-title"
+            className="text-4xl md:text-5xl font-bold"
+          >
+            {title}
+          </h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -44,8 +54,18 @@ export function BcServices({ title, subtitle, services }: BcServicesData) {
                     <Icon className="w-7 h-7" />
                   </div>
                 )}
-                <h3 className="text-xl font-bold mb-3">{service.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">
+                <h3
+                  data-ui-id={`services-item-title-${service.title.toLowerCase().replace(/\s+/g, '-')}`}
+                  data-ui-role="item-title"
+                  className="text-xl font-bold mb-3"
+                >
+                  {service.title}
+                </h3>
+                <p
+                  data-ui-id={`services-item-desc-${service.title.toLowerCase().replace(/\s+/g, '-')}`}
+                  data-ui-role="item-description"
+                  className="text-muted-foreground leading-relaxed"
+                >
                   {service.description}
                 </p>
               </div>

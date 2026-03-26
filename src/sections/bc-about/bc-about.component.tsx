@@ -40,11 +40,21 @@ export function BcAbout({
 
           <div className="flex-1">
             {subtitle && (
-              <p className="text-muted-foreground font-semibold text-lg mb-2">
+              <p
+                data-ui-id="about-subtitle"
+                data-ui-role="section-subtitle"
+                className="text-muted-foreground font-semibold text-lg mb-2"
+              >
                 {subtitle}
               </p>
             )}
-            <h2 className="text-4xl md:text-5xl font-bold mb-8">{title}</h2>
+            <h2
+              data-ui-id="about-title"
+              data-ui-role="section-title"
+              className="text-4xl md:text-5xl font-bold mb-8"
+            >
+              {title}
+            </h2>
 
             <div className="space-y-4 mb-8">
               {content.map((paragraph, i) => (

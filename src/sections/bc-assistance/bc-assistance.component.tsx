@@ -22,12 +22,26 @@ export function BcAssistance({
       <div className="container mx-auto px-4">
         <div className="max-w-2xl mx-auto text-center">
           {subtitle && (
-            <p className="text-muted-foreground font-semibold text-lg mb-2">
+            <p
+              data-ui-id="assistance-subtitle"
+              data-ui-role="section-subtitle"
+              className="text-muted-foreground font-semibold text-lg mb-2"
+            >
               {subtitle}
             </p>
           )}
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">{title}</h2>
-          <p className="text-lg text-muted-foreground leading-relaxed mb-10">
+          <h2
+            data-ui-id="assistance-title"
+            data-ui-role="section-title"
+            className="text-4xl md:text-5xl font-bold mb-6"
+          >
+            {title}
+          </h2>
+          <p
+            data-ui-id="assistance-description"
+            data-ui-role="section-description"
+            className="text-lg text-muted-foreground leading-relaxed mb-10"
+          >
             {description}
           </p>
 
@@ -49,7 +63,11 @@ export function BcAssistance({
           </a>
 
           {serviceArea && (
-            <p className="mt-6 text-muted-foreground">
+            <p
+              data-ui-id="assistance-service-area"
+              data-ui-role="meta"
+              className="mt-6 text-muted-foreground"
+            >
               Elérhető: {serviceArea}
             </p>
           )}

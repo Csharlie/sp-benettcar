@@ -12,7 +12,13 @@ export function BcMap({ title, query, height = 500 }: BcMapData) {
       className="bg-background text-foreground"
     >
       {title && (
-        <h2 className="sr-only">{title}</h2>
+        <h2
+          data-ui-id="map-title"
+          data-ui-role="section-title"
+          className="sr-only"
+        >
+          {title}
+        </h2>
       )}
       <iframe
         title={title ?? 'Térkép'}

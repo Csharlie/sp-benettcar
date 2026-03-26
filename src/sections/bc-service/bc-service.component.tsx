@@ -20,12 +20,26 @@ export function BcService({
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center mb-12">
           {subtitle && (
-            <p className="text-muted-foreground font-semibold text-lg mb-2">
+            <p
+              data-ui-id="service-subtitle"
+              data-ui-role="section-subtitle"
+              className="text-muted-foreground font-semibold text-lg mb-2"
+            >
               {subtitle}
             </p>
           )}
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">{title}</h2>
-          <p className="text-xl text-muted-foreground leading-relaxed">
+          <h2
+            data-ui-id="service-title"
+            data-ui-role="section-title"
+            className="text-4xl md:text-5xl font-bold mb-6"
+          >
+            {title}
+          </h2>
+          <p
+            data-ui-id="service-description"
+            data-ui-role="section-description"
+            className="text-xl text-muted-foreground leading-relaxed"
+          >
             {description}
           </p>
         </div>

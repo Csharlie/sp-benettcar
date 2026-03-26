@@ -13,7 +13,11 @@ export function BcBrand({ title, description, brands }: BcBrandData) {
         {/* Section header */}
         {title && (
           <div className="text-center mb-12">
-            <h4 className="text-2xl md:text-3xl font-semibold text-white mb-4 tracking-tight">
+            <h4
+              data-ui-id="brand-title"
+              data-ui-role="section-title"
+              className="text-2xl md:text-3xl font-semibold text-white mb-4 tracking-tight"
+            >
               {title}
             </h4>
           </div>
@@ -21,7 +25,11 @@ export function BcBrand({ title, description, brands }: BcBrandData) {
 
         {description && (
           <div className="text-center mb-12">
-            <p className="text-lg md:text-xl text-gray-300 mx-auto leading-relaxed">
+            <p
+              data-ui-id="brand-description"
+              data-ui-role="section-description"
+              className="text-lg md:text-xl text-gray-300 mx-auto leading-relaxed"
+            >
               {description}
             </p>
           </div>
