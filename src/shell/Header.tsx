@@ -21,7 +21,8 @@ export function AppHeader({ siteData }: TemplateShellProps) {
           document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })
         },
       }}
-      variant="dark"
+      variant="transparent"
+      className="py-6 bg-black/60 backdrop-blur-md border-transparent"
     />
   )
 }

@@ -30,3 +30,38 @@
     --destructive-foreground: 0 0% 100%;
   }
 }
+
+@layer components {
+  /* Nav mobile toggle — neon-blue háttér */
+  [data-ui-id="nav-mobile-toggle"] {
+    @apply bg-neon-blue text-graphite-950 rounded-lg;
+    padding: 0.75rem!important;
+  }
+
+  /* Nav breakpoint: md → lg (768px → 1024px, legacy-kompatibilis) */
+  /* Desktop linkek elrejtése md-lg között */
+  [data-ui-component="navigation-bar"] .hidden.md\:flex {
+    display: none !important;
+  }
+  /* Toggle megjelenítése md-lg között */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    [data-ui-id="nav-mobile-toggle"] {
+      display: block !important;
+    }
+    #nav-mobile-menu {
+      display: block !important;
+    }
+  }
+  /* lg+ : desktop linkek vissza, toggle el */
+  @media (min-width: 1024px) {
+    [data-ui-component="navigation-bar"] .hidden.md\:flex {
+      display: flex !important;
+    }
+    [data-ui-id="nav-mobile-toggle"] {
+      display: none !important;
+    }
+    #nav-mobile-menu {
+      display: none !important;
+    }
+  }
+}
