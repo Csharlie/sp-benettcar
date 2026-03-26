@@ -195,10 +195,17 @@ export const siteData: SiteData = {
           id: 'service-1',
           type: 'bc-service',
           data: {
-            title: 'Autószerviz',
-            subtitle: 'Volkswagen Konszern specialista',
+            title: 'Szervizszolgáltatások',
+            subtitle: 'Autószerviz',
             description:
-              'Gyári szintű diagnosztika és karbantartás. Eredeti alkatrészek, szakértő szerelők.',
+              'Általános szervizelési és javítási munkák Volkswagen Konszern járművekhez.',
+            services: [
+              { label: 'Általános karbantartás és átvizsgálás' },
+              { label: 'Diagnosztika és hibafeltárás' },
+              { label: 'Motor- és hajtáslánc javítás' },
+              { label: 'Fék- és futómű szerviz' },
+              { label: 'Felkészítés műszaki vizsgára' },
+            ],
             brands: [
               'Volkswagen',
               'Audi',
@@ -207,7 +214,16 @@ export const siteData: SiteData = {
               'Bugatti',
               'Lamborghini',
             ],
-            colorScheme: 'dark' as const,
+            contact: {
+              title: 'Szerviz egyeztetés',
+              description: 'Időpont egyeztetés telefonon vagy üzenetben.',
+              phone: '+36301234567',
+              messageCta: { text: 'Üzenet küldése', href: '#contact' },
+              bookingNote:
+                'Online időpontfoglalási rendszer fejlesztés alatt. Ha Önt is érdekli a funkció, jelezze munkatársaink felé – visszajelzése alapján döntjük el a bevezetést.',
+              hours: '8:00–16:00',
+              weekendHours: 'Zárva',
+            },
           },
         },
 
