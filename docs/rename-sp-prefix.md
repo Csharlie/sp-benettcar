@@ -1,7 +1,7 @@
-# Mappa-struktúra átnevezés — `sp-` prefix konvenció
+﻿# Mappa-struktúra átnevezés — `sp-` prefix konvenció
 
 **Dátum:** 2026-03-27
-**Érintett repók:** sp-platform, sp-clients/benettcar, spektra-dev (referencia)
+**Érintett repók:** sp-platform, sp-clients/sp-benettcar, spektra-dev (referencia)
 
 ---
 
@@ -26,18 +26,18 @@ A gyökér-szintű mappák átnevezése `sp-` prefixre:
 
 | Fájl | Típus | Cserék |
 |------|-------|--------|
-| `sp-clients/benettcar/package.json` | `link:` paths + overrides | 19 |
-| `sp-clients/benettcar/tailwind.config.ts` | content paths | 2 |
-| `sp-clients/benettcar/pnpm-lock.yaml` | regenerált | — |
+| `sp-clients/sp-benettcar/package.json` | `link:` paths + overrides | 19 |
+| `sp-clients/sp-benettcar/tailwind.config.ts` | content paths | 2 |
+| `sp-clients/sp-benettcar/pnpm-lock.yaml` | regenerált | — |
 | `sp-platform/pnpm-lock.yaml` | regenerált | — |
 
 ### Dokumentáció
 
 | Fájl | Cserék |
 |------|--------|
-| `sp-clients/benettcar/docs/implementation-log.md` | 12 |
+| `sp-clients/sp-benettcar/docs/implementation-log.md` | 12 |
 | `sp-platform/docs/bootstrap-log.md` | 3 |
-| `sp-clients/benettcar/docs/bc-migration-plan.md` | 6 |
+| `sp-clients/sp-benettcar/docs/bc-migration-plan.md` | 6 |
 | `spektra-dev/spektra-bootstrap-prompt.md` | 5 |
 | `spektra-dev/spektra-architecture-layers.md` | 4 |
 | **Összesen** | **30 csere** |
@@ -50,7 +50,7 @@ A gyökér-szintű mappák átnevezése `sp-` prefixre:
 4. **platform/ → sp-platform/** — Move-Item, részleges hiba long paths miatt, `git checkout -- packages/` helyreállítás
 5. **clients/ → sp-clients/** — manuális átnevezés File Explorer-ből (VS Code lock)
 6. **pnpm install** — mindkét repo link-validáció OK (sp-platform: 423 csomag, sp-clients: 134 csomag)
-7. **Build validáció** — sp-platform: 8 task PASS, sp-clients/benettcar: 2872 module PASS
+7. **Build validáció** — sp-platform: 8 task PASS, sp-clients/sp-benettcar: 2872 module PASS
 8. **Dokumentáció frissítés** — 5 fájlban összesen 30 path-csere
 9. **Végső grep ellenőrzés** — 0 régi hivatkozás maradt
 

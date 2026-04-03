@@ -1,6 +1,6 @@
-# Benettcar – Implementation Log
+﻿# Benettcar – Implementation Log
 
-**Remote:** https://github.com/Csharlie/sp-client-benettcar
+**Remote:** https://github.com/Csharlie/sp-benettcar
 
 ---
 
@@ -38,7 +38,7 @@
 **Dátum:** 2025-03-25
 **Commit:** #1 – `48edab5`
 
-**Cél:** A kliens projekt könyvtárstruktúrájának létrehozása a `sp-clients/benettcar/` alatt, a platform monorepo-tól teljesen függetlenül.
+**Cél:** A kliens projekt könyvtárstruktúrájának létrehozása a `sp-clients/sp-benettcar/` alatt, a platform monorepo-tól teljesen függetlenül.
 
 **Miért:**
 - A kliens és a platform teljesen szeparált Git repók — a platform semmilyen szinten nem tud a kliensről.
@@ -56,7 +56,7 @@
 
 **Létrehozott struktúra:**
 ```
-sp-clients/benettcar/
+sp-clients/sp-benettcar/
 └── src/
     ├── assets/
     ├── data/
@@ -87,7 +87,7 @@ sp-clients/benettcar/
 **Cél:** A kliens projekt dependency-jeinek definiálása úgy, hogy a platform csomagokra `file:` protokollal hivatkozunk — a platform monorepo-t NEM módosítjuk.
 
 **Miért:**
-- A kliens a platform monorepo-n kívül él (`sp-clients/benettcar/`), ezért `workspace:*` nem használható — az csak pnpm workspace-en belül működik.
+- A kliens a platform monorepo-n kívül él (`sp-clients/sp-benettcar/`), ezért `workspace:*` nem használható — az csak pnpm workspace-en belül működik.
 - `file:` protokollal a kliens közvetlenül a platform csomagjainak forráskódjára mutat fejlesztés alatt, publish nélkül.
 - A platform kódban ZERO módosítás történik — a kliens egyoldalúan hivatkozik.
 
@@ -227,7 +227,7 @@ sp-clients/benettcar/
 
 **Miért:**
 - A Tailwind-nek tudnia kell, hol keresse a utility classokat. Ha a platform komponensek (`NavigationBar`, `FooterBlock`, `LandingTemplate` stb.) forráskódját nem látja, nem generálja a szükséges osztályokat.
-- A kliens a `sp-clients/benettcar/` alatt van, a platform a `sp-platform/` alatt — a relatív utak `../../sp-platform/packages/...` formátumúak.
+- A kliens a `sp-clients/sp-benettcar/` alatt van, a platform a `sp-platform/` alatt — a relatív utak `../../sp-platform/packages/...` formátumúak.
 
 **Hogyan:**
 - A starter app `tailwind.config.ts` mintáját követtük, de:
@@ -994,8 +994,8 @@ sp-clients/benettcar/
 4. **node_modules törlés** (Windows lock workaround): robocopy empty-dir trick (sp-platform), rmdir (sp-clients).
 5. **Move-Item** `platform/` → `sp-platform/` — részleges hiba a long paths miatt, `git checkout -- packages/` visszaállítás.
 6. **clients/ → sp-clients/**: manuális átnevezés File Explorer-ből (VS Code file lock).
-7. **pnpm install**: mindkét repo — sp-platform (423 csomag), sp-clients/benettcar (134 csomag, 7 linked @spektra/* OK).
-8. **Build validáció**: sp-platform 8 task PASS, sp-clients/benettcar 2872 module PASS.
+7. **pnpm install**: mindkét repo — sp-platform (423 csomag), sp-clients/sp-benettcar (134 csomag, 7 linked @spektra/* OK).
+8. **Build validáció**: sp-platform 8 task PASS, sp-clients/sp-benettcar 2872 module PASS.
 9. **Dokumentáció frissítés**: implementation-log.md (12), bootstrap-log.md (3), bc-migration-plan.md (6), spektra-bootstrap-prompt.md (5), spektra-architecture-layers.md (4) — összesen 30 csere.
 
 **Döntések:**
@@ -1009,7 +1009,7 @@ sp-clients/benettcar/
 - `pnpm-lock.yaml` (regenerált)
 - `docs/implementation-log.md` (12 csere)
 - `sp-platform/docs/bootstrap-log.md` (3 csere)
-- `sp-clients/benettcar/docs/bc-migration-plan.md` (6 csere)
+- `sp-clients/sp-benettcar/docs/bc-migration-plan.md` (6 csere)
 - `spektra-dev/spektra-bootstrap-prompt.md` (5 csere)
 - `spektra-dev/spektra-architecture-layers.md` (4 csere)
 

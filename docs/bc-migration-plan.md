@@ -1,4 +1,4 @@
-# Benett Car — Kliens Migráció & Platform CVA Refactor Terv
+﻿# Benett Car — Kliens Migráció & Platform CVA Refactor Terv
 
 > **Utolsó frissítés**: 2026-03-21
 > **Állapot**: Tervezés kész, implementáció NEM kezdődött el
@@ -531,7 +531,7 @@ A legacy `src/data/loadSiteData.ts` tartalmaz egy teljes mock SiteData-t. Ezt ke
 
 ### Lépés 2: Benettcar kliens scaffold (Phase 10b)
 
-1. `sp-clients/benettcar/` könyvtár létrehozása
+1. `sp-clients/sp-benettcar/` könyvtár létrehozása
 2. Config fájlok (package.json, vite.config.ts, tsconfig.json, tailwind.config.ts, postcss.config.js)
 3. `src/theme/bc-theme.ts` — benettcar Tailwind preset
 4. `src/main.tsx`, `src/App.tsx`, `src/index.css`
