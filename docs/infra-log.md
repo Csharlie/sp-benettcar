@@ -13,6 +13,7 @@
 |---|------|--------|-------|
 | 30 | ce61bc9 | chore: scaffold benettcar infra overlay | #32 infra overlay scaffold |
 | 31 | f3170f0 | chore: extend .gitignore — .local/ + .env rules | #33 gitignore boundary |
+| 32 | 79c7c37 | feat: real config.php — CORS, site defaults, sections | #34 config.php (P3.1) |
 
 ---
 
@@ -66,3 +67,31 @@ infra/
 
 **Kapcsolódó sp-infra commit:**
 - `75c7cb7` — sp-infra: .gitignore + BOUNDARY.md létrehozás (azonos P1.4 todo)
+
+---
+
+## #34 — config.php valós tartalom (2026-04-05) · `79c7c37`
+
+**Commit:** `feat: real config.php -- client identity, CORS origins (5174), site defaults, 10 sections (P3.1)`
+
+**Változás:**
+```
+infra/config.php  ← placeholder → return [] konfiguráció
+```
+
+**Config kulcsok:**
+| Kulcs | Érték |
+|---|---|
+| `client_slug` | `'benettcar'` |
+| `client_name` | `'Benett Car'` |
+| `allowed_origins` | `['http://localhost:5174']` |
+| `site_defaults` | `['lang' => 'hu', 'title' => 'Benett Car']` |
+| `sections` | 10 db bc-* slug (hero, brand, services, why-us, fleet, reviews, faq, blog, contact, footer) |
+
+**Miért:**
+- v4 roadmap P3.1: CORS origins, site defaults, plugin config
+- Port 5174 — sp-benettcar/vite.config.ts explicit port override
+- Return-array pattern — a plugin `$config = require config.php` -val olvassa
+
+**Kapcsolódó sp-infra commit:**
+- `36626be` — plugin loader átírva: `require_once` → `require` + `SPEKTRA_CLIENT_CONFIG` constant
