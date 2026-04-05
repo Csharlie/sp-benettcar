@@ -14,6 +14,7 @@
 | 30 | ce61bc9 | chore: scaffold benettcar infra overlay | #32 infra overlay scaffold |
 | 31 | f3170f0 | chore: extend .gitignore — .local/ + .env rules | #33 gitignore boundary |
 | 32 | 79c7c37 | feat: real config.php — CORS, site defaults, sections | #34 config.php (P3.1) |
+| 33 | 4dcf025 | feat: content-model.md + fix section slugs | #35 content model (P3.2) |
 
 ---
 
@@ -86,7 +87,7 @@ infra/config.php  ← placeholder → return [] konfiguráció
 | `client_name` | `'Benett Car'` |
 | `allowed_origins` | `['http://localhost:5174']` |
 | `site_defaults` | `['lang' => 'hu', 'title' => 'Benett Car']` |
-| `sections` | 10 db bc-* slug (hero, brand, services, why-us, fleet, reviews, faq, blog, contact, footer) |
+| `sections` | 10 db bc-* slug (hero, brand, gallery, services, service, about, team, assistance, contact, map) |
 
 **Miért:**
 - v4 roadmap P3.1: CORS origins, site defaults, plugin config
@@ -95,3 +96,29 @@ infra/config.php  ← placeholder → return [] konfiguráció
 
 **Kapcsolódó sp-infra commit:**
 - `36626be` — plugin loader átírva: `require_once` → `require` + `SPEKTRA_CLIENT_CONFIG` constant
+
+---
+
+## #35 — Content model mapping contract (2026-04-05) · `4dcf025`
+
+**Commit:** `feat: content-model.md mapping contract + fix config.php section slugs to match site.ts (P3.2)`
+
+**Mi jött létre:**
+```
+infra/docs/content-model.md  ← canonical mapping contract (320+ sor)
+infra/config.php             ← sections[] javítva: site.ts-hez igazítva
+```
+
+**Tartalom:**
+1. **Global model** — site meta, navigation (WP native menus), pages, home binding
+2. **10 section mapping tábla** — TS mező → ACF field name → ACF type → req/opt → normalization → if missing
+3. **Policy layer** — skip/omit/fallback szabályok required/optional/repeater/CTA/Media-ra
+4. **ACF naming convention** — `{section_slug}_{field_name}` prefix pattern
+5. **Type reference** — Media, CallToAction, NavItem
+
+**Section slug javítás:**
+```
+config.php sections[] RÉGI: bc-why-us, bc-fleet, bc-reviews, bc-faq, bc-blog, bc-footer
+config.php sections[] ÚJ:  bc-gallery, bc-service, bc-about, bc-team, bc-assistance, bc-map
+```
+A 4 helyes slug (bc-hero, bc-brand, bc-services, bc-contact) maradt.
