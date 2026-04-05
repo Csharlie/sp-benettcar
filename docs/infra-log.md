@@ -15,6 +15,7 @@
 | 31 | f3170f0 | chore: extend .gitignore — .local/ + .env rules | #33 gitignore boundary |
 | 32 | 79c7c37 | feat: real config.php — CORS, site defaults, sections | #34 config.php (P3.1) |
 | 33 | 4dcf025 | feat: content-model.md + fix section slugs | #35 content model (P3.2) |
+| 34 | 507dfab | feat: 10 bc-* ACF field groups + registry | #36 ACF field groups (P3.3) |
 
 ---
 
@@ -122,3 +123,33 @@ config.php sections[] RÉGI: bc-why-us, bc-fleet, bc-reviews, bc-faq, bc-blog, b
 config.php sections[] ÚJ:  bc-gallery, bc-service, bc-about, bc-team, bc-assistance, bc-map
 ```
 A 4 helyes slug (bc-hero, bc-brand, bc-services, bc-contact) maradt.
+
+---
+
+## #36 — ACF field groups (2026-04-05) · `507dfab`
+
+**Commit:** `feat: 10 bc-* ACF field groups + registry loader -- code-defined schema from content-model contract (P3.3)`
+
+**Mi jott letre:**
+```
+infra/acf/
+├── field-groups.php          ← Registry: acf/init hook, explicit file list
+└── sections/
+    ├── bc-hero.php            (8 fields: title*, desc*, 2x CTA pair, bg image)
+    ├── bc-brand.php           (2 fields + brands repeater: name*, logo, alt, invert)
+    ├── bc-gallery.php         (3 fields + images repeater: src*, alt*, category, caption)
+    ├── bc-services.php        (2 fields + services repeater: title*, icon*, desc*)
+    ├── bc-service.php         (3 fields + services repeater + brands repeater + contact group)
+    ├── bc-about.php           (content repeater + image + stats repeater + CTA pair + selects)
+    ├── bc-team.php            (3 fields + members repeater: name*, role*, image, phone, email)
+    ├── bc-assistance.php      (6 flat fields: title*, subtitle, desc, label, href, area)
+    ├── bc-contact.php         (3 fields + contactInfo group: phone, email, address + select)
+    └── bc-map.php             (3 fields: title, query*, height)
+```
+
+**Pattern:**
+- Minden `sections/*.php` `return [...]` array-t ad (deklarativ)
+- `field-groups.php` = egyetlen regisztracios hook
+- Mezonevek pontosan a `content-model.md` P3.2 contractbol
+- `menu_order` 0-9: config.php sections[] sorrenddel megegyezik
+- Location: `page_type == front_page` mindenhol
