@@ -30,6 +30,30 @@ return [
 		'title' => 'Benett Car',
 	],
 
+	// ── Navigation ───────────────────────────────────────────────
+	// Curated navigation items for the site.
+	// Future direction: native WordPress menu integration (Phase 11.5).
+	'navigation' => [
+		'primary' => [
+			[
+				'label' => 'Főoldal',
+				'href'  => '/',
+			],
+			[
+				'label' => 'Szolgáltatások',
+				'href'  => '/#services',
+			],
+			[
+				'label' => 'Rólunk',
+				'href'  => '/#about',
+			],
+			[
+				'label' => 'Kapcsolat',
+				'href'  => '/#contact',
+			],
+		],
+	],
+
 	// ── Sections ─────────────────────────────────────────────────
 	// ACF field group slugs that map to SiteData sections.
 	// Order matches site.ts pages[home].sections[] rendering order.
