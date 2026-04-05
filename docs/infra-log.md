@@ -17,6 +17,9 @@
 | 33 | 4dcf025 | feat: content-model.md + fix section slugs | #35 content model (P3.2) |
 | 34 | 507dfab | feat: 10 bc-* ACF field groups + registry | #36 ACF field groups (P3.3) |
 | 35 | fa73f8b | feat: .env.example + overlay docs | #37 env template + overlay docs (P3.4) |
+| 36 | e4aa10f | config: add curated navigation block | #38 navigation block (P7.2.0) |
+| 37 | 48d8596 | feat(P8.1): wp-mapper.ts | #39 WP boundary mapper (P8.1) |
+| 38 | fc2d62d | feat(P8.2): normalize-site-data.ts | #40 consumer-safety normalizer (P8.2) |
 
 ---
 
@@ -151,7 +154,76 @@ A 4 helyes slug (bc-hero, bc-brand, bc-services, bc-contact) maradt.
 
 ---
 
-## #36 — ACF field groups (2026-04-05) · `507dfab`
+## #40 — Consumer-safety normalizer (2026-04-06) · `fc2d62d`
+
+**Commit:** `feat(P8.2): normalize-site-data.ts — consumer-safety cleanup pass`
+
+**Mi jött létre:**
+
+1. `src/data/normalize-site-data.ts` — SiteData → SiteData normalizer (285 sor)
+
+**Funkció:**
+- Gallery images `src` nélkül → kiszűrve
+- Team members `name` nélkül → kiszűrve
+- Stats `value`/`label` nélkül → kiszűrve
+- Üres CTA-k (text trim után üres) → undefined-ra
+- Whitespace-only optional stringek → undefined
+- Brand items logo nélkül → **megtartva** (UI-ban name fallback van)
+- Navigation items label/href nélkül → kiszűrve
+- Per-section normalizer mind a 10 bc-* típusra
+
+**Helperek:** `cleanOptional()`, `cleanCta()`, `isRecord()`, `asTypedArray()`
+
+**Ellenőrzés:** 11/11 PASS (p82-verify.mjs)
+
+### Státusz
+
+✅ Pusholva.
+
+---
+
+## #39 — WP boundary mapper (2026-04-06) · `48d8596`
+
+**Commit:** `feat(P8.1): wp-mapper.ts — WordPress REST → SiteData boundary mapper`
+
+**Mi jött létre:**
+
+1. `src/data/wp-mapper.ts` — raw WP JSON → typed SiteData mapper (475 sor)
+
+**Funkció:**
+- `mapWordPressSiteData(raw: unknown): SiteData` — teljes boundary conversion
+- 10 explicit section mapper: `mapBcHero`, `mapBcBrand`, `mapBcGallery`, `mapBcServices`, `mapBcService`, `mapBcAbout`, `mapBcTeam`, `mapBcAssistance`, `mapBcContact`, `mapBcMap`
+- null → undefined coercion minden optional mezőnél (TS `?:` kompatibilitás)
+- String kivételek: bc-brand.logo és bc-gallery.src marad string
+- Fail-soft: ismeretlen section-ök kihagyva, malformed data kihagyva, üres input → `emptySiteData()`
+
+**Helperek:** `isRecord()`, `asString()`, `asNumber()`, `asBoolean()`, `asArray()`, `maybeMedia()`, `maybeCta()`, `optionalString()`, `isDefined()`
+
+**Ellenőrzés:** 23/23 PASS (p81-verify.mjs)
+
+### Státusz
+
+✅ Pusholva.
+
+---
+
+## #38 — Navigation block (2026-04-06) · `e4aa10f`
+
+**Commit:** `config: add curated navigation block (P7.2.0)`
+
+**Mi változott:**
+
+- `src/data/site.ts` mock SiteData-ba bekerült a kurált navigation blokk (`primary: NavItem[]`)
+
+**Kontextus:** P7.2 (response builder navigation) előkészítés — a kliens-oldali mock adat frissítése, hogy az infra-oldali nav struktúrával szinkronban legyen.
+
+### Státusz
+
+✅ Pusholva.
+
+---
+
+## #37 — .env.example + overlay docs (2026-04-05) · `fa73f8b`
 
 **Commit:** `feat: 10 bc-* ACF field groups + registry loader -- code-defined schema from content-model contract (P3.3)`
 
