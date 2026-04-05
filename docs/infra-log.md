@@ -16,6 +16,7 @@
 | 32 | 79c7c37 | feat: real config.php — CORS, site defaults, sections | #34 config.php (P3.1) |
 | 33 | 4dcf025 | feat: content-model.md + fix section slugs | #35 content model (P3.2) |
 | 34 | 507dfab | feat: 10 bc-* ACF field groups + registry | #36 ACF field groups (P3.3) |
+| 35 | fa73f8b | feat: .env.example + overlay docs | #37 env template + overlay docs (P3.4) |
 
 ---
 
@@ -123,6 +124,30 @@ config.php sections[] RÉGI: bc-why-us, bc-fleet, bc-reviews, bc-faq, bc-blog, b
 config.php sections[] ÚJ:  bc-gallery, bc-service, bc-about, bc-team, bc-assistance, bc-map
 ```
 A 4 helyes slug (bc-hero, bc-brand, bc-services, bc-contact) maradt.
+
+---
+
+## #37 — .env.example + overlay docs (2026-04-05) · `fa73f8b`
+
+**Commit:** `feat: .env.example + overlay docs -- SPEKTRA_ namespace, setup guide (P3.4)`
+
+**Mi jott letre / valtozot:**
+
+1. `infra/env/.env.example` -- uj fajl, 7 valtozo:
+   - `SPEKTRA_WP_URL`, `SPEKTRA_CLIENT_CONFIG`, `VITE_DEV_ORIGIN`
+   - `WAMP_WWW`, `WAMP_VHOST_DIR` (Phase 4)
+   - `SPEKTRA_WP_DEBUG`, `SPEKTRA_DEBUG`
+2. `infra/env/README.md` -- placeholder lecserelve: valtozotabla, setup lepes, hasznalati leiras
+3. `infra/docs/README.md` -- placeholder lecserelve: overlay guide (mi az overlay, konyvtarstruktura, plugin connection, Phase 4 setup lepesek, key contracts)
+
+**Architekturalis dontes:**
+- Minden env valtozo `SPEKTRA_` prefix -- namespace elkeruli a WP konstans utkozest
+- `SPEKTRA_CLIENT_CONFIG` ures alapertelmezett -- fejleszto tolti ki local absolute path-ra
+- `WP_HOME` / `WP_SITEURL` szandekosan kihagyva (WP nativ konstans utkozes)
+
+### Statusz
+
+✅ Pusholva. Phase 3 kesz.
 
 ---
 
