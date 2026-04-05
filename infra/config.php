@@ -32,18 +32,18 @@ return [
 
 	// ── Sections ─────────────────────────────────────────────────
 	// ACF field group slugs that map to SiteData sections.
-	// Order matches the frontend rendering order.
+	// Order matches site.ts pages[home].sections[] rendering order.
 	'sections' => [
 		'bc-hero',
 		'bc-brand',
+		'bc-gallery',
 		'bc-services',
-		'bc-why-us',
-		'bc-fleet',
-		'bc-reviews',
-		'bc-faq',
-		'bc-blog',
+		'bc-service',
+		'bc-about',
+		'bc-team',
+		'bc-assistance',
 		'bc-contact',
-		'bc-footer',
+		'bc-map',
 	],
 
 ];
