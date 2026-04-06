@@ -123,6 +123,44 @@ function logField(field: FieldMapping, value: unknown): void {
   }
 }
 
+// ── Local asset detection ────────────────────────────────────────
+
+/**
+ * Scan seed fields for local asset paths (non-URL image references).
+ * These come from ES-imported images resolved by asset-loader.mjs
+ * and are NOT valid web URLs — they need media library upload (P11+).
+ */
+function detectLocalAssets(fields: Record<string, unknown>): string[] {
+  const warnings: string[] = []
+
+  function scan(value: unknown, path: string): void {
+    if (typeof value === 'string' && value.length > 0) {
+      // Local asset: relative path like "src/assets/brands/vw-logo.jpg"
+      // (not starting with http/https, but has an image extension)
+      if (
+        !value.startsWith('http://') &&
+        !value.startsWith('https://') &&
+        !value.startsWith('#') &&
+        /\.(jpg|jpeg|png|gif|webp|svg|avif)$/i.test(value)
+      ) {
+        warnings.push(`${path}: "${value}"`)
+      }
+    } else if (Array.isArray(value)) {
+      value.forEach((item, i) => scan(item, `${path}[${i}]`))
+    } else if (typeof value === 'object' && value !== null) {
+      for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
+        scan(v, `${path}.${k}`)
+      }
+    }
+  }
+
+  for (const [key, val] of Object.entries(fields)) {
+    scan(val, key)
+  }
+
+  return warnings
+}
+
 // ── Main ─────────────────────────────────────────────────────────
 
 const seed = buildSeed()
@@ -130,6 +168,16 @@ const json = JSON.stringify(seed, null, 2)
 
 const fieldCount = Object.keys(seed.fields).length
 console.log(`\nSeed generated: ${fieldCount} fields`)
+
+// Warn about local asset references
+const localAssets = detectLocalAssets(seed.fields)
+if (localAssets.length > 0) {
+  console.log(`\n⚠ LOCAL ASSET REFERENCES (${localAssets.length}):`)
+  console.log('  These are NOT valid web URLs — media library upload needed (P11+).')
+  for (const w of localAssets) {
+    console.log(`  · ${w}`)
+  }
+}
 
 if (dryRun) {
   console.log('\n--- DRY RUN ---\n')
