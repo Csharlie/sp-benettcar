@@ -24,6 +24,7 @@
 | 40 | 2e16b35 | fix(P8H): Media.variants + render-safety | #42 boundary hardening (P8H) |
 | 41 | 5bda0ba | fix(P8H2): contact safety + mapper strict + lint | #43 boundary + tooling hardening (P8H2) |
 | 42 | 753b172 | P8F: bc-hero render-safety + Vitest boundary tests | #44 Phase 8 close (P8F) |
+| 43 | a1f2c97 | fix: CTA renderability + services render-safety | #45 residual consistency patch |
 
 ---
 
@@ -155,6 +156,55 @@ A 4 helyes slug (bc-hero, bc-brand, bc-services, bc-contact) maradt.
 ### Statusz
 
 ✅ Pusholva. Phase 3 kesz.
+
+---
+
+## #45 — Residual consistency patch (2026-04-06) · `a1f2c97`
+
+**Commit:** `fix: CTA renderability (text+href) + bc-services/bc-service render-safety`
+
+**Típus:** Residual consistency patch — NEM phase rewrite, NEM scope expansion.
+
+**Mi változott:**
+
+### 1. CTA renderability hardening (`normalize-site-data.ts`)
+- `cleanCta()` immár **mindkét** mezőt megköveteli: non-empty `text` ÉS non-empty `href`
+- Korábban: text-only CTA átengedődött, a frontend dead `<a>` linket renderelt belőle
+- Hatás: bc-hero, bc-about, bc-service contactInfo — mind az új `cleanCta()` policy-t kapják
+
+### 2. Hero CTA anchor fix (`normalize-site-data.ts`)
+- `hasRenderableHero()` CTA ellenőrzés egyszerűsítve: ha a CTA túlélte `cleanCta()`-t, garantáltan valid (text+href)
+- Korábban: text-only CTA valid hero anchor volt → hero hollow shell-ként megmaradhatott
+- Most: text-only CTA → dropped by cleanCta → hero sem marad meg rajta
+
+### 3. bc-services render-safety (`normalize-site-data.ts`)
+- Új helper: `hasRenderableServiceItem()` — title VAGY description kell
+- Service itemek filter: icon-only (title+description nélkül) → kiesik
+- 0 renderable service item → teljes section drop
+
+### 4. bc-service render-safety (`normalize-site-data.ts`)
+- Új helper: `hasRenderableService()` — title VAGY description VAGY valid contact.messageCta kell
+- Section drop ha semmi meaningful anchor nincs
+
+### 5. Tesztek
+- 11 új teszt case (44/44 összesen):
+  - text-only CTA → dropped
+  - href-only CTA → dropped
+  - hero nem marad meg dead CTA-n
+  - bc-services empty items → section drop
+  - bc-services empty array → drop
+  - bc-services valid item → keep (filter hollows)
+  - bc-service empty → drop
+  - bc-service title → keep
+  - bc-service description → keep
+  - bc-service valid messageCta → keep
+  - bc-service dead messageCta → drop
+
+**Ellenőrzés:** 44/44 teszt PASS. tsc clean. ESLint clean. vite build OK.
+
+### Státusz
+
+✅ Pusholva.
 
 ---
 
