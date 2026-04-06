@@ -23,6 +23,7 @@
 | 39 | ba52c9f | feat(P8.3): adapter factory + env switch | #41 adapter factory (P8.3) |
 | 40 | 2e16b35 | fix(P8H): Media.variants + render-safety | #42 boundary hardening (P8H) |
 | 41 | 5bda0ba | fix(P8H2): contact safety + mapper strict + lint | #43 boundary + tooling hardening (P8H2) |
+| 42 | 753b172 | P8F: bc-hero render-safety + Vitest boundary tests | #44 Phase 8 close (P8F) |
 
 ---
 
@@ -157,6 +158,45 @@ A 4 helyes slug (bc-hero, bc-brand, bc-services, bc-contact) maradt.
 
 ---
 
+## #44 — Phase 8 close: bc-hero safety + Vitest tests (2026-04-06) · `753b172`
+
+**Commit:** `P8F: bc-hero render-safety + Vitest boundary tests (33/33)`
+
+**Mi változott:**
+
+### 1. bc-hero render-safety (`normalize-site-data.ts`)
+- `normalizeBcHero()` most `Section | undefined`-et ad vissza
+- Új helper: `hasRenderableHero(data)` — ellenőrzi: `title` VAGY `description` VAGY `primaryCTA.text` VAGY `backgroundImage.src` legyen non-empty
+- Teljes section drop, ha egyik sem teljesül
+- A #42-es logban jelölt **TODO** ezzel lezárva
+
+### 2. Vitest boundary test suite
+- `vitest@^2` telepítve (Vite 5 kompatibilis; v4 Vite 6+-t igényel)
+- `package.json` scripts: `"test": "vitest run"`, `"test:watch": "vitest"`
+
+### 3. `wp-mapper.test.ts` — 14 teszt
+- **Top-level strictness** (8): null/string/number → throw; missing site/nav/pages → throw; non-array pages → throw; empty pages → throw
+- **Media.variants fidelity** (4): canonical variants preserved; invalid items fail-soft skipped; missing → undefined; empty → undefined
+- **Section fail-soft** (1): unknown section type silently skipped
+- **Happy path** (1): valid payload maps into usable SiteData
+
+### 4. `normalize-site-data.test.ts` — 19 teszt
+- **bc-hero** (6): empty drop, whitespace drop, title-only keep, description-only keep, CTA-only keep, backgroundImage-only keep
+- **bc-gallery** (2): no valid src → drop; valid src → keep (filters bad images)
+- **bc-team** (2): no named member → drop; at least one → keep (filters empty)
+- **bc-contact** (4): no contactInfo → drop; all-empty fields → drop; phone → keep; email → keep
+- **bc-brand** (2): named but logoless → keep; zero renderable → drop
+- **bc-about** (2): empty stats → undefined (section kept); valid stats preserved
+- **Full pipeline smoke** (1): raw WP payload → mapper → normalizer → 4 sections intact
+
+**Ellenőrzés:** 33/33 teszt PASS. `tsc --noEmit` clean. ESLint clean. `vite build` OK.
+
+### Státusz
+
+✅ Commitolva. Phase 8 lezárva.
+
+---
+
 ## #43 — Boundary + tooling hardening (2026-04-06) · `5bda0ba`
 
 **Commit:** `fix(P8H2): boundary + tooling hardening — contact safety, mapper strictness, lint`
@@ -214,7 +254,7 @@ A 4 helyes slug (bc-hero, bc-brand, bc-services, bc-contact) maradt.
 - `bc-team`: drop ha 0 named member normalizálás után
 - `bc-about` stats: empty stats → `undefined` (section maga marad)
 - `bc-brand`: drop **csak** ha 0 renderable brand item (logoless de named → marad)
-- `bc-hero`: **TODO** — skip rule deferred, component-aware review szükséges
+- `bc-hero`: ~~**TODO** — skip rule deferred~~ → **DONE** in #44 (P8F)
 
 **Ellenőrzés:** 25/25 PASS (p8h-verify.mjs). TS clean. Vite build OK.
 
