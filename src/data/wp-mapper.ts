@@ -114,8 +114,9 @@ function maybeMedia(value: unknown): Media | undefined {
 function maybeCta(value: unknown): CallToAction | undefined {
   if (!isRecord(value)) return undefined
   const text = asString(value.text)
-  if (text === undefined) return undefined
-  return { text, href: asString(value.href) }
+  const href = asString(value.href)
+  if (text === undefined || href === undefined) return undefined
+  return { text, href }
 }
 
 /**
