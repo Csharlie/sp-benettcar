@@ -27,6 +27,46 @@
 | 43 | a1f2c97 | fix: CTA renderability + services render-safety | #45 residual consistency patch |
 | 44 | d9a9f57 | fix: bc-services/bc-service contract alignment | #46 Codex P2 finding fix |
 | 45 | 5bb833b | fix: drop hollow bc-service.contact card | #47 Codex P2 contact card fix |
+| 46 | 322d6ce | docs: content-model CTA + variants policy alignment | #48 P8-R4 content-model alignment |
+| 47 | d982fc5 | fix: maybeCta requires href to match strict CTA contract | P8-R4 wp-mapper CTA fix |
+| 48 | 4be70ec | docs: content-model CTA href optional → required | P8-R4 content-model CTA docs |
+
+---
+
+## Canonical Phase 8 Sequence
+
+Phase 8 — Contract Hardening — a fázis során több elnevezési konvenció keveredett.
+Az alábbi tábla a kanonikus sorrend, amely az összes historikus aliast egy koherens modellre normalizálja.
+
+| Canonical | Scope | Log entry | Legacy alias |
+|---|---|---|---|
+| P8.1 | WP mapper | #39 | — |
+| P8.2 | Normalizer | #40 | — |
+| P8.3 | Adapter / env switch | #41 | — |
+| P8.4 | Hardening 1 — Media.variants + render-safety | #42 | `P8H` |
+| P8.5 | Hardening 2 — contact safety + mapper strict + lint | #43 | `P8H2` |
+| P8.6 | Core close — bc-hero safety + Vitest boundary tests | #44 | `P8F` |
+| P8.R1 | Residual consistency patch — CTA renderability + services | #45 | — |
+| P8.R2 | Codex finding fix 1 — bc-services/bc-service contract | #46 | — |
+| P8.R3 | Codex finding fix 2 — hollow contact card | #47 | — |
+| P8.R4 | Multi-repo closure — docs alignment, CTA contract strict | #48 + d982fc5 + 4be70ec | `P8-R4` |
+
+### Closure semantics
+
+- **P8.6 (#44)** = Core Close. A delivery subphases (P8.1–P8.6) lezárultak.
+- **P8.R1–R4 (#45–#48 + follow-ups)** = Remediation / closure passes. Codex audit findings, docs drift, contract szigorítás.
+- **P8-Rfinal** = Phase 8 teljes lezárás. Nincs nyitott technikai vagy contract-szintű finding.
+
+A historikus commit üzeneteket és log entry címeket nem írtuk át — a kanonikus tábla az értelmezési réteg.
+
+### Forward rule (Phase 9+)
+
+Phase 9-től az alábbi konvenciót alkalmazzuk:
+
+- Deliverable subphases: `P9.1`, `P9.2`, `P9.3`
+- Remediation / audit rounds: `P9.R1`, `P9.R2`, `P9.R3`
+
+Mnemonic aliasok (`P9H`, `P9H2`, `P9F`, `P9-final`) nem használandók.
 
 ---
 
