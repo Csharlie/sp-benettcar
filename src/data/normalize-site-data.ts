@@ -187,7 +187,10 @@ function normalizeBcGallery(
 function normalizeBcServices(
   data: Record<string, unknown>,
 ): Record<string, unknown> | undefined {
+  // Section title is always rendered as heading — required
+  if (typeof data.title !== 'string' || data.title.trim().length === 0) return undefined
   const services = asTypedArray(data.services)
+  // Service card title is required: rendered as heading + used as React key
   const renderableServices = services.filter(hasRenderableServiceItem)
   if (renderableServices.length === 0) return undefined
   return {
@@ -197,10 +200,9 @@ function normalizeBcServices(
   }
 }
 
+/** A service card is renderable only if it has a non-empty title (heading + React key). */
 function hasRenderableServiceItem(item: Record<string, unknown>): boolean {
-  if (typeof item.title === 'string' && item.title.trim().length > 0) return true
-  if (typeof item.description === 'string' && item.description.trim().length > 0) return true
-  return false
+  return typeof item.title === 'string' && item.title.trim().length > 0
 }
 
 function normalizeBcService(
@@ -208,6 +210,19 @@ function normalizeBcService(
 ): Record<string, unknown> | undefined {
   const result = { ...data }
   result.subtitle = cleanOptional(result.subtitle)
+
+  // Filter empty service labels — rendered as bullet text + React key
+  const services = asTypedArray(result.services)
+  result.services = services.filter(
+    (s) => typeof s.label === 'string' && s.label.trim().length > 0,
+  )
+
+  // Filter empty brand strings — rendered as chips + React key
+  if (Array.isArray(result.brands)) {
+    result.brands = (result.brands as unknown[]).filter(
+      (b) => typeof b === 'string' && b.trim().length > 0,
+    )
+  }
 
   // Clean contact sub-object
   if (isRecord(result.contact)) {
@@ -224,11 +239,13 @@ function normalizeBcService(
   return result
 }
 
+/**
+ * Section title is always rendered as heading — it is the primary anchor.
+ * Description is also always rendered. Contact messageCta is a secondary anchor.
+ */
 function hasRenderableService(data: Record<string, unknown>): boolean {
-  if (typeof data.title === 'string' && data.title.trim().length > 0) return true
-  if (typeof data.description === 'string' && data.description.trim().length > 0) return true
-  if (isRecord(data.contact) && data.contact.messageCta !== undefined) return true
-  return false
+  if (typeof data.title !== 'string' || data.title.trim().length === 0) return false
+  return true
 }
 
 function normalizeBcAbout(

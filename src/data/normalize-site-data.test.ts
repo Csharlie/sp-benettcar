@@ -163,7 +163,7 @@ describe('normalize — bc-services render-safety', () => {
     expect(data.services).toHaveLength(1)
   })
 
-  it('keeps service item with description only (no title)', () => {
+  it('drops service item with description only (no title = blank heading + bad key)', () => {
     const sections = pipelineSections([
       {
         id: 'sv4',
@@ -174,7 +174,21 @@ describe('normalize — bc-services render-safety', () => {
         },
       },
     ])
-    expect(sections).toHaveLength(1)
+    expect(sections).toHaveLength(0)
+  })
+
+  it('drops bc-services with empty section title', () => {
+    const sections = pipelineSections([
+      {
+        id: 'sv5',
+        type: 'bc-services',
+        data: {
+          title: '',
+          services: [{ title: 'Repair', icon: 'wrench', description: 'Fix' }],
+        },
+      },
+    ])
+    expect(sections).toHaveLength(0)
   })
 })
 
@@ -213,7 +227,7 @@ describe('normalize — bc-service render-safety', () => {
     expect(sections).toHaveLength(1)
   })
 
-  it('keeps bc-service with non-empty description', () => {
+  it('drops bc-service with non-empty description but no title', () => {
     const sections = pipelineSections([
       {
         id: 'svc3',
@@ -226,10 +240,10 @@ describe('normalize — bc-service render-safety', () => {
         },
       },
     ])
-    expect(sections).toHaveLength(1)
+    expect(sections).toHaveLength(0)
   })
 
-  it('keeps bc-service with valid contact messageCta', () => {
+  it('drops bc-service with valid contact messageCta but no title', () => {
     const sections = pipelineSections([
       {
         id: 'svc4',
@@ -247,7 +261,7 @@ describe('normalize — bc-service render-safety', () => {
         },
       },
     ])
-    expect(sections).toHaveLength(1)
+    expect(sections).toHaveLength(0)
   })
 
   it('drops bc-service when contact messageCta lacks href', () => {
@@ -269,6 +283,42 @@ describe('normalize — bc-service render-safety', () => {
       },
     ])
     expect(sections).toHaveLength(0)
+  })
+
+  it('filters empty service labels', () => {
+    const sections = pipelineSections([
+      {
+        id: 'svc6',
+        type: 'bc-service',
+        data: {
+          title: 'Car Repair',
+          description: '',
+          services: [{ label: 'Oil change' }, { label: '' }, { label: '   ' }],
+          brands: [],
+        },
+      },
+    ])
+    expect(sections).toHaveLength(1)
+    const data = sections[0]!.data as Record<string, unknown>
+    expect(data.services).toHaveLength(1)
+  })
+
+  it('filters empty brand strings', () => {
+    const sections = pipelineSections([
+      {
+        id: 'svc7',
+        type: 'bc-service',
+        data: {
+          title: 'Car Repair',
+          description: '',
+          services: [],
+          brands: ['BMW', '', '  ', 'Audi'],
+        },
+      },
+    ])
+    expect(sections).toHaveLength(1)
+    const data = sections[0]!.data as Record<string, unknown>
+    expect(data.brands).toHaveLength(2)
   })
 })
 
