@@ -68,12 +68,12 @@
 | `subtitle` | `bc_hero_subtitle` | text | ✗ | empty → `undefined` | omit |
 | `description` | `bc_hero_description` | textarea | ✔ | — | **skip section** |
 | `primaryCTA.text` | `bc_hero_primary_cta_text` | text | ✗† | — | omit CTA |
-| `primaryCTA.href` | `bc_hero_primary_cta_href` | text | ✗† | — | `"#"` |
+| `primaryCTA.href` | `bc_hero_primary_cta_href` | text | ✗† | — | **omit CTA** |
 | `secondaryCTA.text` | `bc_hero_secondary_cta_text` | text | ✗ | — | omit CTA |
-| `secondaryCTA.href` | `bc_hero_secondary_cta_href` | text | ✗ | — | `"#"` |
+| `secondaryCTA.href` | `bc_hero_secondary_cta_href` | text | ✗ | — | **omit CTA** |
 | `backgroundImage` | `bc_hero_background_image` | image | ✗ | ACF image → `Media` | `undefined` |
 
-> † `primaryCTA` optional at section level, but if `text` is set, the whole CTA is emitted.
+> † `primaryCTA` optional at section level. CTA requires both `text` and `href` to be non-empty; if either is missing, the entire CTA is dropped by the normalizer.
 
 ### 2.2. bc-brand
 
@@ -139,7 +139,7 @@
 | `contact.description` | `bc_service_contact_description` | textarea | ✔‡ | — | omit group |
 | `contact.phone` | `bc_service_contact_phone` | text | ✗ | — | omit |
 | `contact.messageCta.text` | `bc_service_contact_message_cta_text` | text | ✗ | — | omit CTA |
-| `contact.messageCta.href` | `bc_service_contact_message_cta_href` | text | ✗ | — | `"#"` |
+| `contact.messageCta.href` | `bc_service_contact_message_cta_href` | text | ✗ | — | **omit CTA** |
 | `contact.bookingNote` | `bc_service_contact_booking_note` | text | ✗ | empty → `undefined` | omit |
 | `contact.hours` | `bc_service_contact_hours` | text | ✗ | — | omit |
 | `contact.weekendHours` | `bc_service_contact_weekend_hours` | text | ✗ | — | omit |
@@ -164,7 +164,7 @@
 | `stats[].label` | `bc_about_stats_label` | text | ✔ | — | skip item |
 | `cta` | — | — | ✗ | CTA group | `undefined` |
 | `cta.text` | `bc_about_cta_text` | text | ✗† | — | omit CTA |
-| `cta.href` | `bc_about_cta_href` | text | ✗† | — | `"#"` |
+| `cta.href` | `bc_about_cta_href` | text | ✗† | — | **omit CTA** |
 | `colorScheme` | `bc_about_color_scheme` | select | ✗ | `'light'` \| `'dark'` | `'light'` |
 
 ### 2.7. bc-team
@@ -253,7 +253,8 @@
 | Helyzet | Policy |
 |---------|--------|
 | `cta.text` üres | omit egész CTA (nem emit `{ text: "", href: ... }`) |
-| `cta.text` van, `cta.href` üres | emit `{ text: "...", href: "#" }` |
+| `cta.href` üres | **omit egész CTA** — text-only CTA dead anchor lenne |
+| `cta.text` + `cta.href` mindkettő non-empty | emit `{ text: "...", href: "..." }` |
 
 ### 3.4. Media / Image Policies
 
@@ -262,7 +263,7 @@
 | ACF image field üres | `undefined` (optional) vagy skip (required) |
 | ACF image → `Media` | `spektra_acf_image_to_media()` helper |
 | ACF image → URL string | `$image['url']` (bc-brand, bc-gallery) |
-| Variants | Nem generálunk — `variants` = `undefined` |
+| Variants | `spektra_acf_image_to_media()` generálja WP registered image sizes-ból |
 
 ### 3.5. Section Order Policy
 
