@@ -36,7 +36,7 @@ A gyökér-szintű mappák átnevezése `sp-` prefixre:
 | Fájl | Cserék |
 |------|--------|
 | `sp-clients/sp-benettcar/docs/implementation-log.md` | 12 |
-| `sp-platform/docs/bootstrap-log.md` | 3 |
+| `sp-platform/docs/bootstrap-platform-log.md` | 3 |
 | `sp-clients/sp-benettcar/docs/bc-migration-plan.md` | 6 |
 | `spektra-dev/spektra-bootstrap-prompt.md` | 5 |
 | `spektra-dev/spektra-architecture-layers.md` | 4 |

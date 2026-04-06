@@ -1015,7 +1015,7 @@ sp-clients/sp-benettcar/
 - `tailwind.config.ts` (2 path)
 - `pnpm-lock.yaml` (regenerált)
 - `docs/implementation-log.md` (12 csere)
-- `sp-platform/docs/bootstrap-log.md` (3 csere)
+- `sp-platform/docs/bootstrap-platform-log.md` (3 csere)
 - `sp-clients/sp-benettcar/docs/bc-migration-plan.md` (6 csere)
 - `spektra-dev/spektra-bootstrap-prompt.md` (5 csere)
 - `spektra-dev/spektra-architecture-layers.md` (4 csere)

@@ -619,4 +619,4 @@ Utility: `cn`
 - [ ] `packages/config/` — eslint + ts config csomag (deferred)
 - [ ] FAQ + CTA section komponensek a platformon
 - [ ] check-boundaries script (deferred)
-- [ ] Bootstrap-log frissítés (Update 3.5: type erasure, Update 3.6: runtime validation, Update 3.7: validation gaps fix — ezek NEM dokumentáltak a bootstrap-log-ban)
+- [ ] Bootstrap-platform-log frissítés (Update 3.5: type erasure, Update 3.6: runtime validation, Update 3.7: validation gaps fix — ezek NEM dokumentáltak a bootstrap-platform-log-ban)
