@@ -90,9 +90,6 @@ function normalizeSectionData(
 ): Record<string, unknown> | undefined {
   switch (type) {
     case 'bc-hero':
-      // TODO: bc-hero render-safety skip rule requires component-aware review.
-      // Hero is a high-visibility layout-driving section — defer until
-      // we can audit the component's actual minimum content rendering behavior.
       return normalizeBcHero(data)
     case 'bc-brand':
       return normalizeBcBrand(data)
@@ -121,12 +118,33 @@ function normalizeSectionData(
 
 function normalizeBcHero(
   data: Record<string, unknown>,
-): Record<string, unknown> {
+): Record<string, unknown> | undefined {
   const result = { ...data }
   result.subtitle = cleanOptional(result.subtitle)
   result.primaryCTA = cleanCta(result.primaryCTA)
   result.secondaryCTA = cleanCta(result.secondaryCTA)
+
+  // Hero render-safety: keep only if at least one meaningful visual/content
+  // anchor exists. An empty hero would render as a full-screen hollow shell.
+  if (!hasRenderableHero(result)) return undefined
+
   return result
+}
+
+/**
+ * A hero is renderable if it has at least one of:
+ * - non-empty title
+ * - non-empty description
+ * - renderable CTA (primary or secondary with text)
+ * - renderable backgroundImage (with src)
+ */
+function hasRenderableHero(data: Record<string, unknown>): boolean {
+  if (typeof data.title === 'string' && data.title.trim().length > 0) return true
+  if (typeof data.description === 'string' && data.description.trim().length > 0) return true
+  if (isRecord(data.primaryCTA) && typeof data.primaryCTA.text === 'string' && data.primaryCTA.text.trim().length > 0) return true
+  if (isRecord(data.secondaryCTA) && typeof data.secondaryCTA.text === 'string' && data.secondaryCTA.text.trim().length > 0) return true
+  if (isRecord(data.backgroundImage) && typeof data.backgroundImage.src === 'string' && data.backgroundImage.src.trim().length > 0) return true
+  return false
 }
 
 function normalizeBcBrand(
