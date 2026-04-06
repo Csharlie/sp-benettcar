@@ -7,6 +7,6 @@ dist
 .local/
 
 # === Environment ===
-.env
+# .env committed (defaults), .env.local gitignored (overrides)
 .env.local
 .env.*.local

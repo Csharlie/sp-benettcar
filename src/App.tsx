@@ -1,15 +1,10 @@
-import { createJsonAdapter } from '@spektra/data'
 import { SiteDataProvider } from '@spektra/runtime'
 import { LandingTemplate } from '@spektra/templates'
 import { registry } from './registry'
 import { AppHeader, AppFooter } from './shell'
-import { siteData } from './data/site'
+import { createAdapter } from './data/create-adapter'
 
-/**
- * JSON adapter — mock SiteData-ból dolgozik.
- * WordPress-re váltás: createJsonAdapter({ data }) → createWordPressAdapter({ url })
- */
-const adapter = createJsonAdapter({ data: siteData })
+const adapter = createAdapter()
 
 export default function App() {
   return (
