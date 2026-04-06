@@ -26,6 +26,7 @@
 | 42 | 753b172 | P8F: bc-hero render-safety + Vitest boundary tests | #44 Phase 8 close (P8F) |
 | 43 | a1f2c97 | fix: CTA renderability + services render-safety | #45 residual consistency patch |
 | 44 | d9a9f57 | fix: bc-services/bc-service contract alignment | #46 Codex P2 finding fix |
+| 45 | 5bb833b | fix: drop hollow bc-service.contact card | #47 Codex P2 contact card fix |
 
 ---
 
@@ -157,6 +158,25 @@ A 4 helyes slug (bc-hero, bc-brand, bc-services, bc-contact) maradt.
 ### Statusz
 
 ✅ Pusholva. Phase 3 kesz.
+
+---
+
+## #47 — Codex P2 contact card fix (2026-04-06) · `5bb833b`
+
+**Commit:** `fix: drop hollow bc-service.contact card (Codex P2 finding)`
+
+**Típus:** Codex audit finding — normalizer ↔ component contract alignment.
+
+**Mi változott:**
+- `normalizeBcService()` contact block: title + legalább egy action (phone vagy messageCta) kell
+- Nincs title → contact drop; nincs action → contact drop
+- Komponens a contact létezésére rendereli a teljes jobb oldali cardot, title/description feltétel nélkül → hollow shell megelőzve
+
+**Tesztek:** +3 új (hollow contact no-title, hollow contact no-action, valid contact keep). 50/50 PASS.
+
+### Státusz
+
+✅ Commitolva.
 
 ---
 
