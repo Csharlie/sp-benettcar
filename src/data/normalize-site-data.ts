@@ -135,14 +135,17 @@ function normalizeBcHero(
  * A hero is renderable if it has at least one of:
  * - non-empty title
  * - non-empty description
- * - renderable CTA (primary or secondary with text)
+ * - renderable CTA (primary or secondary — text + href both required)
  * - renderable backgroundImage (with src)
+ *
+ * CTA check: after cleanCta runs, surviving CTA objects are guaranteed to have
+ * both text and href, so existence alone is sufficient.
  */
 function hasRenderableHero(data: Record<string, unknown>): boolean {
   if (typeof data.title === 'string' && data.title.trim().length > 0) return true
   if (typeof data.description === 'string' && data.description.trim().length > 0) return true
-  if (isRecord(data.primaryCTA) && typeof data.primaryCTA.text === 'string' && data.primaryCTA.text.trim().length > 0) return true
-  if (isRecord(data.secondaryCTA) && typeof data.secondaryCTA.text === 'string' && data.secondaryCTA.text.trim().length > 0) return true
+  if (data.primaryCTA !== undefined) return true
+  if (data.secondaryCTA !== undefined) return true
   if (isRecord(data.backgroundImage) && typeof data.backgroundImage.src === 'string' && data.backgroundImage.src.trim().length > 0) return true
   return false
 }
@@ -183,16 +186,26 @@ function normalizeBcGallery(
 
 function normalizeBcServices(
   data: Record<string, unknown>,
-): Record<string, unknown> {
+): Record<string, unknown> | undefined {
+  const services = asTypedArray(data.services)
+  const renderableServices = services.filter(hasRenderableServiceItem)
+  if (renderableServices.length === 0) return undefined
   return {
     ...data,
     subtitle: cleanOptional(data.subtitle),
+    services: renderableServices,
   }
+}
+
+function hasRenderableServiceItem(item: Record<string, unknown>): boolean {
+  if (typeof item.title === 'string' && item.title.trim().length > 0) return true
+  if (typeof item.description === 'string' && item.description.trim().length > 0) return true
+  return false
 }
 
 function normalizeBcService(
   data: Record<string, unknown>,
-): Record<string, unknown> {
+): Record<string, unknown> | undefined {
   const result = { ...data }
   result.subtitle = cleanOptional(result.subtitle)
 
@@ -207,7 +220,15 @@ function normalizeBcService(
     result.contact = contact
   }
 
+  if (!hasRenderableService(result)) return undefined
   return result
+}
+
+function hasRenderableService(data: Record<string, unknown>): boolean {
+  if (typeof data.title === 'string' && data.title.trim().length > 0) return true
+  if (typeof data.description === 'string' && data.description.trim().length > 0) return true
+  if (isRecord(data.contact) && data.contact.messageCta !== undefined) return true
+  return false
 }
 
 function normalizeBcAbout(
@@ -320,16 +341,15 @@ function cleanOptional(value: unknown): string | undefined {
 }
 
 /**
- * Clean a CTA object: if text is empty/whitespace after trim, drop the entire CTA.
+ * Clean a CTA object: a CTA is renderable only if it has BOTH non-empty text
+ * AND non-empty href. Without href the frontend renders a dead <a> link.
  */
 function cleanCta(value: unknown): CallToAction | undefined {
   if (!isRecord(value)) return undefined
   const text = typeof value.text === 'string' ? value.text.trim() : ''
-  if (text.length === 0) return undefined
-  return {
-    text,
-    href: typeof value.href === 'string' ? value.href.trim() : undefined,
-  }
+  const href = typeof value.href === 'string' ? value.href.trim() : ''
+  if (text.length === 0 || href.length === 0) return undefined
+  return { text, href }
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

@@ -81,6 +81,195 @@ describe('normalize — bc-hero render-safety', () => {
     ])
     expect(sections).toHaveLength(1)
   })
+
+  it('drops hero with text-only CTA (no href = dead link)', () => {
+    const sections = pipelineSections([
+      {
+        id: 'h7',
+        type: 'bc-hero',
+        data: {
+          title: '',
+          description: '',
+          primaryCTA: { text: 'Click me' },
+        },
+      },
+    ])
+    expect(sections).toHaveLength(0)
+  })
+
+  it('drops hero with href-only CTA (no text)', () => {
+    const sections = pipelineSections([
+      {
+        id: 'h8',
+        type: 'bc-hero',
+        data: {
+          title: '',
+          description: '',
+          primaryCTA: { href: '/go' },
+        },
+      },
+    ])
+    expect(sections).toHaveLength(0)
+  })
+})
+
+// ── bc-services render-safety ─────────────────────────────────────────────
+
+describe('normalize — bc-services render-safety', () => {
+  it('drops bc-services with no renderable service items', () => {
+    const sections = pipelineSections([
+      {
+        id: 'sv1',
+        type: 'bc-services',
+        data: {
+          title: 'Services',
+          services: [
+            { title: '', icon: 'wrench', description: '' },
+            { title: '   ', icon: 'car', description: '  ' },
+          ],
+        },
+      },
+    ])
+    expect(sections).toHaveLength(0)
+  })
+
+  it('drops bc-services with empty services array', () => {
+    const sections = pipelineSections([
+      {
+        id: 'sv2',
+        type: 'bc-services',
+        data: { title: 'Services', services: [] },
+      },
+    ])
+    expect(sections).toHaveLength(0)
+  })
+
+  it('keeps bc-services with at least one titled item', () => {
+    const sections = pipelineSections([
+      {
+        id: 'sv3',
+        type: 'bc-services',
+        data: {
+          title: 'Services',
+          services: [
+            { title: 'Repair', icon: 'wrench', description: '' },
+            { title: '', icon: 'car', description: '' },
+          ],
+        },
+      },
+    ])
+    expect(sections).toHaveLength(1)
+    const data = sections[0]!.data as Record<string, unknown>
+    expect(data.services).toHaveLength(1)
+  })
+
+  it('keeps service item with description only (no title)', () => {
+    const sections = pipelineSections([
+      {
+        id: 'sv4',
+        type: 'bc-services',
+        data: {
+          title: 'Services',
+          services: [{ title: '', icon: '', description: 'Full service repair' }],
+        },
+      },
+    ])
+    expect(sections).toHaveLength(1)
+  })
+})
+
+// ── bc-service render-safety ──────────────────────────────────────────────
+
+describe('normalize — bc-service render-safety', () => {
+  it('drops bc-service with no title, no description, no CTA', () => {
+    const sections = pipelineSections([
+      {
+        id: 'svc1',
+        type: 'bc-service',
+        data: {
+          title: '',
+          description: '',
+          services: [{ label: 'oil change' }],
+          brands: ['BMW'],
+        },
+      },
+    ])
+    expect(sections).toHaveLength(0)
+  })
+
+  it('keeps bc-service with non-empty title', () => {
+    const sections = pipelineSections([
+      {
+        id: 'svc2',
+        type: 'bc-service',
+        data: {
+          title: 'Car Repair',
+          description: '',
+          services: [],
+          brands: [],
+        },
+      },
+    ])
+    expect(sections).toHaveLength(1)
+  })
+
+  it('keeps bc-service with non-empty description', () => {
+    const sections = pipelineSections([
+      {
+        id: 'svc3',
+        type: 'bc-service',
+        data: {
+          title: '',
+          description: 'Professional automotive services',
+          services: [],
+          brands: [],
+        },
+      },
+    ])
+    expect(sections).toHaveLength(1)
+  })
+
+  it('keeps bc-service with valid contact messageCta', () => {
+    const sections = pipelineSections([
+      {
+        id: 'svc4',
+        type: 'bc-service',
+        data: {
+          title: '',
+          description: '',
+          services: [],
+          brands: [],
+          contact: {
+            title: '',
+            description: '',
+            messageCta: { text: 'Message us', href: '/contact' },
+          },
+        },
+      },
+    ])
+    expect(sections).toHaveLength(1)
+  })
+
+  it('drops bc-service when contact messageCta lacks href', () => {
+    const sections = pipelineSections([
+      {
+        id: 'svc5',
+        type: 'bc-service',
+        data: {
+          title: '',
+          description: '',
+          services: [],
+          brands: [],
+          contact: {
+            title: '',
+            description: '',
+            messageCta: { text: 'Message us' },
+          },
+        },
+      },
+    ])
+    expect(sections).toHaveLength(0)
+  })
 })
 
 // ── bc-gallery render-safety ──────────────────────────────────────────────
