@@ -16,7 +16,7 @@ export function BcGallery({
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
   const [selectedImage, setSelectedImage] = useState<BcGalleryImage | null>(null)
 
-  const closeLightbox = useCallback(() => setSelectedImage(null), [])
+  const closeLightbox = useCallback(() => setSelectedImage(null), [setSelectedImage])
 
   useEffect(() => {
     if (!selectedImage) return

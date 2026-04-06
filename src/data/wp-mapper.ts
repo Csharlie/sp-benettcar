@@ -131,10 +131,22 @@ function optionalString(value: unknown): string | undefined {
  * Maps the raw WordPress REST response into a typed SiteData.
  *
  * This is the single public entrypoint for P8.1.
+ * Top-level payload must be a valid object with site, navigation, pages.
+ * Invalid top-level structure throws (not fail-soft — this is a source/contract error).
+ * Section-level malformed items are still handled fail-soft.
  */
 export function mapWordPressSiteData(raw: unknown): SiteData {
   if (!isRecord(raw)) {
-    return emptySiteData()
+    throw new Error('Invalid WordPress payload: expected object')
+  }
+  if (!isRecord(raw.site)) {
+    throw new Error('Invalid WordPress payload: missing site block')
+  }
+  if (!isRecord(raw.navigation)) {
+    throw new Error('Invalid WordPress payload: missing navigation block')
+  }
+  if (!Array.isArray(raw.pages)) {
+    throw new Error('Invalid WordPress payload: missing pages array')
   }
 
   return {
@@ -146,10 +158,7 @@ export function mapWordPressSiteData(raw: unknown): SiteData {
 
 // ── Site meta ─────────────────────────────────────────────────────────────
 
-function mapSite(raw: unknown): SiteMeta {
-  if (!isRecord(raw)) {
-    return { name: '' }
-  }
+function mapSite(raw: Record<string, unknown>): SiteMeta {
   return {
     name: asString(raw.name) ?? '',
     description: optionalString(raw.description),
@@ -160,10 +169,7 @@ function mapSite(raw: unknown): SiteMeta {
 
 // ── Navigation ────────────────────────────────────────────────────────────
 
-function mapNavigation(raw: unknown): Navigation {
-  if (!isRecord(raw)) {
-    return { primary: [] }
-  }
+function mapNavigation(raw: Record<string, unknown>): Navigation {
   return {
     primary: asArray(raw.primary).map(mapNavItem).filter(isDefined),
     footer: raw.footer !== undefined
@@ -189,12 +195,10 @@ function mapNavItem(raw: unknown): NavItem | undefined {
 
 // ── Pages ─────────────────────────────────────────────────────────────────
 
-function mapPages(raw: unknown): Page[] {
-  const arr = asArray(raw)
-  const pages = arr.map(mapPage).filter(isDefined)
-  // SiteData requires at least 1 page — provide empty fallback
+function mapPages(raw: unknown[]): Page[] {
+  const pages = raw.map(mapPage).filter(isDefined)
   if (pages.length === 0) {
-    return [{ slug: 'home', sections: [] }]
+    throw new Error('Invalid WordPress payload: pages array contains no valid pages')
   }
   return pages
 }
@@ -504,12 +508,4 @@ function mapBcMap(raw: Record<string, unknown>): Record<string, unknown> {
 
 function isDefined<T>(value: T | undefined | null): value is T {
   return value !== undefined && value !== null
-}
-
-function emptySiteData(): SiteData {
-  return {
-    site: { name: '' },
-    navigation: { primary: [] },
-    pages: [{ slug: 'home', sections: [] }],
-  }
 }

@@ -247,7 +247,7 @@ function normalizeBcAssistance(
 
 function normalizeBcContact(
   data: Record<string, unknown>,
-): Record<string, unknown> {
+): Record<string, unknown> | undefined {
   const result = { ...data }
   result.subtitle = cleanOptional(result.subtitle)
   result.description = cleanOptional(result.description)
@@ -258,9 +258,26 @@ function normalizeBcContact(
     ci.email = cleanOptional(ci.email)
     ci.address = cleanOptional(ci.address)
     result.contactInfo = ci
+
+    // Drop section if contactInfo has no renderable fields
+    if (!hasRenderableContactInfo(ci)) return undefined
+  } else {
+    // No contactInfo at all — component would crash on dereference
+    return undefined
   }
 
   return result
+}
+
+/**
+ * Check if contactInfo has at least one meaningful renderable field.
+ */
+function hasRenderableContactInfo(ci: Record<string, unknown>): boolean {
+  return (
+    typeof ci.phone === 'string' ||
+    typeof ci.email === 'string' ||
+    typeof ci.address === 'string'
+  )
 }
 
 function normalizeBcMap(
