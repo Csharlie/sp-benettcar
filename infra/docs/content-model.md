@@ -309,7 +309,7 @@ Repeater:  bc_brand_brands (repeater), bc_brand_brands_name (sub-field)
 
 ### CallToAction (platform)
 ```ts
-{ text: string, href?: string }
+{ text: string, href: string }
 ```
 
 ### NavItem (platform)
