@@ -25,6 +25,7 @@
 | 41 | 5bda0ba | fix(P8H2): contact safety + mapper strict + lint | #43 boundary + tooling hardening (P8H2) |
 | 42 | 753b172 | P8F: bc-hero render-safety + Vitest boundary tests | #44 Phase 8 close (P8F) |
 | 43 | a1f2c97 | fix: CTA renderability + services render-safety | #45 residual consistency patch |
+| 44 | d9a9f57 | fix: bc-services/bc-service contract alignment | #46 Codex P2 finding fix |
 
 ---
 
@@ -156,6 +157,38 @@ A 4 helyes slug (bc-hero, bc-brand, bc-services, bc-contact) maradt.
 ### Statusz
 
 ✅ Pusholva. Phase 3 kesz.
+
+---
+
+## #46 — Codex P2 finding fix (2026-04-06) · `d9a9f57`
+
+**Commit:** `fix: bc-services/bc-service contract alignment (Codex P2 findings)`
+
+**Típus:** Codex audit finding javítás — normalizer ↔ component contract alignment.
+
+**Mi változott:**
+
+### 1. bc-services contract alignment (`normalize-site-data.ts`)
+- Section title kötelező (komponens mindig rendereli heading-ként)
+- Service item: **title kötelező** (heading + React key), description-only → drop
+- Korábban: description-only item átcsúszott → blank heading + üres/duplikált React key
+
+### 2. bc-service contract alignment (`normalize-site-data.ts`)
+- Section title kötelező (mindig renderelt heading)
+- description-only / messageCta-only section → drop (title nélkül hollow shell)
+- `services[].label` filter: üres label → kiesik (bullet text + React key)
+- `brands[]` filter: üres string → kiesik (chip text + React key)
+
+### 3. Tesztek
+- 3 teszt korrigálva (description-only / messageCta-only → most drop)
+- 3 új teszt: bc-services empty title → drop, empty labels filter, empty brands filter
+- 47/47 PASS
+
+**Ellenőrzés:** 47/47 teszt PASS. tsc clean. ESLint clean. vite build OK.
+
+### Státusz
+
+✅ Commitolva.
 
 ---
 
