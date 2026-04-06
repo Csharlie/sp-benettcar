@@ -161,6 +161,26 @@ A 4 helyes slug (bc-hero, bc-brand, bc-services, bc-contact) maradt.
 
 ---
 
+## #48 — P8-R4 content-model CTA + variants alignment (2026-04-06) · `322d6ce`
+
+**Commit:** `docs: content-model CTA + variants policy alignment (P8-R4)`
+
+**Típus:** Docs alignment — Codex audit finding P8-R4.
+
+**Mi változott:**
+- bc-hero, bc-service.contact, bc-about CTA href fallback `"#"` → **omit CTA**
+- CTA Policies tábla: text-only → omit egész CTA
+- Media Variants: "Nem generálunk" → `spektra_acf_image_to_media()` generálja WP registered image sizes-ból
+- primaryCTA footnote frissítve: text + href required
+
+**Kontextus:** P8-R4 multi-repo closure pass — finding 4/5.
+
+### Státusz
+
+✅ Pusholva.
+
+---
+
 ## #47 — Codex P2 contact card fix (2026-04-06) · `5bb833b`
 
 **Commit:** `fix: drop hollow bc-service.contact card (Codex P2 finding)`
