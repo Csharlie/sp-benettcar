@@ -1003,7 +1003,7 @@ sp-clients/sp-benettcar/
 6. **clients/ → sp-clients/**: manuális átnevezés File Explorer-ből (VS Code file lock).
 7. **pnpm install**: mindkét repo — sp-platform (423 csomag), sp-clients/sp-benettcar (134 csomag, 7 linked @spektra/* OK).
 8. **Build validáció**: sp-platform 8 task PASS, sp-clients/sp-benettcar 2872 module PASS.
-9. **Dokumentáció frissítés**: implementation-log.md (12), bootstrap-log.md (3), bc-migration-plan.md (6), spektra-bootstrap-prompt.md (5), spektra-architecture-layers.md (4) — összesen 30 csere.
+9. **Dokumentáció frissítés**: implementation-log.md (12), bootstrap-platform-log.md (3), bc-migration-plan.md (6), spektra-bootstrap-prompt.md (5), spektra-architecture-layers.md (4) — összesen 30 csere.
 
 **Döntések:**
 - `sp-` prefix — a platform összes top-level mappáján egységes naming.
