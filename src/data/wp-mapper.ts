@@ -23,6 +23,8 @@ import type {
   Page,
   Section,
   Media,
+  MediaVariant,
+  MediaSource,
   CallToAction,
 } from '@spektra/types'
 
@@ -49,9 +51,47 @@ function asArray(value: unknown): unknown[] {
 }
 
 /**
+ * Convert a raw value to MediaSource | undefined.
+ */
+function mapMediaSource(value: unknown): MediaSource | undefined {
+  if (!isRecord(value)) return undefined
+  const url = asString(value.url)
+  if (url === undefined) return undefined
+  return {
+    url,
+    width: asNumber(value.width),
+    height: asNumber(value.height),
+    format: asString(value.format),
+  }
+}
+
+/**
+ * Convert a raw value to MediaVariant | undefined.
+ * Requires name + valid source. Invalid items are skipped fail-soft.
+ */
+function mapMediaVariant(value: unknown): MediaVariant | undefined {
+  if (!isRecord(value)) return undefined
+  const name = asString(value.name)
+  if (name === undefined) return undefined
+  const source = mapMediaSource(value.source)
+  if (source === undefined) return undefined
+  return { name, source }
+}
+
+/**
+ * Map an array of raw variants. Returns undefined if empty/missing.
+ */
+function mapMediaVariants(value: unknown): MediaVariant[] | undefined {
+  const arr = asArray(value)
+  const mapped = arr.map(mapMediaVariant).filter(isDefined)
+  return mapped.length > 0 ? mapped : undefined
+}
+
+/**
  * Convert a raw value to Media | undefined.
  * Accepts a valid Media shape (object with src + alt strings).
  * Returns undefined for null, non-objects, or malformed shapes.
+ * Preserves canonical Media.variants when present.
  */
 function maybeMedia(value: unknown): Media | undefined {
   if (!isRecord(value)) return undefined
@@ -64,7 +104,7 @@ function maybeMedia(value: unknown): Media | undefined {
     width: asNumber(value.width),
     height: asNumber(value.height),
     mimeType: asString(value.mimeType),
-    // variants are optional; skip deep mapping for now
+    variants: mapMediaVariants(value.variants),
   }
 }
 

@@ -9,6 +9,7 @@
  * - Empty/unusable CTA objects → removed
  * - Non-renderable array items → filtered out
  * - Section-aware targeted cleanup
+ * - Sections that would only produce hollow UI shells → dropped
  *
  * Policy:
  * - Items with explicit UI fallback (e.g. logoless brand → name) are KEPT
@@ -64,26 +65,34 @@ function normalizePage(page: Page): Page {
   return {
     ...page,
     title: cleanOptional(page.title),
-    sections: page.sections.map(normalizeSection),
+    sections: normalizeSections(page.sections),
   }
 }
 
 // ── Sections ──────────────────────────────────────────────────────────────
 
-function normalizeSection(section: Section): Section {
-  const data = normalizeSectionData(
+function normalizeSections(sections: Section[]): Section[] {
+  return sections.map(normalizeSection).filter(isDefined)
+}
+
+function normalizeSection(section: Section): Section | undefined {
+  const result = normalizeSectionData(
     section.type,
     section.data as Record<string, unknown>,
   )
-  return { ...section, data }
+  if (result === undefined) return undefined
+  return { ...section, data: result }
 }
 
 function normalizeSectionData(
   type: string,
   data: Record<string, unknown>,
-): Record<string, unknown> {
+): Record<string, unknown> | undefined {
   switch (type) {
     case 'bc-hero':
+      // TODO: bc-hero render-safety skip rule requires component-aware review.
+      // Hero is a high-visibility layout-driving section — defer until
+      // we can audit the component's actual minimum content rendering behavior.
       return normalizeBcHero(data)
     case 'bc-brand':
       return normalizeBcBrand(data)
@@ -122,8 +131,14 @@ function normalizeBcHero(
 
 function normalizeBcBrand(
   data: Record<string, unknown>,
-): Record<string, unknown> {
+): Record<string, unknown> | undefined {
   // Brand items are NOT filtered — logoless brands render as name text (UI fallback)
+  const brands = asTypedArray(data.brands)
+  // Only drop the whole section if zero renderable brand items exist
+  const renderableBrands = brands.filter(
+    (b) => typeof b.name === 'string' && b.name.trim().length > 0,
+  )
+  if (renderableBrands.length === 0) return undefined
   return {
     ...data,
     title: cleanOptional(data.title),
@@ -133,15 +148,18 @@ function normalizeBcBrand(
 
 function normalizeBcGallery(
   data: Record<string, unknown>,
-): Record<string, unknown> {
+): Record<string, unknown> | undefined {
   const images = asTypedArray(data.images)
+  // Filter out images with empty/missing src — not renderable
+  const renderableImages = images.filter(
+    (img) => typeof img.src === 'string' && img.src.trim().length > 0,
+  )
+  // Drop the whole section if no valid images remain
+  if (renderableImages.length === 0) return undefined
   return {
     ...data,
     subtitle: cleanOptional(data.subtitle),
-    // Filter out images with empty/missing src — not renderable
-    images: images.filter(
-      (img) => typeof img.src === 'string' && img.src.trim().length > 0,
-    ),
+    images: renderableImages,
   }
 }
 
@@ -183,29 +201,34 @@ function normalizeBcAbout(
 
   // Filter stats with empty value or label
   const stats = asTypedArray(result.stats)
-  result.stats = stats.filter(
+  const renderableStats = stats.filter(
     (s) =>
       typeof s.value === 'string' &&
       s.value.trim().length > 0 &&
       typeof s.label === 'string' &&
       s.label.trim().length > 0,
   )
+  // Stats are optional sub-content of bc-about — empty stats don't drop the section
+  result.stats = renderableStats.length > 0 ? renderableStats : undefined
 
   return result
 }
 
 function normalizeBcTeam(
   data: Record<string, unknown>,
-): Record<string, unknown> {
+): Record<string, unknown> | undefined {
   const members = asTypedArray(data.members)
+  // Filter members without a name — not renderable
+  const renderableMembers = members.filter(
+    (m) => typeof m.name === 'string' && m.name.trim().length > 0,
+  )
+  // Drop the whole section if no renderable members remain
+  if (renderableMembers.length === 0) return undefined
   return {
     ...data,
     subtitle: cleanOptional(data.subtitle),
     description: cleanOptional(data.description),
-    // Filter members without a name — not renderable
-    members: members.filter(
-      (m) => typeof m.name === 'string' && m.name.trim().length > 0,
-    ),
+    members: renderableMembers,
   }
 }
 
@@ -276,6 +299,10 @@ function cleanCta(value: unknown): CallToAction | undefined {
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+function isDefined<T>(value: T | undefined | null): value is T {
+  return value !== undefined && value !== null
 }
 
 function asTypedArray(value: unknown): Record<string, unknown>[] {
