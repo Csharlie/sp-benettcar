@@ -20,6 +20,9 @@
 | 36 | e4aa10f | config: add curated navigation block | #38 navigation block (P7.2.0) |
 | 37 | 48d8596 | feat(P8.1): wp-mapper.ts | #39 WP boundary mapper (P8.1) |
 | 38 | fc2d62d | feat(P8.2): normalize-site-data.ts | #40 consumer-safety normalizer (P8.2) |
+| 39 | ba52c9f | feat(P8.3): adapter factory + env switch | #41 adapter factory (P8.3) |
+| 40 | 2e16b35 | fix(P8H): Media.variants + render-safety | #42 boundary hardening (P8H) |
+| 41 | 5bda0ba | fix(P8H2): contact safety + mapper strict + lint | #43 boundary + tooling hardening (P8H2) |
 
 ---
 
@@ -151,6 +154,111 @@ A 4 helyes slug (bc-hero, bc-brand, bc-services, bc-contact) maradt.
 ### Statusz
 
 ✅ Pusholva. Phase 3 kesz.
+
+---
+
+## #43 — Boundary + tooling hardening (2026-04-06) · `5bda0ba`
+
+**Commit:** `fix(P8H2): boundary + tooling hardening — contact safety, mapper strictness, lint`
+
+**Mi változott:**
+
+### 1. bc-contact render-safety (`normalize-site-data.ts`)
+- `normalizeBcContact()` most `Section | undefined`-et ad vissza
+- Új helper: `hasRenderableContactInfo(ci)` — ellenőrzi, hogy van-e legalább egy renderable mező (phone / email / address)
+- Hiányzó/null/üres `contactInfo` → teljes section drop
+- Cél: a component soha nem kaphat crashelő `contactInfo` nélküli section-t
+
+### 2. Top-level mapper strictness (`wp-mapper.ts`)
+- Invalid top-level payload (non-object) → `throw Error` (korábban: `emptySiteData()`)
+- Hiányzó `site` / `navigation` / `pages` → explicit throw descriptive üzenettel
+- Üres `pages[]` → throw (nem synthesizál fake home page-et)
+- `emptySiteData()` helper törölve (dead code)
+- Section-level fail-soft **marad** (unknown/malformed itemek skipelődnek)
+
+### 3. Lint tooling
+- `eslint`, `@eslint/js`, `typescript-eslint`, `eslint-plugin-react-hooks`, `eslint-plugin-react-refresh`, `globals` devDependency telepítve
+- `eslint.config.js` — ESLint flat config (Vite + React + TS standard)
+- `bc-gallery.component.tsx` — `useCallback` deps fix (React Compiler finding: `setSelectedImage` hozzáadva a dependency array-hoz)
+- `npm run lint` immár ténylegesen fut és zöld
+
+**Ellenőrzés:** 16/16 PASS (p8h2-verify.mjs). TS clean. Lint clean. Vite build OK.
+
+### Státusz
+
+✅ Pusholva.
+
+---
+
+## #42 — Boundary hardening (2026-04-06) · `2e16b35`
+
+**Commit:** `fix(P8H): boundary hardening — Media.variants fidelity + section render-safety`
+
+**Mi változott:**
+
+### 1. Media.variants fidelity (`wp-mapper.ts`)
+- `MediaVariant`, `MediaSource` importálva `@spektra/types`-ból
+- Új helperek: `mapMediaSource()`, `mapMediaVariant()`, `mapMediaVariants()`
+- `maybeMedia()` bővítve: a canonical `Media.variants` mezőt most megőrzi
+- Invalid variant itemek fail-soft kiesnek, üres/hiányzó variants → `undefined`
+- String kivételek változatlanok (bc-brand.logo, bc-gallery.src)
+
+### 2. Section render-safety (`normalize-site-data.ts`)
+- `normalizeSection()` visszatérési típusa `Section | undefined` lett
+- Új `normalizeSections()` helper: `.map(normalizeSection).filter(isDefined)` → `Section[]`
+- `isDefined<T>()` helper hozzáadva
+- `normalizePage()` a `normalizeSections()`-t használja
+
+**Section-aware skip szabályok:**
+- `bc-gallery`: drop ha 0 valid image src normalizálás után
+- `bc-team`: drop ha 0 named member normalizálás után
+- `bc-about` stats: empty stats → `undefined` (section maga marad)
+- `bc-brand`: drop **csak** ha 0 renderable brand item (logoless de named → marad)
+- `bc-hero`: **TODO** — skip rule deferred, component-aware review szükséges
+
+**Ellenőrzés:** 25/25 PASS (p8h-verify.mjs). TS clean. Vite build OK.
+
+### Státusz
+
+✅ Pusholva.
+
+---
+
+## #41 — Adapter factory (2026-04-06) · `ba52c9f`
+
+**Commit:** `feat(P8.3): adapter factory + env-based source switch`
+
+**Mi jött létre / változott:**
+
+### 1. `.env` (új, committed)
+```
+VITE_DATA_SOURCE=json
+```
+Committed default — csak ez az egy sor. WP config `.env.local`-ba megy (gitignored).
+
+### 2. `.gitignore` módosítás
+- `.env` most **tracked** (committed default)
+- `.env.local` / `.env.*.local` marad gitignored (overrides)
+
+### 3. `src/data/create-adapter.ts` (új)
+- `createAdapter(): SiteDataAdapter` — adapter factory
+- `import.meta.env.VITE_DATA_SOURCE` alapján switchel:
+  - `'json'` (default) → `createJsonAdapter({ data: siteData })`
+  - `'wordpress'` → `createWordPressAdapter({ apiBase, mapResponse })` — pipeline: `normalizeSiteData(mapWordPressSiteData(raw))`
+  - ismeretlen érték → `console.warn` + json fallback
+- `VITE_DATA_SOURCE=wordpress` + hiányzó `VITE_WP_API_BASE` → `throw Error` (fail-fast)
+- Validation: a platform `createWordPressAdapter` belül kezeli (`validateSiteData`)
+
+### 4. `src/App.tsx` módosítás
+- Hardcoded `createJsonAdapter({ data: siteData })` lecserélve → `createAdapter()`
+- `@spektra/data` és `./data/site` importok eltávolítva az App-ból
+- App most deklaratívan tiszta: csak `createAdapter()` + `SiteDataProvider` + `LandingTemplate`
+
+**Ellenőrzés:** TS clean. Vite build OK (json mode).
+
+### Státusz
+
+✅ Pusholva.
 
 ---
 
