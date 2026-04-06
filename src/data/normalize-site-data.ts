@@ -224,7 +224,8 @@ function normalizeBcService(
     )
   }
 
-  // Clean contact sub-object
+  // Clean contact sub-object — drop if hollow (component renders entire right
+  // card block on contact existence, title + description are unconditional)
   if (isRecord(result.contact)) {
     const contact = { ...result.contact } as Record<string, unknown>
     contact.phone = cleanOptional(contact.phone)
@@ -232,7 +233,12 @@ function normalizeBcService(
     contact.hours = cleanOptional(contact.hours)
     contact.weekendHours = cleanOptional(contact.weekendHours)
     contact.messageCta = cleanCta(contact.messageCta)
-    result.contact = contact
+
+    // Contact card requires title (always rendered heading) and at least one
+    // actionable element (phone or messageCta) to justify the card
+    const hasTitle = typeof contact.title === 'string' && (contact.title as string).trim().length > 0
+    const hasAction = contact.phone !== undefined || contact.messageCta !== undefined
+    result.contact = hasTitle && hasAction ? contact : undefined
   }
 
   if (!hasRenderableService(result)) return undefined

@@ -320,6 +320,63 @@ describe('normalize — bc-service render-safety', () => {
     const data = sections[0]!.data as Record<string, unknown>
     expect(data.brands).toHaveLength(2)
   })
+
+  it('drops hollow contact (no title)', () => {
+    const sections = pipelineSections([
+      {
+        id: 'svc8',
+        type: 'bc-service',
+        data: {
+          title: 'Car Repair',
+          description: '',
+          services: [],
+          brands: [],
+          contact: { title: '', description: '', phone: '+36 1 234 5678' },
+        },
+      },
+    ])
+    expect(sections).toHaveLength(1)
+    const data = sections[0]!.data as Record<string, unknown>
+    expect(data.contact).toBeUndefined()
+  })
+
+  it('drops hollow contact (no actionable element)', () => {
+    const sections = pipelineSections([
+      {
+        id: 'svc9',
+        type: 'bc-service',
+        data: {
+          title: 'Car Repair',
+          description: '',
+          services: [],
+          brands: [],
+          contact: { title: 'Contact Us', description: 'Get in touch' },
+        },
+      },
+    ])
+    expect(sections).toHaveLength(1)
+    const data = sections[0]!.data as Record<string, unknown>
+    expect(data.contact).toBeUndefined()
+  })
+
+  it('keeps contact with title + phone', () => {
+    const sections = pipelineSections([
+      {
+        id: 'svc10',
+        type: 'bc-service',
+        data: {
+          title: 'Car Repair',
+          description: '',
+          services: [],
+          brands: [],
+          contact: { title: 'Call Us', description: '', phone: '+36 1 234 5678' },
+        },
+      },
+    ])
+    expect(sections).toHaveLength(1)
+    const data = sections[0]!.data as Record<string, unknown>
+    expect(data.contact).toBeDefined()
+  })
 })
 
 // ── bc-gallery render-safety ──────────────────────────────────────────────
