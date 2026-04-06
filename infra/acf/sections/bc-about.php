@@ -54,6 +54,12 @@ return [
 			'preview_size'  => 'medium',
 		],
 		[
+			'key'   => 'field_bc_about_image_alt',
+			'label' => 'Image Alt Text',
+			'name'  => 'bc_about_image_alt',
+			'type'  => 'text',
+		],
+		[
 			'key'           => 'field_bc_about_image_position',
 			'label'         => 'Image Position',
 			'name'          => 'bc_about_image_position',

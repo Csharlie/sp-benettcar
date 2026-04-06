@@ -66,6 +66,12 @@ return [
 			'return_format' => 'array',
 			'preview_size'  => 'medium',
 		],
+		[
+			'key'   => 'field_bc_hero_background_image_alt',
+			'label' => 'Background Image Alt Text',
+			'name'  => 'bc_hero_background_image_alt',
+			'type'  => 'text',
+		],
 	],
 	'location' => [
 		[

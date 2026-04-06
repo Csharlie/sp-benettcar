@@ -65,6 +65,12 @@ return [
 					'preview_size'  => 'thumbnail',
 				],
 				[
+					'key'   => 'field_bc_team_members_image_alt',
+					'label' => 'Photo Alt Text',
+					'name'  => 'image_alt',
+					'type'  => 'text',
+				],
+				[
 					'key'   => 'field_bc_team_members_phone',
 					'label' => 'Phone',
 					'name'  => 'phone',
