@@ -36,20 +36,50 @@ return [
 	'navigation' => [
 		'primary' => [
 			[
-				'label' => 'Főoldal',
-				'href'  => '/',
+				'label' => 'Galéria',
+				'href'  => '#gallery',
 			],
 			[
 				'label' => 'Szolgáltatások',
-				'href'  => '/#services',
+				'href'  => '#services',
+			],
+			[
+				'label' => 'Szerviz',
+				'href'  => '#car-service',
 			],
 			[
 				'label' => 'Rólunk',
-				'href'  => '/#about',
+				'href'  => '#about',
+			],
+			[
+				'label' => 'Útmenti segítség',
+				'href'  => '#roadside',
+			],
+		],
+		'footer' => [
+			[
+				'label' => 'Autószerviz',
+				'href'  => '#car-service',
+			],
+			[
+				'label' => 'Útmenti segítség',
+				'href'  => '#roadside',
+			],
+			[
+				'label' => 'Rólunk',
+				'href'  => '#about',
 			],
 			[
 				'label' => 'Kapcsolat',
-				'href'  => '/#contact',
+				'href'  => '#contact',
+			],
+			[
+				'label' => 'Adatvédelem',
+				'href'  => '#privacy',
+			],
+			[
+				'label' => 'ÁSZF',
+				'href'  => '#terms',
 			],
 		],
 	],
