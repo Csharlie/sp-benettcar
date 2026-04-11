@@ -80,7 +80,10 @@ function normalizeSection(section: Section): Section | undefined {
     section.type,
     section.data as Record<string, unknown>,
   )
-  if (result === undefined) return undefined
+  if (result === undefined) {
+    console.warn('[spektra] Section dropped by normalizer:', section.type, section.id)
+    return undefined
+  }
   return { ...section, data: result }
 }
 
