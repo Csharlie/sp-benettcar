@@ -281,7 +281,9 @@ function mapSectionData(
       return mapBcMap(raw)
     default:
       // Unknown section type → skip
-      console.warn('[spektra] Unknown section type skipped:', type)
+      if (import.meta.env.DEV) {
+        console.warn('[spektra] Unknown section type skipped:', type)
+      }
       return undefined
   }
 }
