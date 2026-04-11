@@ -10,7 +10,7 @@ overrides:
   '@spektra/runtime': link:../../sp-platform/packages/runtime
   '@spektra/components': link:../../sp-platform/packages/components
   '@spektra/sections': link:../../sp-platform/packages/sections
-  '@spektra/templates': link:../../sp-platform/packages/templates
+  '@spektra/layouts': link:../../sp-platform/packages/layouts
 
 importers:
 
@@ -22,15 +22,15 @@ importers:
       '@spektra/data':
         specifier: link:../../sp-platform/packages/data
         version: link:../../sp-platform/packages/data
+      '@spektra/layouts':
+        specifier: link:../../sp-platform/packages/layouts
+        version: link:../../sp-platform/packages/layouts
       '@spektra/runtime':
         specifier: link:../../sp-platform/packages/runtime
         version: link:../../sp-platform/packages/runtime
       '@spektra/sections':
         specifier: link:../../sp-platform/packages/sections
         version: link:../../sp-platform/packages/sections
-      '@spektra/templates':
-        specifier: link:../../sp-platform/packages/templates
-        version: link:../../sp-platform/packages/templates
       '@spektra/themes':
         specifier: link:../../sp-platform/packages/themes
         version: link:../../sp-platform/packages/themes

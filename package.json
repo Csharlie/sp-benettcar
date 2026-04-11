@@ -19,7 +19,7 @@
     "@spektra/data": "link:../../sp-platform/packages/data",
     "@spektra/runtime": "link:../../sp-platform/packages/runtime",
     "@spektra/sections": "link:../../sp-platform/packages/sections",
-    "@spektra/templates": "link:../../sp-platform/packages/templates",
+    "@spektra/layouts": "link:../../sp-platform/packages/layouts",
     "@spektra/themes": "link:../../sp-platform/packages/themes",
     "@spektra/types": "link:../../sp-platform/packages/types",
     "lucide-react": "^0.263.1",
@@ -52,7 +52,7 @@
       "@spektra/runtime": "link:../../sp-platform/packages/runtime",
       "@spektra/components": "link:../../sp-platform/packages/components",
       "@spektra/sections": "link:../../sp-platform/packages/sections",
-      "@spektra/templates": "link:../../sp-platform/packages/templates"
+      "@spektra/layouts": "link:../../sp-platform/packages/layouts"
     }
   }
 }

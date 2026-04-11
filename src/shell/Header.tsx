@@ -1,11 +1,11 @@
 import { NavigationBar } from '@spektra/components'
-import type { TemplateShellProps } from '@spektra/templates'
+import type { LayoutShellProps } from '@spektra/layouts'
 
 /**
  * Benettcar header — maps SiteData to NavigationBar props.
  * DI bridge: a LandingTemplate siteData-t injektál, mi rendereljük a komponenst.
  */
-export function AppHeader({ siteData }: TemplateShellProps) {
+export function AppHeader({ siteData }: LayoutShellProps) {
   const links = siteData.navigation.primary.map((item) => ({
     label: item.label,
     href: item.href,

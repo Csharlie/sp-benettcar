@@ -1,5 +1,5 @@
 import { SiteDataProvider } from '@spektra/runtime'
-import { LandingTemplate } from '@spektra/templates'
+import { LandingTemplate } from '@spektra/layouts'
 import { registry } from './registry'
 import { AppHeader, AppFooter } from './shell'
 import { createAdapter } from './data/create-adapter'

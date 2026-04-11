@@ -1,12 +1,12 @@
 import { FooterBlock } from '@spektra/components'
-import type { TemplateShellProps } from '@spektra/templates'
+import type { LayoutShellProps } from '@spektra/layouts'
 
 /**
  * Benettcar footer — maps SiteData to FooterBlock props.
  * A flat NavItem[] footer linkeket 3 csoportba rendezzük:
  * Szolgáltatások / Információ / Jogi.
  */
-export function AppFooter({ siteData }: TemplateShellProps) {
+export function AppFooter({ siteData }: LayoutShellProps) {
   const footerLinks = siteData.navigation.footer ?? []
 
   return (
