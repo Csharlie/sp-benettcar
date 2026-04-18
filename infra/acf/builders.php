@@ -133,27 +133,70 @@ function spektra_build_bc_gallery( string $p, int $pid ): ?array {
 // ── bc-services ──────────────────────────────────────────────────
 
 /**
+ * Load bc-services items from sp_bc_service CPT posts.
+ *
+ * Returns a normalized array of service items matching the SiteData contract,
+ * or an empty array if no CPT posts exist.
+ *
+ * @return array<int, array{title: string, icon: string, description: string}>
+ */
+function spektra_bc_get_services(): array {
+	$posts = get_posts( [
+		'post_type'      => 'sp_bc_service',
+		'posts_per_page' => -1,
+		'orderby'        => [ 'menu_order' => 'ASC', 'ID' => 'ASC' ],
+		'post_status'    => 'publish',
+	] );
+
+	if ( empty( $posts ) ) {
+		return [];
+	}
+
+	return array_map( function ( \WP_Post $post ): array {
+		return [
+			'title'       => trim( $post->post_title ),
+			'icon'        => trim( (string) get_field( 'bc_service_icon', $post->ID ) ),
+			'description' => trim( (string) get_field( 'bc_service_description', $post->ID ) ),
+		];
+	}, $posts );
+}
+
+/**
  * @param string $p   ACF field prefix (bc_services_).
  * @param int    $pid Post ID.
  */
 function spektra_build_bc_services( string $p, int $pid ): ?array {
-	$title    = spektra_get_field( $p . 'title', $pid );
-	$services = spektra_get_field( $p . 'services', $pid );
+	$title = spektra_get_field( $p . 'title', $pid );
 
-	if ( $title === null || empty( $services ) || ! is_array( $services ) ) {
+	if ( $title === null ) {
+		return null;
+	}
+
+	// CPT-first: use sp_bc_service posts if available.
+	$services = spektra_bc_get_services();
+
+	// Fallback: ACF Repeater (migration transition safety).
+	if ( empty( $services ) ) {
+		$repeater = spektra_get_field( $p . 'services', $pid );
+		if ( ! empty( $repeater ) && is_array( $repeater ) ) {
+			$services = array_map( function ( array $row ): array {
+				return [
+					'title'       => $row['title'] ?? '',
+					'icon'        => $row['icon'] ?? '',
+					'description' => $row['description'] ?? '',
+				];
+			}, $repeater );
+		}
+	}
+
+	if ( empty( $services ) ) {
 		return null;
 	}
 
 	return [
 		'title'    => $title,
 		'subtitle' => spektra_get_field( $p . 'subtitle', $pid, '' ),
-		'services' => array_map( function ( array $row ): array {
-			return [
-				'title'       => $row['title'] ?? '',
-				'icon'        => $row['icon'] ?? '',
-				'description' => $row['description'] ?? '',
-			];
-		}, $services ),
+		'services' => $services,
 	];
 }
 
