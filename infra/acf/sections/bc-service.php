@@ -2,6 +2,11 @@
 /**
  * bc-service field group — Single service detail section.
  *
+ * P13.2: Repeaters replaced with ACF Free textarea fields.
+ * - bc_service_services repeater → bc_service_services_text textarea (split by newline)
+ * - bc_service_brands repeater → bc_service_brands_text textarea (split by newline)
+ * Legacy repeater data retained in DB.
+ *
  * Contract: content-model.md §2.5
  *
  * @package Spektra\Client\Benettcar
@@ -35,40 +40,22 @@ return [
 			'rows'     => 3,
 		],
 		[
-			'key'        => 'field_bc_service_services',
-			'label'      => 'Service Items',
-			'name'       => 'bc_service_services',
-			'type'       => 'repeater',
-			'required'   => 1,
-			'min'        => 1,
-			'layout'     => 'table',
-			'sub_fields' => [
-				[
-					'key'      => 'field_bc_service_services_label',
-					'label'    => 'Label',
-					'name'     => 'label',
-					'type'     => 'text',
-					'required' => 1,
-				],
-			],
+			'key'          => 'field_bc_service_services_text',
+			'label'        => 'Service Items',
+			'name'         => 'bc_service_services_text',
+			'type'         => 'textarea',
+			'required'     => 1,
+			'rows'         => 8,
+			'instructions' => 'Minden sor egy szolgáltatás elem (label). Üres sorok figyelmen kívül maradnak.',
 		],
 		[
-			'key'        => 'field_bc_service_brands',
-			'label'      => 'Brands',
-			'name'       => 'bc_service_brands',
-			'type'       => 'repeater',
-			'required'   => 1,
-			'min'        => 1,
-			'layout'     => 'table',
-			'sub_fields' => [
-				[
-					'key'      => 'field_bc_service_brands_name',
-					'label'    => 'Brand Name',
-					'name'     => 'name',
-					'type'     => 'text',
-					'required' => 1,
-				],
-			],
+			'key'          => 'field_bc_service_brands_text',
+			'label'        => 'Brands',
+			'name'         => 'bc_service_brands_text',
+			'type'         => 'textarea',
+			'required'     => 1,
+			'rows'         => 8,
+			'instructions' => 'Minden sor egy márkanév. Üres sorok figyelmen kívül maradnak.',
 		],
 		[
 			'key'        => 'field_bc_service_contact',

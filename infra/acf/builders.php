@@ -29,6 +29,30 @@
 
 defined( 'ABSPATH' ) || exit;
 
+// ── Shared helpers ───────────────────────────────────────────────
+
+/**
+ * Split a textarea value into a trimmed, non-empty string array.
+ *
+ * Same semantics as sp-exotica's spektra_split_textarea().
+ * Kept client-local per extraction rule (extraction to sp-infra deferred
+ * until a shared refactor step).
+ *
+ * @param string $text Raw textarea value (newline-separated).
+ * @return string[] Non-empty trimmed lines.
+ */
+function spektra_bc_split_textarea( string $text ): array {
+	if ( $text === '' ) {
+		return [];
+	}
+
+	$lines = explode( "\n", $text );
+	$lines = array_map( 'trim', $lines );
+	$lines = array_filter( $lines, static fn( string $line ): bool => $line !== '' );
+
+	return array_values( $lines );
+}
+
 // ── bc-hero ──────────────────────────────────────────────────────
 
 /**
@@ -269,16 +293,43 @@ function spektra_build_bc_services( string $p, int $pid ): ?array {
 function spektra_build_bc_service( string $p, int $pid ): ?array {
 	$title    = spektra_get_field( $p . 'title', $pid );
 	$desc     = spektra_get_field( $p . 'description', $pid );
-	$services = spektra_get_field( $p . 'services', $pid );
-	$brands   = spektra_get_field( $p . 'brands', $pid );
 
 	if ( $title === null || $desc === null ) {
 		return null;
 	}
-	if ( empty( $services ) || ! is_array( $services ) ) {
+
+	// 1. Textarea+split (P13.2 primary source).
+	$services_lines = spektra_bc_split_textarea( (string) spektra_get_field( $p . 'services_text', $pid, '' ) );
+	$services = array_map( static fn( string $line ): array => [ 'label' => $line ], $services_lines );
+
+	// 2. Legacy repeater fallback.
+	if ( empty( $services ) ) {
+		$repeater = spektra_get_field( $p . 'services', $pid );
+		if ( ! empty( $repeater ) && is_array( $repeater ) ) {
+			$services = array_map( function ( array $row ): array {
+				return [ 'label' => $row['label'] ?? '' ];
+			}, $repeater );
+		}
+	}
+
+	if ( empty( $services ) ) {
 		return null;
 	}
-	if ( empty( $brands ) || ! is_array( $brands ) ) {
+
+	// 1. Textarea+split (P13.2 primary source).
+	$brands = spektra_bc_split_textarea( (string) spektra_get_field( $p . 'brands_text', $pid, '' ) );
+
+	// 2. Legacy repeater fallback.
+	if ( empty( $brands ) ) {
+		$repeater = spektra_get_field( $p . 'brands', $pid );
+		if ( ! empty( $repeater ) && is_array( $repeater ) ) {
+			$brands = array_map( function ( array $row ): string {
+				return $row['name'] ?? '';
+			}, $repeater );
+		}
+	}
+
+	if ( empty( $brands ) ) {
 		return null;
 	}
 
@@ -286,12 +337,8 @@ function spektra_build_bc_service( string $p, int $pid ): ?array {
 		'title'       => $title,
 		'subtitle'    => spektra_get_field( $p . 'subtitle', $pid, '' ),
 		'description' => $desc,
-		'services'    => array_map( function ( array $row ): array {
-			return [ 'label' => $row['label'] ?? '' ];
-		}, $services ),
-		'brands'      => array_map( function ( array $row ): string {
-			return $row['name'] ?? '';
-		}, $brands ),
+		'services'    => $services,
+		'brands'      => $brands,
 	];
 
 	$contact = spektra_get_field( $p . 'contact', $pid );
@@ -323,23 +370,67 @@ function spektra_build_bc_service( string $p, int $pid ): ?array {
 // ── bc-about ─────────────────────────────────────────────────────
 
 /**
+ * Read bc-about stat slots from front page.
+ *
+ * @param string $p   ACF field prefix (bc_about_).
+ * @param int    $pid Post ID.
+ * @param int    $max Maximum slot count.
+ * @return array<int, array{value: string, label: string}>
+ */
+function spektra_bc_get_stat_slots( string $p, int $pid, int $max = 6 ): array {
+	$items = [];
+
+	for ( $i = 1; $i <= $max; $i++ ) {
+		$value = trim( (string) spektra_get_field( $p . 'stat_' . $i . '_value', $pid, '' ) );
+		$label = trim( (string) spektra_get_field( $p . 'stat_' . $i . '_label', $pid, '' ) );
+
+		if ( $value === '' || $label === '' ) {
+			continue;
+		}
+
+		$items[] = [
+			'value' => $value,
+			'label' => $label,
+		];
+	}
+
+	return $items;
+}
+
+/**
  * @param string $p   ACF field prefix (bc_about_).
  * @param int    $pid Post ID.
  */
 function spektra_build_bc_about( string $p, int $pid ): ?array {
-	$title   = spektra_get_field( $p . 'title', $pid );
-	$content = spektra_get_field( $p . 'content', $pid );
+	$title = spektra_get_field( $p . 'title', $pid );
 
-	if ( $title === null || empty( $content ) || ! is_array( $content ) ) {
+	if ( $title === null ) {
+		return null;
+	}
+
+	// 1. Textarea+split (P13.2 primary source).
+	$content = spektra_bc_split_textarea( (string) spektra_get_field( $p . 'content_text', $pid, '' ) );
+
+	// 2. Legacy repeater fallback.
+	if ( empty( $content ) ) {
+		$repeater = spektra_get_field( $p . 'content', $pid );
+		if ( ! empty( $repeater ) && is_array( $repeater ) ) {
+			$content = array_map( function ( array $row ): string {
+				return $row['paragraph'] ?? '';
+			}, $repeater );
+			$content = array_filter( $content, static fn( string $s ): bool => trim( $s ) !== '' );
+			$content = array_values( $content );
+		}
+	}
+
+	if ( empty( $content ) ) {
 		return null;
 	}
 
 	$data = [
 		'title'         => $title,
 		'subtitle'      => spektra_get_field( $p . 'subtitle', $pid, '' ),
-		'content'       => array_map( function ( array $row ): string {
-			return $row['paragraph'] ?? '';
-		}, $content ),
+		'content'       => $content,
 		'image'         => spektra_normalize_media(
 			spektra_get_field( $p . 'image', $pid ),
 			spektra_get_field( $p . 'image_alt', $pid, '' )
@@ -348,13 +439,23 @@ function spektra_build_bc_about( string $p, int $pid ): ?array {
 		'colorScheme'   => spektra_get_field( $p . 'color_scheme', $pid, 'light' ),
 	];
 
-	$stats = spektra_get_field( $p . 'stats', $pid );
-	$data['stats'] = is_array( $stats ) ? array_map( function ( array $row ): array {
-		return [
-			'value' => $row['value'] ?? '',
-			'label' => $row['label'] ?? '',
-		];
-	}, $stats ) : [];
+	// 1. Stat slots (P13.2 primary source).
+	$stats = spektra_bc_get_stat_slots( $p, $pid );
+
+	// 2. Legacy repeater fallback.
+	if ( empty( $stats ) ) {
+		$repeater = spektra_get_field( $p . 'stats', $pid );
+		if ( is_array( $repeater ) ) {
+			$stats = array_map( function ( array $row ): array {
+				return [
+					'value' => $row['value'] ?? '',
+					'label' => $row['label'] ?? '',
+				];
+			}, $repeater );
+		}
+	}
+
+	$data['stats'] = $stats;
 
 	$cta_text = spektra_get_field( $p . 'cta_text', $pid );
 	$cta_href = spektra_get_field( $p . 'cta_href', $pid );
