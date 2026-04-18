@@ -2,12 +2,13 @@
 /**
  * sp_bc_service CPT registration + ACF field group.
  *
- * First cpt_collection migration target for BenettCar.
- * Replaces bc_services_services ACF Repeater with CPT-based collection.
+ * P12.6: First cpt_collection migration target for BenettCar.
+ * P13.1: CPT hidden from admin — retained as legacy fallback only.
+ *        Slot-based ACF Free Admin on Homepage supersedes CPT editing.
+ *        Do NOT delete existing CPT posts or provenance meta.
+ *        Future cleanup can remove this once slot-based parity is stable.
  *
  * Loaded by: field-groups.php (require_once).
- *
- * Phase: P12.3b / P12.6
  *
  * @package Spektra\Client\Benettcar
  */
@@ -15,7 +16,8 @@
 defined( 'ABSPATH' ) || exit;
 
 // ── CPT Registration ─────────────────────────────────────────────
-// Runs on 'init' to ensure post type is available early enough.
+// Kept registered for query stability (spektra_bc_get_services fallback).
+// Hidden from editor-facing admin after P13.1 slot-based refactor.
 
 add_action( 'init', function () {
 	register_post_type( 'sp_bc_service', [
@@ -33,8 +35,8 @@ add_action( 'init', function () {
 			'menu_name'          => 'Services',
 		],
 		'public'       => false,
-		'show_ui'      => true,
-		'show_in_menu' => true,
+		'show_ui'      => false,
+		'show_in_menu' => false,
 		'show_in_rest' => true,
 		'menu_icon'    => 'dashicons-hammer',
 		'supports'     => [ 'title', 'page-attributes' ],

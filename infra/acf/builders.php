@@ -133,13 +133,46 @@ function spektra_build_bc_gallery( string $p, int $pid ): ?array {
 // ── bc-services ──────────────────────────────────────────────────
 
 /**
- * Load bc-services items from sp_bc_service CPT posts.
+ * Load bc-services items from Homepage slot-based ACF Free fields.
  *
- * Returns a normalized array of valid service items matching the SiteData
- * contract, or an empty array if no publishable CPT posts exist.
- * Invalid items (empty title/icon/description) are silently skipped.
+ * Reads up to $max slot triplets (title/icon/description) from the front page.
+ * A slot is valid only if all three values are non-empty after trim.
+ * Invalid/empty slots are silently skipped.
  *
- * Uses spektra_get_field() for ACF reads to maintain platform helper boundary.
+ * P13.1: Primary source for bc-services items.
+ *
+ * @param string $p   ACF field prefix (bc_services_).
+ * @param int    $pid Post ID (front page).
+ * @param int    $max Maximum slot count.
+ * @return array<int, array{title: string, icon: string, description: string}>
+ */
+function spektra_bc_get_service_slots( string $p, int $pid, int $max = 6 ): array {
+	$items = [];
+
+	for ( $i = 1; $i <= $max; $i++ ) {
+		$title       = trim( (string) spektra_get_field( $p . 'service_' . $i . '_title', $pid, '' ) );
+		$icon        = trim( (string) spektra_get_field( $p . 'service_' . $i . '_icon', $pid, '' ) );
+		$description = trim( (string) spektra_get_field( $p . 'service_' . $i . '_description', $pid, '' ) );
+
+		if ( $title === '' || $icon === '' || $description === '' ) {
+			continue;
+		}
+
+		$items[] = [
+			'title'       => $title,
+			'icon'        => $icon,
+			'description' => $description,
+		];
+	}
+
+	return $items;
+}
+
+/**
+ * Load bc-services items from hidden sp_bc_service CPT posts (legacy fallback).
+ *
+ * P12.6 implementation retained as secondary fallback after P13.1 slot refactor.
+ * CPT is hidden from admin (show_ui: false) but posts remain queryable.
  *
  * @return array<int, array{title: string, icon: string, description: string}>
  */
@@ -161,8 +194,6 @@ function spektra_bc_get_services(): array {
 		$icon        = trim( (string) spektra_get_field( 'bc_service_icon', $post->ID, '' ) );
 		$description = trim( (string) spektra_get_field( 'bc_service_description', $post->ID, '' ) );
 
-		// Skip invalid items — title, icon, description are all required
-		// (matches original repeater sub-field constraints).
 		if ( $title === '' || $icon === '' || $description === '' ) {
 			continue;
 		}
@@ -178,6 +209,14 @@ function spektra_bc_get_services(): array {
 }
 
 /**
+ * Build bc-services section data.
+ *
+ * Source priority (P13.1):
+ * 1. Slot-based fields from Homepage
+ * 2. Hidden legacy CPT posts (sp_bc_service)
+ * 3. Legacy repeater fallback (bc_services_services)
+ * 4. null if no valid services
+ *
  * @param string $p   ACF field prefix (bc_services_).
  * @param int    $pid Post ID.
  */
@@ -188,10 +227,15 @@ function spektra_build_bc_services( string $p, int $pid ): ?array {
 		return null;
 	}
 
-	// CPT-first: use sp_bc_service posts if available.
-	$services = spektra_bc_get_services();
+	// 1. Slot-based fields (P13.1 primary source).
+	$services = spektra_bc_get_service_slots( $p, $pid );
 
-	// Fallback: ACF Repeater (migration transition safety).
+	// 2. Hidden CPT fallback (P12.6 legacy).
+	if ( empty( $services ) ) {
+		$services = spektra_bc_get_services();
+	}
+
+	// 3. Legacy repeater fallback (pre-P12.6).
 	if ( empty( $services ) ) {
 		$repeater = spektra_get_field( $p . 'services', $pid );
 		if ( ! empty( $repeater ) && is_array( $repeater ) ) {
