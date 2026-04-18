@@ -27,13 +27,14 @@ return [
 			'type'  => 'text',
 		],
 		[
-			'key'        => 'field_bc_services_services',
-			'label'      => 'Services',
-			'name'       => 'bc_services_services',
-			'type'       => 'repeater',
-			'required'   => 1,
-			'min'        => 1,
-			'layout'     => 'block',
+			'key'          => 'field_bc_services_services',
+			'label'        => 'Services (Legacy fallback — ne szerkeszd)',
+			'name'         => 'bc_services_services',
+			'type'         => 'repeater',
+			'required'     => 0,
+			'min'          => 0,
+			'layout'       => 'block',
+			'instructions' => 'Legacy rollback/fallback adat. A runtime a Services CPT-ből olvas (sp_bc_service). Ez a mező csak vészhelyzeti visszaállításhoz marad. Szerkesztése NEM jelenik meg az oldalon.',
 			'sub_fields' => [
 				[
 					'key'      => 'field_bc_services_services_title',

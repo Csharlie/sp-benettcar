@@ -135,8 +135,11 @@ function spektra_build_bc_gallery( string $p, int $pid ): ?array {
 /**
  * Load bc-services items from sp_bc_service CPT posts.
  *
- * Returns a normalized array of service items matching the SiteData contract,
- * or an empty array if no CPT posts exist.
+ * Returns a normalized array of valid service items matching the SiteData
+ * contract, or an empty array if no publishable CPT posts exist.
+ * Invalid items (empty title/icon/description) are silently skipped.
+ *
+ * Uses spektra_get_field() for ACF reads to maintain platform helper boundary.
  *
  * @return array<int, array{title: string, icon: string, description: string}>
  */
@@ -152,13 +155,26 @@ function spektra_bc_get_services(): array {
 		return [];
 	}
 
-	return array_map( function ( \WP_Post $post ): array {
-		return [
-			'title'       => trim( $post->post_title ),
-			'icon'        => trim( (string) get_field( 'bc_service_icon', $post->ID ) ),
-			'description' => trim( (string) get_field( 'bc_service_description', $post->ID ) ),
+	$items = [];
+	foreach ( $posts as $post ) {
+		$title       = trim( $post->post_title );
+		$icon        = trim( (string) spektra_get_field( 'bc_service_icon', $post->ID, '' ) );
+		$description = trim( (string) spektra_get_field( 'bc_service_description', $post->ID, '' ) );
+
+		// Skip invalid items — title, icon, description are all required
+		// (matches original repeater sub-field constraints).
+		if ( $title === '' || $icon === '' || $description === '' ) {
+			continue;
+		}
+
+		$items[] = [
+			'title'       => $title,
+			'icon'        => $icon,
+			'description' => $description,
 		];
-	}, $posts );
+	}
+
+	return $items;
 }
 
 /**
