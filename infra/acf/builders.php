@@ -101,41 +101,135 @@ function spektra_build_bc_hero( string $p, int $pid ): ?array {
 // ── bc-brand ─────────────────────────────────────────────────────
 
 /**
+ * Load bc-brand items from Homepage slot-based ACF Free fields.
+ *
+ * P13.3: Primary source. Reads up to $max brand slots.
+ * A slot is valid only if name is non-empty.
+ *
+ * @param string $p   ACF field prefix (bc_brand_).
+ * @param int    $pid Post ID.
+ * @param int    $max Maximum slot count.
+ * @return array<int, array{name: string, logo: string, alt: string, invert: bool}>
+ */
+function spektra_bc_get_brand_slots( string $p, int $pid, int $max = 10 ): array {
+	$items = [];
+
+	for ( $i = 1; $i <= $max; $i++ ) {
+		$name = trim( (string) spektra_get_field( $p . 'brand_' . $i . '_name', $pid, '' ) );
+
+		if ( $name === '' ) {
+			continue;
+		}
+
+		$items[] = [
+			'name'   => $name,
+			'logo'   => spektra_resolve_image_url( spektra_get_field( $p . 'brand_' . $i . '_logo', $pid ) ),
+			'alt'    => trim( (string) spektra_get_field( $p . 'brand_' . $i . '_alt', $pid, '' ) ),
+			'invert' => (bool) spektra_get_field( $p . 'brand_' . $i . '_invert', $pid, false ),
+		];
+	}
+
+	return $items;
+}
+
+/**
  * @param string $p   ACF field prefix (bc_brand_).
  * @param int    $pid Post ID.
  */
 function spektra_build_bc_brand( string $p, int $pid ): ?array {
-	$brands = spektra_get_field( $p . 'brands', $pid );
+	// P13.3 slot-first.
+	$brands = spektra_bc_get_brand_slots( $p, $pid );
 
-	if ( empty( $brands ) || ! is_array( $brands ) ) {
+	// Legacy repeater fallback.
+	if ( empty( $brands ) ) {
+		$repeater = spektra_get_field( $p . 'brands', $pid );
+		if ( ! empty( $repeater ) && is_array( $repeater ) ) {
+			$brands = array_map( function ( array $row ): array {
+				return [
+					'name'   => $row['name'] ?? '',
+					'logo'   => spektra_resolve_image_url( $row['logo'] ?? null ),
+					'alt'    => $row['alt'] ?? '',
+					'invert' => (bool) ( $row['invert'] ?? false ),
+				];
+			}, $repeater );
+		}
+	}
+
+	if ( empty( $brands ) ) {
 		return null;
 	}
 
 	return [
 		'title'       => spektra_get_field( $p . 'title', $pid, '' ),
 		'description' => spektra_get_field( $p . 'description', $pid, '' ),
-		'brands'      => array_map( function ( array $row ): array {
-			return [
-				'name'   => $row['name'] ?? '',
-				'logo'   => spektra_resolve_image_url( $row['logo'] ?? null ),
-				'alt'    => $row['alt'] ?? '',
-				'invert' => (bool) ( $row['invert'] ?? false ),
-			];
-		}, $brands ),
+		'brands'      => $brands,
 	];
 }
 
 // ── bc-gallery ───────────────────────────────────────────────────
 
 /**
+ * Load bc-gallery images from Homepage slot-based ACF Free fields.
+ *
+ * P13.3: Primary source. Reads up to $max image slots.
+ * A slot is valid only if src (image) is non-empty.
+ *
+ * @param string $p   ACF field prefix (bc_gallery_).
+ * @param int    $pid Post ID.
+ * @param int    $max Maximum slot count.
+ * @return array<int, array{src: string, alt: string, category: string, caption: string}>
+ */
+function spektra_bc_get_gallery_slots( string $p, int $pid, int $max = 10 ): array {
+	$items = [];
+
+	for ( $i = 1; $i <= $max; $i++ ) {
+		$src = spektra_resolve_image_url( spektra_get_field( $p . 'image_' . $i . '_src', $pid ) );
+
+		if ( $src === '' ) {
+			continue;
+		}
+
+		$items[] = [
+			'src'      => $src,
+			'alt'      => trim( (string) spektra_get_field( $p . 'image_' . $i . '_alt', $pid, '' ) ),
+			'category' => trim( (string) spektra_get_field( $p . 'image_' . $i . '_category', $pid, '' ) ),
+			'caption'  => trim( (string) spektra_get_field( $p . 'image_' . $i . '_caption', $pid, '' ) ),
+		];
+	}
+
+	return $items;
+}
+
+/**
  * @param string $p   ACF field prefix (bc_gallery_).
  * @param int    $pid Post ID.
  */
 function spektra_build_bc_gallery( string $p, int $pid ): ?array {
-	$title  = spektra_get_field( $p . 'title', $pid );
-	$images = spektra_get_field( $p . 'images', $pid );
+	$title = spektra_get_field( $p . 'title', $pid );
 
-	if ( $title === null || empty( $images ) || ! is_array( $images ) ) {
+	if ( $title === null ) {
+		return null;
+	}
+
+	// P13.3 slot-first.
+	$images = spektra_bc_get_gallery_slots( $p, $pid );
+
+	// Legacy repeater fallback.
+	if ( empty( $images ) ) {
+		$repeater = spektra_get_field( $p . 'images', $pid );
+		if ( ! empty( $repeater ) && is_array( $repeater ) ) {
+			$images = array_map( function ( array $row ): array {
+				return [
+					'src'      => spektra_resolve_image_url( $row['src'] ?? null ),
+					'alt'      => $row['alt'] ?? '',
+					'category' => $row['category'] ?? '',
+					'caption'  => $row['caption'] ?? '',
+				];
+			}, $repeater );
+		}
+	}
+
+	if ( empty( $images ) ) {
 		return null;
 	}
 
@@ -143,14 +237,7 @@ function spektra_build_bc_gallery( string $p, int $pid ): ?array {
 		'title'          => $title,
 		'subtitle'       => spektra_get_field( $p . 'subtitle', $pid, '' ),
 		'showCategories' => (bool) spektra_get_field( $p . 'show_categories', $pid, false ),
-		'images'         => array_map( function ( array $row ): array {
-			return [
-				'src'      => spektra_resolve_image_url( $row['src'] ?? null ),
-				'alt'      => $row['alt'] ?? '',
-				'category' => $row['category'] ?? '',
-				'caption'  => $row['caption'] ?? '',
-			];
-		}, $images ),
+		'images'         => $images,
 	];
 }
 
@@ -472,14 +559,75 @@ function spektra_build_bc_about( string $p, int $pid ): ?array {
 // ── bc-team ──────────────────────────────────────────────────────
 
 /**
+ * Load bc-team members from Homepage slot-based ACF Free fields.
+ *
+ * P13.3: Primary source. Reads up to $max member slots.
+ * A slot is valid only if name is non-empty.
+ *
+ * @param string $p   ACF field prefix (bc_team_).
+ * @param int    $pid Post ID.
+ * @param int    $max Maximum slot count.
+ * @return array<int, array{name: string, role: string, image: ?array, phone: string, email: string}>
+ */
+function spektra_bc_get_team_slots( string $p, int $pid, int $max = 8 ): array {
+	$items = [];
+
+	for ( $i = 1; $i <= $max; $i++ ) {
+		$name = trim( (string) spektra_get_field( $p . 'member_' . $i . '_name', $pid, '' ) );
+
+		if ( $name === '' ) {
+			continue;
+		}
+
+		$items[] = [
+			'name'  => $name,
+			'role'  => trim( (string) spektra_get_field( $p . 'member_' . $i . '_role', $pid, '' ) ),
+			'image' => spektra_normalize_media(
+				spektra_get_field( $p . 'member_' . $i . '_image', $pid ),
+				trim( (string) spektra_get_field( $p . 'member_' . $i . '_image_alt', $pid, '' ) )
+			),
+			'phone' => trim( (string) spektra_get_field( $p . 'member_' . $i . '_phone', $pid, '' ) ),
+			'email' => trim( (string) spektra_get_field( $p . 'member_' . $i . '_email', $pid, '' ) ),
+		];
+	}
+
+	return $items;
+}
+
+/**
  * @param string $p   ACF field prefix (bc_team_).
  * @param int    $pid Post ID.
  */
 function spektra_build_bc_team( string $p, int $pid ): ?array {
-	$title   = spektra_get_field( $p . 'title', $pid );
-	$members = spektra_get_field( $p . 'members', $pid );
+	$title = spektra_get_field( $p . 'title', $pid );
 
-	if ( $title === null || empty( $members ) || ! is_array( $members ) ) {
+	if ( $title === null ) {
+		return null;
+	}
+
+	// P13.3 slot-first.
+	$members = spektra_bc_get_team_slots( $p, $pid );
+
+	// Legacy repeater fallback.
+	if ( empty( $members ) ) {
+		$repeater = spektra_get_field( $p . 'members', $pid );
+		if ( ! empty( $repeater ) && is_array( $repeater ) ) {
+			$members = array_map( function ( array $row ): array {
+				return [
+					'name'  => $row['name'] ?? '',
+					'role'  => $row['role'] ?? '',
+					'image' => spektra_normalize_media(
+						$row['image'] ?? null,
+						$row['image_alt'] ?? ''
+					),
+					'phone' => $row['phone'] ?? '',
+					'email' => $row['email'] ?? '',
+				];
+			}, $repeater );
+		}
+	}
+
+	if ( empty( $members ) ) {
 		return null;
 	}
 
@@ -487,18 +635,7 @@ function spektra_build_bc_team( string $p, int $pid ): ?array {
 		'title'       => $title,
 		'subtitle'    => spektra_get_field( $p . 'subtitle', $pid, '' ),
 		'description' => spektra_get_field( $p . 'description', $pid, '' ),
-		'members'     => array_map( function ( array $row ): array {
-			return [
-				'name'  => $row['name'] ?? '',
-				'role'  => $row['role'] ?? '',
-				'image' => spektra_normalize_media(
-					$row['image'] ?? null,
-					$row['image_alt'] ?? ''
-				),
-				'phone' => $row['phone'] ?? '',
-				'email' => $row['email'] ?? '',
-			];
-		}, $members ),
+		'members'     => $members,
 	];
 }
 
