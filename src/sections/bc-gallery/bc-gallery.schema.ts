@@ -1,6 +1,6 @@
-export interface BcGalleryImage {
-  src: string
-  alt: string
+import type { Media } from '@spektra/types'
+
+export interface BcGalleryImage extends Media {
   category?: string
   caption?: string
 }
