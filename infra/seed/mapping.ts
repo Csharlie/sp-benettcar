@@ -12,17 +12,22 @@
  * using the kind to determine how ACF should handle the value.
  *
  * Rules:
- *   - Repeater fields: extract returns an array of row objects (sub-field keys = ACF sub-field names)
+ *   - Slot fields: extract returns scalar / image for each individual slot key
+ *   - Textarea fields: extract returns newline-joined text
  *   - Group fields: extract returns a flat object (keys = ACF sub-field names)
  *   - Image fields: extract returns { url: string, alt: string }
  *   - Scalar fields: extract returns a string | number | boolean
  *   - Navigation is NOT exported (config-driven, out of parity scope)
+ *
+ * P13.4: All 8 migrated repeatable fields now use slot-based or textarea mappings.
+ * `kind: 'repeater'` retained in FieldKind for legacy/future compatibility only.
  *
  * @package Spektra\Client\Benettcar
  */
 
 // ── Types ────────────────────────────────────────────────────────
 
+/** `repeater` retained for legacy/future compatibility — not used in active mappings. */
 export type FieldKind = 'scalar' | 'repeater' | 'group' | 'image'
 
 export interface FieldMapping {
@@ -59,6 +64,112 @@ function extractMedia(
   const img = data[key] as { src?: string; alt?: string } | undefined
   if (!img || !img.src) return null
   return { url: str(img.src), alt: str(img.alt) }
+}
+
+/** Join string items with newline for textarea seed fields. */
+function joinLines(items: string[]): string {
+  return items.join('\n')
+}
+
+/**
+ * Generate scalar slot FieldMappings from an array property.
+ * For each slot 1..max, the extract closure picks item[i-1] or returns ''.
+ */
+function makeSlotScalars<T>(
+  prefix: string,
+  suffix: string,
+  max: number,
+  getItems: (d: Record<string, unknown>) => T[],
+  getValue: (item: T) => string,
+): FieldMapping[] {
+  const fields: FieldMapping[] = []
+  for (let i = 1; i <= max; i++) {
+    const idx = i - 1
+    fields.push({
+      acfKey: `${prefix}${i}${suffix}`,
+      kind: 'scalar',
+      extract: (d) => {
+        const items = getItems(d)
+        return idx < items.length ? getValue(items[idx]) : ''
+      },
+    })
+  }
+  return fields
+}
+
+/**
+ * Generate image slot FieldMappings from an array property.
+ * For each slot 1..max, the extract closure picks item[i-1] or returns null.
+ */
+function makeSlotImages<T>(
+  prefix: string,
+  suffix: string,
+  max: number,
+  getItems: (d: Record<string, unknown>) => T[],
+  getMedia: (item: T) => { url: string; alt: string } | null,
+): FieldMapping[] {
+  const fields: FieldMapping[] = []
+  for (let i = 1; i <= max; i++) {
+    const idx = i - 1
+    fields.push({
+      acfKey: `${prefix}${i}${suffix}`,
+      kind: 'image',
+      extract: (d) => {
+        const items = getItems(d)
+        return idx < items.length ? getMedia(items[idx]) : null
+      },
+    })
+  }
+  return fields
+}
+
+// ── Typed array extractors ───────────────────────────────────────
+
+type ServiceItem = { title?: string; icon?: string; description?: string }
+type GalleryImage = {
+  src?: string
+  alt?: string
+  category?: string
+  caption?: string
+}
+type BrandItem = {
+  name?: string
+  logo?: string
+  alt?: string
+  invert?: boolean
+}
+type TeamMember = {
+  name?: string
+  role?: string
+  image?: { src?: string; alt?: string }
+  phone?: string
+  email?: string
+}
+type StatItem = { value?: string; label?: string }
+
+const getServiceItems = (d: Record<string, unknown>): ServiceItem[] => {
+  const items = d.services as ServiceItem[]
+  return Array.isArray(items) ? items : []
+}
+
+const getGalleryImages = (d: Record<string, unknown>): GalleryImage[] => {
+  const images = d.images as GalleryImage[]
+  return Array.isArray(images) ? images : []
+}
+
+const getBrandItems = (d: Record<string, unknown>): BrandItem[] => {
+  const brands = d.brands as BrandItem[]
+  return Array.isArray(brands) ? brands : []
+}
+
+const getTeamMembers = (d: Record<string, unknown>): TeamMember[] => {
+  const members = d.members as TeamMember[]
+  return Array.isArray(members) ? members : []
+}
+
+const getAboutStats = (d: Record<string, unknown>): StatItem[] => {
+  const stats = d.stats as StatItem[]
+  return Array.isArray(stats) ? stats : []
 }
 
 // ── Section mappings ─────────────────────────────────────────────
@@ -113,6 +224,7 @@ const bcHero: SectionMapping = {
   ],
 }
 
+// P13.4: bc-brand — 10 brand slots (name/logo/alt/invert).
 const bcBrand: SectionMapping = {
   sectionType: 'bc-brand',
   fields: [
@@ -122,28 +234,22 @@ const bcBrand: SectionMapping = {
       kind: 'scalar',
       extract: (d) => str(d.description),
     },
-    {
-      acfKey: 'bc_brand_brands',
-      kind: 'repeater',
-      extract: (d) => {
-        const brands = d.brands as Array<{
-          name?: string
-          logo?: string
-          alt?: string
-          invert?: boolean
-        }>
-        if (!Array.isArray(brands)) return []
-        return brands.map((b) => ({
-          name: str(b.name),
-          logo: str(b.logo),
-          alt: str(b.alt),
-          invert: bool(b.invert) ? '1' : '0',
-        }))
-      },
-    },
+    ...makeSlotScalars('bc_brand_brand_', '_name', 10, getBrandItems, (b) =>
+      str(b.name),
+    ),
+    ...makeSlotImages('bc_brand_brand_', '_logo', 10, getBrandItems, (b) =>
+      b.logo ? { url: str(b.logo), alt: str(b.alt) } : null,
+    ),
+    ...makeSlotScalars('bc_brand_brand_', '_alt', 10, getBrandItems, (b) =>
+      str(b.alt),
+    ),
+    ...makeSlotScalars('bc_brand_brand_', '_invert', 10, getBrandItems, (b) =>
+      bool(b.invert) ? '1' : '0',
+    ),
   ],
 }
 
+// P13.4: bc-gallery — 10 image slots (src/alt/category/caption).
 const bcGallery: SectionMapping = {
   sectionType: 'bc-gallery',
   fields: [
@@ -162,28 +268,38 @@ const bcGallery: SectionMapping = {
       kind: 'scalar',
       extract: (d) => (bool(d.showCategories) ? '1' : '0'),
     },
-    {
-      acfKey: 'bc_gallery_images',
-      kind: 'repeater',
-      extract: (d) => {
-        const images = d.images as Array<{
-          src?: string
-          alt?: string
-          category?: string
-          caption?: string
-        }>
-        if (!Array.isArray(images)) return []
-        return images.map((img) => ({
-          src: str(img.src),
-          alt: str(img.alt),
-          category: str(img.category),
-          caption: str(img.caption),
-        }))
-      },
-    },
+    ...makeSlotImages(
+      'bc_gallery_image_',
+      '_src',
+      10,
+      getGalleryImages,
+      (img) => (img.src ? { url: str(img.src), alt: str(img.alt) } : null),
+    ),
+    ...makeSlotScalars(
+      'bc_gallery_image_',
+      '_alt',
+      10,
+      getGalleryImages,
+      (img) => str(img.alt),
+    ),
+    ...makeSlotScalars(
+      'bc_gallery_image_',
+      '_category',
+      10,
+      getGalleryImages,
+      (img) => str(img.category),
+    ),
+    ...makeSlotScalars(
+      'bc_gallery_image_',
+      '_caption',
+      10,
+      getGalleryImages,
+      (img) => str(img.caption),
+    ),
   ],
 }
 
+// P13.4: bc-services — 6 service slots (title/icon/description).
 const bcServices: SectionMapping = {
   sectionType: 'bc-services',
   fields: [
@@ -197,26 +313,31 @@ const bcServices: SectionMapping = {
       kind: 'scalar',
       extract: (d) => str(d.subtitle),
     },
-    {
-      acfKey: 'bc_services_services',
-      kind: 'repeater',
-      extract: (d) => {
-        const items = d.services as Array<{
-          title?: string
-          icon?: string
-          description?: string
-        }>
-        if (!Array.isArray(items)) return []
-        return items.map((s) => ({
-          title: str(s.title),
-          icon: str(s.icon),
-          description: str(s.description),
-        }))
-      },
-    },
+    ...makeSlotScalars(
+      'bc_services_service_',
+      '_title',
+      6,
+      getServiceItems,
+      (s) => str(s.title),
+    ),
+    ...makeSlotScalars(
+      'bc_services_service_',
+      '_icon',
+      6,
+      getServiceItems,
+      (s) => str(s.icon),
+    ),
+    ...makeSlotScalars(
+      'bc_services_service_',
+      '_description',
+      6,
+      getServiceItems,
+      (s) => str(s.description),
+    ),
   ],
 }
 
+// P13.4: bc-service — services/brands as textarea, contact as group.
 const bcService: SectionMapping = {
   sectionType: 'bc-service',
   fields: [
@@ -236,23 +357,23 @@ const bcService: SectionMapping = {
       extract: (d) => str(d.description),
     },
     {
-      acfKey: 'bc_service_services',
-      kind: 'repeater',
+      // P13.2: services[].label → newline-joined textarea.
+      acfKey: 'bc_service_services_text',
+      kind: 'scalar',
       extract: (d) => {
         const items = d.services as Array<{ label?: string }>
-        if (!Array.isArray(items)) return []
-        return items.map((s) => ({ label: str(s.label) }))
+        if (!Array.isArray(items)) return ''
+        return joinLines(items.map((s) => str(s.label)).filter(Boolean))
       },
     },
     {
-      // site.ts: string[] → ACF repeater with {name} sub-field
-      // PHP builder maps [{name}] → string[] in output
-      acfKey: 'bc_service_brands',
-      kind: 'repeater',
+      // P13.2: brands[] (string[]) → newline-joined textarea.
+      acfKey: 'bc_service_brands_text',
+      kind: 'scalar',
       extract: (d) => {
         const brands = d.brands as string[]
-        if (!Array.isArray(brands)) return []
-        return brands.map((name) => ({ name: str(name) }))
+        if (!Array.isArray(brands)) return ''
+        return joinLines(brands.filter(Boolean))
       },
     },
     {
@@ -261,7 +382,9 @@ const bcService: SectionMapping = {
       extract: (d) => {
         const c = d.contact as Record<string, unknown> | undefined
         if (!c) return null
-        const cta = c.messageCta as { text?: string; href?: string } | undefined
+        const cta = c.messageCta as
+          | { text?: string; href?: string }
+          | undefined
         return {
           title: str(c.title),
           description: str(c.description),
@@ -277,6 +400,7 @@ const bcService: SectionMapping = {
   ],
 }
 
+// P13.4: bc-about — content as textarea, stats as 6 slots.
 const bcAbout: SectionMapping = {
   sectionType: 'bc-about',
   fields: [
@@ -287,14 +411,13 @@ const bcAbout: SectionMapping = {
       extract: (d) => str(d.subtitle),
     },
     {
-      // site.ts: string[] → ACF repeater with {paragraph} sub-field
-      // PHP builder maps [{paragraph}] → string[] in output
-      acfKey: 'bc_about_content',
-      kind: 'repeater',
+      // P13.2: content[] (string[]) → newline-joined textarea.
+      acfKey: 'bc_about_content_text',
+      kind: 'scalar',
       extract: (d) => {
         const lines = d.content as string[]
-        if (!Array.isArray(lines)) return []
-        return lines.map((text) => ({ paragraph: str(text) }))
+        if (!Array.isArray(lines)) return ''
+        return joinLines(lines)
       },
     },
     {
@@ -320,15 +443,13 @@ const bcAbout: SectionMapping = {
       kind: 'scalar',
       extract: (d) => str(d.colorScheme) || 'light',
     },
-    {
-      acfKey: 'bc_about_stats',
-      kind: 'repeater',
-      extract: (d) => {
-        const stats = d.stats as Array<{ value?: string; label?: string }>
-        if (!Array.isArray(stats)) return []
-        return stats.map((s) => ({ value: str(s.value), label: str(s.label) }))
-      },
-    },
+    // P13.2: stats as 6 slot pairs (value/label).
+    ...makeSlotScalars('bc_about_stat_', '_value', 6, getAboutStats, (s) =>
+      str(s.value),
+    ),
+    ...makeSlotScalars('bc_about_stat_', '_label', 6, getAboutStats, (s) =>
+      str(s.label),
+    ),
     {
       acfKey: 'bc_about_cta_text',
       kind: 'scalar',
@@ -342,6 +463,7 @@ const bcAbout: SectionMapping = {
   ],
 }
 
+// P13.4: bc-team — 8 member slots (name/role/image/image_alt/phone/email).
 const bcTeam: SectionMapping = {
   sectionType: 'bc-team',
   fields: [
@@ -356,28 +478,28 @@ const bcTeam: SectionMapping = {
       kind: 'scalar',
       extract: (d) => str(d.description),
     },
-    {
-      acfKey: 'bc_team_members',
-      kind: 'repeater',
-      extract: (d) => {
-        const members = d.members as Array<{
-          name?: string
-          role?: string
-          image?: { src?: string; alt?: string }
-          phone?: string
-          email?: string
-        }>
-        if (!Array.isArray(members)) return []
-        return members.map((m) => ({
-          name: str(m.name),
-          role: str(m.role),
-          image: m.image?.src ?? '',
-          image_alt: str(m.image?.alt),
-          phone: str(m.phone),
-          email: str(m.email),
-        }))
-      },
-    },
+    ...makeSlotScalars('bc_team_member_', '_name', 8, getTeamMembers, (m) =>
+      str(m.name),
+    ),
+    ...makeSlotScalars('bc_team_member_', '_role', 8, getTeamMembers, (m) =>
+      str(m.role),
+    ),
+    ...makeSlotImages('bc_team_member_', '_image', 8, getTeamMembers, (m) =>
+      m.image?.src ? { url: str(m.image.src), alt: str(m.image?.alt) } : null,
+    ),
+    ...makeSlotScalars(
+      'bc_team_member_',
+      '_image_alt',
+      8,
+      getTeamMembers,
+      (m) => str(m.image?.alt),
+    ),
+    ...makeSlotScalars('bc_team_member_', '_phone', 8, getTeamMembers, (m) =>
+      str(m.phone),
+    ),
+    ...makeSlotScalars('bc_team_member_', '_email', 8, getTeamMembers, (m) =>
+      str(m.email),
+    ),
   ],
 }
 

@@ -96,7 +96,17 @@ if ( ! empty( $gallery_repeater ) && is_array( $gallery_repeater ) ) {
 		}
 	}
 
-	WP_CLI::success( "Migrated {$count} gallery images to slots." );
+	// Clear unused gallery slots.
+	$cleared = 0;
+	for ( $s = $count + 1; $s <= $max_gallery; $s++ ) {
+		update_field( 'bc_gallery_image_' . $s . '_src', '', $front_page_id );
+		update_field( 'bc_gallery_image_' . $s . '_alt', '', $front_page_id );
+		update_field( 'bc_gallery_image_' . $s . '_category', '', $front_page_id );
+		update_field( 'bc_gallery_image_' . $s . '_caption', '', $front_page_id );
+		$cleared++;
+	}
+
+	WP_CLI::success( "Migrated {$count} gallery images to slots, cleared {$cleared} unused." );
 
 	if ( count( $gallery_repeater ) > $max_gallery ) {
 		$overflow = count( $gallery_repeater ) - $max_gallery;
@@ -135,7 +145,17 @@ if ( ! empty( $brand_repeater ) && is_array( $brand_repeater ) ) {
 		}
 	}
 
-	WP_CLI::success( "Migrated {$count} brands to slots." );
+	// Clear unused brand slots.
+	$cleared = 0;
+	for ( $s = $count + 1; $s <= $max_brand; $s++ ) {
+		update_field( 'bc_brand_brand_' . $s . '_name', '', $front_page_id );
+		update_field( 'bc_brand_brand_' . $s . '_logo', '', $front_page_id );
+		update_field( 'bc_brand_brand_' . $s . '_alt', '', $front_page_id );
+		update_field( 'bc_brand_brand_' . $s . '_invert', 0, $front_page_id );
+		$cleared++;
+	}
+
+	WP_CLI::success( "Migrated {$count} brands to slots, cleared {$cleared} unused." );
 
 	if ( count( $brand_repeater ) > $max_brand ) {
 		$overflow = count( $brand_repeater ) - $max_brand;
@@ -176,7 +196,19 @@ if ( ! empty( $team_repeater ) && is_array( $team_repeater ) ) {
 		}
 	}
 
-	WP_CLI::success( "Migrated {$count} team members to slots." );
+	// Clear unused team slots.
+	$cleared = 0;
+	for ( $s = $count + 1; $s <= $max_team; $s++ ) {
+		update_field( 'bc_team_member_' . $s . '_name', '', $front_page_id );
+		update_field( 'bc_team_member_' . $s . '_role', '', $front_page_id );
+		update_field( 'bc_team_member_' . $s . '_image', '', $front_page_id );
+		update_field( 'bc_team_member_' . $s . '_image_alt', '', $front_page_id );
+		update_field( 'bc_team_member_' . $s . '_phone', '', $front_page_id );
+		update_field( 'bc_team_member_' . $s . '_email', '', $front_page_id );
+		$cleared++;
+	}
+
+	WP_CLI::success( "Migrated {$count} team members to slots, cleared {$cleared} unused." );
 
 	if ( count( $team_repeater ) > $max_team ) {
 		$overflow = count( $team_repeater ) - $max_team;
