@@ -60,3 +60,70 @@ add_filter( 'get_user_option_closedpostboxes_page', function ( $closed ) {
 
 	return $defaults;
 } );
+
+// ── Front-page ACF UX helpers ───────────────────────────────────
+// Adds compact previews (thumbnail/text) to slot accordions so editors
+// can identify entries faster without opening each block.
+add_action( 'admin_enqueue_scripts', function ( string $hook ): void {
+	if ( ! in_array( $hook, [ 'post.php', 'post-new.php' ], true ) ) {
+		return;
+	}
+
+	if ( ! function_exists( 'get_current_screen' ) ) {
+		return;
+	}
+
+	$screen = get_current_screen();
+	if ( ! $screen || $screen->base !== 'post' || $screen->post_type !== 'page' ) {
+		return;
+	}
+
+	$front_page_id = (int) get_option( 'page_on_front' );
+	if ( $front_page_id <= 0 ) {
+		return;
+	}
+
+	$post_id = 0;
+	if ( isset( $_GET['post'] ) ) {
+		$post_id = (int) $_GET['post'];
+	} elseif ( isset( $_POST['post_ID'] ) ) {
+		$post_id = (int) $_POST['post_ID'];
+	}
+
+	if ( $post_id > 0 && $post_id !== $front_page_id ) {
+		return;
+	}
+
+	$asset_dir     = __DIR__ . '/admin';
+	$script_path   = $asset_dir . '/accordion-preview.js';
+	$style_path    = $asset_dir . '/accordion-preview.css';
+	$content_dir   = wp_normalize_path( WP_CONTENT_DIR );
+	$script_normal = wp_normalize_path( $script_path );
+	$style_normal  = wp_normalize_path( $style_path );
+
+	if ( ! file_exists( $script_path ) || ! str_starts_with( $script_normal, $content_dir ) ) {
+		return;
+	}
+
+	if ( ! file_exists( $style_path ) || ! str_starts_with( $style_normal, $content_dir ) ) {
+		return;
+	}
+
+	$script_url = content_url( str_replace( $content_dir, '', $script_normal ) );
+	$style_url  = content_url( str_replace( $content_dir, '', $style_normal ) );
+
+	wp_enqueue_style(
+		'spektra-bc-acf-accordion-preview',
+		$style_url,
+		[],
+		(string) filemtime( $style_path )
+	);
+
+	wp_enqueue_script(
+		'spektra-bc-acf-accordion-preview',
+		$script_url,
+		[ 'jquery', 'acf-input' ],
+		(string) filemtime( $script_path ),
+		true
+	);
+} );
