@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <title>Benett Car WordPress Admin Kezikonyv</title>
+  <style>
+    body {
+      font-family: Calibri, Arial, sans-serif;
+      line-height: 1.45;
+      color: #222;
+      margin: 32px;
+      font-size: 11pt;
+    }
+    h1, h2, h3, h4 {
+      color: #0f2d52;
+      margin-top: 22px;
+      margin-bottom: 10px;
+    }
+    h1 {
+      font-size: 24pt;
+      border-bottom: 3px solid #0f2d52;
+      padding-bottom: 10px;
+    }
+    h2 {
+      font-size: 16pt;
+      border-bottom: 1px solid #cfd8e3;
+      padding-bottom: 4px;
+    }
+    h3 {
+      font-size: 13pt;
+    }
+    .lead {
+      font-size: 12pt;
+      background: #f4f8fc;
+      border: 1px solid #d6e2ef;
+      padding: 14px;
+    }
+    .note, .warning, .tip, .shot {
+      padding: 12px;
+      margin: 12px 0;
+      border-radius: 6px;
+    }
+    .note {
+      background: #eef6ff;
+      border: 1px solid #b8d7f4;
+    }
+    .warning {
+      background: #fff4e8;
+      border: 1px solid #f0c48c;
+    }
+    .tip {
+      background: #edf8ef;
+      border: 1px solid #b6dcbf;
+    }
+    .shot {
+      background: #fafafa;
+      border: 2px dashed #b9b9b9;
+      color: #555;
+      font-style: italic;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 14px 0;
+    }
+    th, td {
+      border: 1px solid #cfd8e3;
+      padding: 8px;
+      vertical-align: top;
+      text-align: left;
+    }
+    th {
+      background: #eaf2fb;
+    }
+    ul, ol {
+      margin-top: 6px;
+      margin-bottom: 10px;
+    }
+    .page-break {
+      page-break-before: always;
+      margin-top: 28px;
+    }
+    .icon-grid td:first-child {
+      width: 18%;
+      font-weight: bold;
+    }
+    .small {
+      font-size: 10pt;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>Benett Car weboldal kezelesi utmutato</h1>
+  <p><strong>Cel:</strong> Ez a dokumentum abban segit, hogy a Benett Car weboldal tartalmat biztonsagosan, fejlesztoi segitseg nelkul is tudja frissiteni a WordPress admin feluleten.</p>
+  <p><strong>Ervenyes:</strong> Benett Car WordPress admin, fooldal szerkesztes, menu szerkesztes, kepek feltoltese, ikonok megadasa.</p>
+
+  <div class="lead">
+    <strong>Gyors osszefoglalo</strong><br>
+    1. Lepjen be a WordPress adminba.<br>
+    2. Nyissa meg az <strong>Oldalak</strong> menupontot.<br>
+    3. Nyissa meg a <strong>Fooldal</strong> oldalt szerkesztesre.<br>
+    4. A dobozok alapbol csukva vannak. Nyissa ki azt a reszt, amelyet modositani szeretne.<br>
+    5. A nagyobb listakban az elemek kulon lenyithato blokkokban vannak.<br>
+    6. Mentes utan ellenorizze a weboldalon az eredmenyt.
+  </div>
+
+  <h2>1. Bejelentkezes a WordPress adminba</h2>
+  <ol>
+    <li>Nyissa meg a WordPress admin cimet.</li>
+    <li>Adja meg a felhasznalonevet es jelszot.</li>
+    <li>Sikeres belepes utan a bal oldali menu jelenik meg.</li>
+  </ol>
+  <div class="shot">Kep helye: WordPress belepo oldal vagy admin nyitokepernyo.</div>
+
+  <h2>2. A fooldal szerkesztesenek alapelve</h2>
+  <p>A weboldal fo tartalmai kulon szekciokban vannak. Minden szekcio sajat dobozban jelenik meg. A dobozokat egyszer kell kinyitni, a bennuk levo elemek pedig kulon is nyithatok.</p>
+  <table>
+    <tr><th>Feluletelem</th><th>Mit jelent</th></tr>
+    <tr><td>Szekcio doboz</td><td>Egy nagy tartalmi egyseg, peldaul Bevezeto, Markak, Galeria, Kapcsolat.</td></tr>
+    <tr><td>Lenyithato blokk</td><td>Egyetlen marka, egyetlen kep, egyetlen szolgaltatas vagy egyetlen csapattag kulon szerkesztheto blokkja.</td></tr>
+    <tr><td>Kotelezo mezo</td><td>Ha nincs kitoltve, az adott resz nem vagy hibasan jelenhet meg.</td></tr>
+    <tr><td>Frissites gomb</td><td>Ezzel menti a modositasokat.</td></tr>
+  </table>
+  <div class="tip"><strong>Hasznos:</strong> A rendszer ugy van kialakitva, hogy minel kevesebbet kelljen gorgetni. Eloszor mindig csak azt nyissa ki, amit eppen szerkeszteni szeretne.</div>
+  <div class="shot">Kep helye: Fooldal szerkeszto nezet, minden szekcio csukott allapotban.</div>
+
+  <h2>3. Hogyan nyissa meg a fooldalt</h2>
+  <ol>
+    <li>A bal oldali menuben kattintson az <strong>Oldalak</strong> menupontba.</li>
+    <li>Keresse meg a <strong>Fooldal</strong> oldalt.</li>
+    <li>Kattintson a <strong>Szerkesztes</strong> lehetosegre.</li>
+  </ol>
+  <div class="shot">Kep helye: Oldalak lista, a Fooldal sor kiemelve.</div>
+
+  <h2>4. Mentes es ellenorzes</h2>
+  <ol>
+    <li>Modositsa a kivant mezoket.</li>
+    <li>Kattintson jobb oldalt a <strong>Frissites</strong> gombra.</li>
+    <li>Nyissa meg a weboldalt uj lapon.</li>
+    <li>Frissitse az oldalt a bongeszoben.</li>
+  </ol>
+  <div class="warning"><strong>Fontos:</strong> Ha mentes utan nem latszik azonnal a valtozas, frissitse ujra az oldalt. Ha tovabbra sem latszik, ellenorizze, hogy biztosan a megfelelo mezot modositotta-e.</div>
+  <div class="shot">Kep helye: Frissites gomb a jobb oldali oszlopban.</div>
+
+  <div class="page-break"></div>
+  <h2>5. Szekciok reszletes magyarazata</h2>
+
+  <h3>5.1 Bevezeto</h3>
+  <p>Ez a weboldal tetejen megjeleno fo resz. Itt lathato a nagy cim, a rovid bevezeto szoveg, a hatterkep es a gombok.</p>
+  <table>
+    <tr><th>Mezo</th><th>Mire valo</th><th>Megjegyzes</th></tr>
+    <tr><td>Cim</td><td>A fo kiemelt szoveg a kepen vagy a hero reszben.</td><td>Kotelezo.</td></tr>
+    <tr><td>Alcim</td><td>Rovid kiegeszito sor.</td><td>Opcionlis.</td></tr>
+    <tr><td>Leiras</td><td>A fo bemutato szoveg.</td><td>Kotelezo.</td></tr>
+    <tr><td>Elsoleges gomb felirat + hivatkozas</td><td>Fo cselekves gomb.</td><td>A felirat es a link egyutt hasznalhato.</td></tr>
+    <tr><td>Masodlagos gomb felirat + hivatkozas</td><td>Masodik gomb.</td><td>Opcionlis.</td></tr>
+    <tr><td>Hatterkep</td><td>A fo nyitokep.</td><td>Lehetoleg jo minosegu, fekvo kep.</td></tr>
+    <tr><td>Hatterkep alt szoveg</td><td>Akadalymentesitesi leiras.</td><td>Lehetoleg 3-8 szo.</td></tr>
+  </table>
+  <div class="tip"><strong>Javaslat:</strong> A cim legyen rovid, jol olvashato es 1-2 sorban elferjen.</div>
+
+  <h3>5.2 Markak</h3>
+  <p>Itt jelennek meg a szervizelt vagy kapcsolodo markak logo i.</p>
+  <p>Minden <strong>Marka 1, Marka 2...</strong> blokk egy kulon marka.</p>
+  <table>
+    <tr><th>Mezo</th><th>Mire valo</th></tr>
+    <tr><td>Nev</td><td>A marka neve.</td></tr>
+    <tr><td>Logo</td><td>A marka logokep.</td></tr>
+    <tr><td>Alt szoveg</td><td>A logo rovid leirasa.</td></tr>
+    <tr><td>Invertalas</td><td>Akkor hasznalja, ha a logo sotet hatteren jobban latszik forditott verzioban.</td></tr>
+  </table>
+  <div class="note"><strong>Szabal y:</strong> Az uresen hagyott blokk nem jelenik meg a weboldalon.</div>
+  <div class="shot">Kep helye: Markak szekcio, egy kinyitott Marka blokk.</div>
+
+  <h3>5.3 Galeria</h3>
+  <p>Itt szerkesztheto a referenciakepek vagy hangulatkepek listaja.</p>
+  <table>
+    <tr><th>Mezo</th><th>Mire valo</th><th>Tipp</th></tr>
+    <tr><td>Ke pfile</td><td>A galeria kep.</td><td>Lehetoleg allando oldalaranyu kepet hasznaljon.</td></tr>
+    <tr><td>Alt szoveg</td><td>Mit abrazol a kep.</td><td>Rovid, ertelmes leiras.</td></tr>
+    <tr><td>Kategoria</td><td>Szureshez vagy csoportositas hoz hasznalhato szoveg.</td><td>Opcionlis.</td></tr>
+    <tr><td>Kepalairas</td><td>Rovid felirat a kephez.</td><td>Opcionlis.</td></tr>
+  </table>
+  <div class="warning"><strong>Fontos:</strong> Csak olyan kepet tolts on fel, amelyhez van felhasznalasi joga.</div>
+
+  <h3>5.4 Szolgaltatasok kartya k</h3>
+  <p>Ez a szekcio a fo szolgaltatasokat kartyakban mutatja.</p>
+  <table>
+    <tr><th>Mezo</th><th>Mire valo</th></tr>
+    <tr><td>Cim</td><td>A kartya cime.</td></tr>
+    <tr><td>Ikon</td><td>A kartya elejen megjeleno piktogram neve.</td></tr>
+    <tr><td>Leiras</td><td>Rovid magyarazo szoveg.</td></tr>
+  </table>
+
+  <h4>Engedelyezett ikonok</h4>
+  <table class="icon-grid">
+    <tr><th>Ikon</th><th>Jelentese</th><th>Mikor ajanlott</th></tr>
+    <tr><td>[Wrench]</td><td>Szerviz, javitas</td><td>Altalanos autoszerviz, karbantartas.</td></tr>
+    <tr><td>[Car]</td><td>Auto, jarmu</td><td>Autoatvizsgalas, altalanos autos temaju kartya.</td></tr>
+    <tr><td>[ShieldCheck]</td><td>Biztonsag, megbizhatosag</td><td>Garancia, minosegbiztositas, megbizhato szolgaltatas.</td></tr>
+    <tr><td>[Battery]</td><td>Akkumulator, elektromos rendszer</td><td>Akkumulator csere, inditasi problema, elektromos hibak.</td></tr>
+    <tr><td>[Gauge]</td><td>Meres, diagnosztika</td><td>Muszeres vizsgalat, allapotfelmeres, diagnosztika.</td></tr>
+    <tr><td>[Settings]</td><td>Beallitas, szereles</td><td>Finombeallitas, szereles, karbantartasi munka.</td></tr>
+    <tr><td>[CircleDollarSign]</td><td>Ar, koltseg, ajanlat</td><td>Araj anlat, kedvezo ar, attekintheto koltseg.</td></tr>
+    <tr><td>[AlertCircle] vagy [AlertTriangle]</td><td>Hibajelzes, figyelmeztetes</td><td>Gyors hibafelismeres, veszjelzes, sos helyzet.</td></tr>
+  </table>
+  <div class="tip"><strong>Jo hir:</strong> A kis-nagybetu mar nem szamit. Ha peldaul azt irja be, hogy <strong>wrench</strong>, a rendszer akkor is felismeri.</div>
+  <div class="shot">Kep helye: Szolgaltatas kartya egy kinyitott lenyithato blokkal.</div>
+
+  <h3>5.5 Szerviz reszletek</h3>
+  <p>Itt szerepel a hosszabb szervizbemutato tartalom, a szolgaltatasok listaja, a markak listaja es a jobb oldali kapcsolat doboz.</p>
+  <table>
+    <tr><th>Resz</th><th>Mire valo</th></tr>
+    <tr><td>Szolgaltatasok szovege</td><td>Soron kent egy szolgaltatas vagy teendo.</td></tr>
+    <tr><td>Markak szovege</td><td>Soron kent egy marka vagy jarmucsoport.</td></tr>
+    <tr><td>Kapcsolati doboz</td><td>Telefon, uzenet gomb, nyitvatartas, megjegyzes.</td></tr>
+  </table>
+  <div class="note">Minden uj sor egy kulon listaelemkent jelenik meg.</div>
+
+  <h3>5.6 Rolunk</h3>
+  <p>Itt mutatkozik be a ceg vagy csapat. A bekezdesek es a statisztikak kulon szerkeszthet ok.</p>
+  <table>
+    <tr><th>Mezo</th><th>Magyarazat</th></tr>
+    <tr><td>Tartalom szoveg</td><td>Minden uj sor kulon bekezdeskent jelenik meg.</td></tr>
+    <tr><td>Statisztika blokkok</td><td>Ertek + felirat parok, peldaul 20 ev tapasztalat.</td></tr>
+    <tr><td>Kep</td><td>Bemutato foto.</td></tr>
+    <tr><td>Gomb</td><td>Kapcsolatfelvetel vagy tovabblepes.</td></tr>
+  </table>
+
+  <h3>5.7 Csapat</h3>
+  <p>Minden <strong>Csapattag</strong> blokk egy kulon munkatarsat jelent.</p>
+  <table>
+    <tr><th>Mezo</th><th>Magyarazat</th></tr>
+    <tr><td>Nev</td><td>A munkatars neve.</td></tr>
+    <tr><td>Pozicio</td><td>Beosztas vagy szerepkor.</td></tr>
+    <tr><td>Kep</td><td>Portre foto.</td></tr>
+    <tr><td>Telefon</td><td>Opcionlis elerhetoseg.</td></tr>
+    <tr><td>E-mail</td><td>Opcionlis elerhetoseg.</td></tr>
+  </table>
+
+  <h3>5.8 Utmenti segitseg</h3>
+  <p>Egy kulon kiemelt szekcio a gyors segitseghez.</p>
+  <table>
+    <tr><th>Mezo</th><th>Mit jelent</th></tr>
+    <tr><td>Leiras</td><td>Rovid segitsegnyujtasi ismerteto.</td></tr>
+    <tr><td>Szolgaltatasi terulet</td><td>Hol elerheto a szolgaltatas.</td></tr>
+    <tr><td>Gomb felirat + hivatkozas</td><td>Kapcsolati vagy ajanlatkeresi gomb.</td></tr>
+  </table>
+
+  <h3>5.9 Kapcsolat</h3>
+  <p>Itt kezelheti a ceg alapvet o elerhetosegeit.</p>
+  <table>
+    <tr><th>Mezo</th><th>Mit jelent</th></tr>
+    <tr><td>Telefon</td><td>A fo telefonszam.</td></tr>
+    <tr><td>E-mail</td><td>Kapcsolati email cim.</td></tr>
+    <tr><td>Cim</td><td>Postai vagy telephely cim.</td></tr>
+  </table>
+
+  <h3>5.10 Terkep</h3>
+  <p>A terkep nem koordinatabol, hanem Google Maps keresokifejezesbol dolgozik.</p>
+  <table>
+    <tr><th>Mezo</th><th>Mit erdemes beirni</th></tr>
+    <tr><td>Google Maps keresokifejezes</td><td>Peldaul: Benett Car Business KFT, Cegled</td></tr>
+    <tr><td>Terkep magassag</td><td>Pixeles magassag, peldaul 400 vagy 500.</td></tr>
+  </table>
+
+  <div class="page-break"></div>
+  <h2>6. Menuk szerkesztese</h2>
+  <p>A weboldal fejlec es lablec navigacioja most mar WordPress menukbol jon.</p>
+  <table>
+    <tr><th>Menu neve</th><th>Szerepe</th></tr>
+    <tr><td>spektra-primary</td><td>Felso menu, a fejlecben jelenik meg.</td></tr>
+    <tr><td>spektra-footer</td><td>Lablec menu.</td></tr>
+  </table>
+  <ol>
+    <li>Nyissa meg a <strong>Megjelenes</strong> menut.</li>
+    <li>Kattintson a <strong>Menuk</strong> menupontba.</li>
+    <li>Valassza ki a szerkesztendo menut.</li>
+    <li>Adjon hozza uj elemet vagy modositja a megl evot.</li>
+    <li>Mentes utan ellenorizze a weboldalon.</li>
+  </ol>
+  <div class="tip"><strong>Javasolt belso hivatkozasok:</strong> #gallery, #services, #car-service, #about, #roadside, #contact, #privacy, #terms</div>
+  <div class="warning"><strong>Fontos:</strong> Ha egy menuponthoz rossz hivatkozas kerul, a kattintas nem a megfelelo reszre ugrik.</div>
+  <div class="shot">Kep helye: Megjelenes -> Menuk kepernyo, spektra-primary kivalasztva.</div>
+
+  <h2>7. Kepek feltoltesehez ajanlasok</h2>
+  <ul>
+    <li>Lehetoleg eles, jo minosegu kepeket hasznaljon.</li>
+    <li>Ne tolts on fel tul kicsi vagy erosen pixeles kepet.</li>
+    <li>A fajlnev legyen ertelmes, peldaul muhely-kulso.jpg.</li>
+    <li>Az alt szoveg mindig roviden irja le, mi lathato a kepen.</li>
+  </ul>
+  <div class="shot">Kep helye: WordPress mediatar feltoltesi ablak.</div>
+
+  <h2>8. Gyakori hibak es megoldasok</h2>
+  <table>
+    <tr><th>Hiba</th><th>Mit jelent</th><th>Megoldas</th></tr>
+    <tr><td>Nem latszik a valtozas</td><td>Lehet, hogy nem lett mentve vagy a bongeszo regi valtozatot mutat.</td><td>Kattintson a Frissites gombra, majd bongeszoben is frissitsen.</td></tr>
+    <tr><td>Eltunt egy blokk</td><td>Valoszinuleg kotelezo mezo maradt uresen.</td><td>Ellenorizze a cimet, leirast, kepet vagy mas kotelezo adatot.</td></tr>
+    <tr><td>Rossz ikon jelenik meg</td><td>Az ikon neve nincs felismerve.</td><td>Valasszon az engedelyezett ikonok kozul.</td></tr>
+    <tr><td>A menu nem jo helyre ugrik</td><td>Hibas hivatkozas kerult a menupontba.</td><td>Ellenorizze, hogy a link peldaul #about vagy #contact formatumu-e.</td></tr>
+    <tr><td>A terkep rossz helyet mutat</td><td>A keresokifejezes pontatlan.</td><td>Adjon meg pontosabb cegnevet vagy varost.</td></tr>
+  </table>
+
+  <h2>9. Mikor kerjen segitseget</h2>
+  <ul>
+    <li>Ha mentes utan hiba uzenet jelenik meg.</li>
+    <li>Ha teljes szekcio eltunik es nem tudja, miert.</li>
+    <li>Ha uj tartalmi blokkot szeretne, nem csak a megl evot modositani.</li>
+    <li>Ha a menu vagy a terkep nem megfeleloen mukodik.</li>
+    <li>Ha bizonytalan benne, hogy egy kep vagy logo megfelelo formatumu-e.</li>
+  </ul>
+
+  <h2>10. Atadasi ellenorzo lista</h2>
+  <table>
+    <tr><th>Ellenorizendo</th><th>Allapot</th></tr>
+    <tr><td>Belepes a WordPress adminba mukodik</td><td>____</td></tr>
+    <tr><td>Fooldal szerkesztes megnyithato</td><td>____</td></tr>
+    <tr><td>Szekciok csukva indulnak</td><td>____</td></tr>
+    <tr><td>Slot blokkok kulon nyithatok</td><td>____</td></tr>
+    <tr><td>Kepek feltoltese mukodik</td><td>____</td></tr>
+    <tr><td>Menu szerkesztes elerheto</td><td>____</td></tr>
+    <tr><td>Mentes utan a valtozas megjelenik az oldalon</td><td>____</td></tr>
+  </table>
+
+  <div class="note small">
+    Ez a dokumentum a Benett Car jelenlegi WordPress admin feluletehez keszult. Ha uj szekcio, uj ikonrendszer vagy uj menuletapadas kerul a rendszerbe, a dokumentumot erdemes frissiteni.
+  </div>
+</body>
+</html>

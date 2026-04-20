@@ -1,10 +1,52 @@
-import { Wrench, DollarSign, AlertCircle, type LucideIcon } from 'lucide-react'
+import {
+  AlertCircle,
+  AlertTriangle,
+  Battery,
+  Car,
+  CircleDollarSign,
+  Gauge,
+  Settings,
+  ShieldCheck,
+  Wrench,
+  type LucideIcon,
+} from 'lucide-react'
 import type { BcServicesData } from './bc-services.schema'
 
 const iconMap: Record<string, LucideIcon> = {
   Wrench,
-  DollarSign,
+  Car,
   AlertCircle,
+  AlertTriangle,
+  Battery,
+  Gauge,
+  Settings,
+  ShieldCheck,
+  CircleDollarSign,
+}
+
+const iconAliases: Record<string, keyof typeof iconMap> = {
+  wrench: 'Wrench',
+  car: 'Car',
+  alertcircle: 'AlertCircle',
+  'alert-circle': 'AlertCircle',
+  alerttriangle: 'AlertTriangle',
+  'alert-triangle': 'AlertTriangle',
+  battery: 'Battery',
+  gauge: 'Gauge',
+  settings: 'Settings',
+  shieldcheck: 'ShieldCheck',
+  'shield-check': 'ShieldCheck',
+  circledollarsign: 'CircleDollarSign',
+  'circle-dollar-sign': 'CircleDollarSign',
+  dollarsign: 'CircleDollarSign',
+  'dollar-sign': 'CircleDollarSign',
+}
+
+function resolveServiceIcon(iconName: string): LucideIcon {
+  if (iconMap[iconName]) return iconMap[iconName]
+  const normalized = iconName.trim().toLowerCase()
+  const alias = iconAliases[normalized]
+  return alias ? iconMap[alias] : Wrench
 }
 
 export function BcServices({ title, subtitle, services }: BcServicesData) {
@@ -42,7 +84,7 @@ export function BcServices({ title, subtitle, services }: BcServicesData) {
           className="grid md:grid-cols-3 gap-8"
         >
           {services.map((service, index) => {
-            const Icon = iconMap[service.icon] || Wrench
+            const Icon = resolveServiceIcon(service.icon)
             return (
               <div
                 key={service.title}

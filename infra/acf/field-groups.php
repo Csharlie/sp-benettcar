@@ -10,11 +10,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-// ── CPT registrations ────────────────────────────────────────────
-// Load CPT + ACF field groups for collection-based sections.
-// These hook into 'init' (CPT) and 'acf/init' (field groups) internally.
-require_once __DIR__ . '/cpt-service.php';
-
 // ── Front-page field groups ──────────────────────────────────────
 
 /**

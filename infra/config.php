@@ -30,9 +30,17 @@ return [
 		'title' => 'Benett Car',
 	],
 
+	// ── Navigation menus ───────────────────────────────────────
+	// Primary source for navigation in WordPress.
+	// If these menus do not exist yet, the curated navigation fallback below is used.
+	'navigation_menus' => [
+		'primary' => 'spektra-primary',
+		'footer'  => 'spektra-footer',
+	],
+
 	// ── Navigation ───────────────────────────────────────────────
-	// Curated navigation items for the site.
-	// Future direction: native WordPress menu integration (Phase 11.5).
+	// Curated fallback navigation items for the site.
+	// Used only until the WordPress menus above are created.
 	'navigation' => [
 		'primary' => [
 			[

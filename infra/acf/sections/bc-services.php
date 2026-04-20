@@ -40,7 +40,7 @@ for ( $i = 1; $i <= $max_slots; $i++ ) {
 		'label'        => 'Szolgáltatás ' . $i . ' — Ikon',
 		'name'         => 'bc_services_service_' . $i . '_icon',
 		'type'         => 'text',
-		'instructions' => 'Ikon neve — elérhető ikonok: Wrench (csavarkulcs), DollarSign (dollárjel), AlertCircle (felkiáltójel). Pontosan így írja be, kis-nagybetű számít.',
+		'instructions' => 'Ikon neve — elérhető ikonok: Wrench (szerviz), Car (autó), ShieldCheck (garancia/biztonság), Battery (akkumulátor), Gauge (diagnosztika), Settings (beállítás/javítás), CircleDollarSign (ár/árképzés), AlertCircle vagy AlertTriangle (hibajelzés). Kis-nagybetű nem számít, de a javasolt írásmód ez.',
 		'wrapper'      => [ 'width' => '50' ],
 	];
 	$slot_fields[] = [
