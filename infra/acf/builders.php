@@ -23,6 +23,7 @@
  *   P7.4: media normalization — ACF image → canonical Media shape.
  *   P7.4.1: bc-brand.logo rolled back to URL string (frontend contract).
  *   P11.2: moved from sp-infra to client overlay.
+ *   P13.5d: legacy repeater/CPT fallbacks removed — slot-only source.
  *
  * @package Spektra\Client\Benettcar
  */
@@ -137,23 +138,7 @@ function spektra_bc_get_brand_slots( string $p, int $pid, int $max = 10 ): array
  * @param int    $pid Post ID.
  */
 function spektra_build_bc_brand( string $p, int $pid ): ?array {
-	// P13.3 slot-first.
 	$brands = spektra_bc_get_brand_slots( $p, $pid );
-
-	// Legacy repeater fallback.
-	if ( empty( $brands ) ) {
-		$repeater = spektra_get_field( $p . 'brands', $pid );
-		if ( ! empty( $repeater ) && is_array( $repeater ) ) {
-			$brands = array_map( function ( array $row ): array {
-				return [
-					'name'   => $row['name'] ?? '',
-					'logo'   => spektra_resolve_image_url( $row['logo'] ?? null ),
-					'alt'    => $row['alt'] ?? '',
-					'invert' => (bool) ( $row['invert'] ?? false ),
-				];
-			}, $repeater );
-		}
-	}
 
 	if ( empty( $brands ) ) {
 		return null;
@@ -211,23 +196,7 @@ function spektra_build_bc_gallery( string $p, int $pid ): ?array {
 		return null;
 	}
 
-	// P13.3 slot-first.
 	$images = spektra_bc_get_gallery_slots( $p, $pid );
-
-	// Legacy repeater fallback.
-	if ( empty( $images ) ) {
-		$repeater = spektra_get_field( $p . 'images', $pid );
-		if ( ! empty( $repeater ) && is_array( $repeater ) ) {
-			$images = array_map( function ( array $row ): array {
-				return [
-					'src'      => spektra_resolve_image_url( $row['src'] ?? null ),
-					'alt'      => $row['alt'] ?? '',
-					'category' => $row['category'] ?? '',
-					'caption'  => $row['caption'] ?? '',
-				];
-			}, $repeater );
-		}
-	}
 
 	if ( empty( $images ) ) {
 		return null;
@@ -280,53 +249,10 @@ function spektra_bc_get_service_slots( string $p, int $pid, int $max = 6 ): arra
 }
 
 /**
- * Load bc-services items from hidden sp_bc_service CPT posts (legacy fallback).
- *
- * P12.6 implementation retained as secondary fallback after P13.1 slot refactor.
- * CPT is hidden from admin (show_ui: false) but posts remain queryable.
- *
- * @return array<int, array{title: string, icon: string, description: string}>
- */
-function spektra_bc_get_services(): array {
-	$posts = get_posts( [
-		'post_type'      => 'sp_bc_service',
-		'posts_per_page' => -1,
-		'orderby'        => [ 'menu_order' => 'ASC', 'ID' => 'ASC' ],
-		'post_status'    => 'publish',
-	] );
-
-	if ( empty( $posts ) ) {
-		return [];
-	}
-
-	$items = [];
-	foreach ( $posts as $post ) {
-		$title       = trim( $post->post_title );
-		$icon        = trim( (string) spektra_get_field( 'bc_service_icon', $post->ID, '' ) );
-		$description = trim( (string) spektra_get_field( 'bc_service_description', $post->ID, '' ) );
-
-		if ( $title === '' || $icon === '' || $description === '' ) {
-			continue;
-		}
-
-		$items[] = [
-			'title'       => $title,
-			'icon'        => $icon,
-			'description' => $description,
-		];
-	}
-
-	return $items;
-}
-
-/**
  * Build bc-services section data.
  *
- * Source priority (P13.1):
- * 1. Slot-based fields from Homepage
- * 2. Hidden legacy CPT posts (sp_bc_service)
- * 3. Legacy repeater fallback (bc_services_services)
- * 4. null if no valid services
+ * Reads slot-based fields from Homepage (P13.1).
+ * Returns null if no valid services.
  *
  * @param string $p   ACF field prefix (bc_services_).
  * @param int    $pid Post ID.
@@ -338,27 +264,7 @@ function spektra_build_bc_services( string $p, int $pid ): ?array {
 		return null;
 	}
 
-	// 1. Slot-based fields (P13.1 primary source).
 	$services = spektra_bc_get_service_slots( $p, $pid );
-
-	// 2. Hidden CPT fallback (P12.6 legacy).
-	if ( empty( $services ) ) {
-		$services = spektra_bc_get_services();
-	}
-
-	// 3. Legacy repeater fallback (pre-P12.6).
-	if ( empty( $services ) ) {
-		$repeater = spektra_get_field( $p . 'services', $pid );
-		if ( ! empty( $repeater ) && is_array( $repeater ) ) {
-			$services = array_map( function ( array $row ): array {
-				return [
-					'title'       => $row['title'] ?? '',
-					'icon'        => $row['icon'] ?? '',
-					'description' => $row['description'] ?? '',
-				];
-			}, $repeater );
-		}
-	}
 
 	if ( empty( $services ) ) {
 		return null;
@@ -385,36 +291,14 @@ function spektra_build_bc_service( string $p, int $pid ): ?array {
 		return null;
 	}
 
-	// 1. Textarea+split (P13.2 primary source).
 	$services_lines = spektra_bc_split_textarea( (string) spektra_get_field( $p . 'services_text', $pid, '' ) );
 	$services = array_map( static fn( string $line ): array => [ 'label' => $line ], $services_lines );
-
-	// 2. Legacy repeater fallback.
-	if ( empty( $services ) ) {
-		$repeater = spektra_get_field( $p . 'services', $pid );
-		if ( ! empty( $repeater ) && is_array( $repeater ) ) {
-			$services = array_map( function ( array $row ): array {
-				return [ 'label' => $row['label'] ?? '' ];
-			}, $repeater );
-		}
-	}
 
 	if ( empty( $services ) ) {
 		return null;
 	}
 
-	// 1. Textarea+split (P13.2 primary source).
 	$brands = spektra_bc_split_textarea( (string) spektra_get_field( $p . 'brands_text', $pid, '' ) );
-
-	// 2. Legacy repeater fallback.
-	if ( empty( $brands ) ) {
-		$repeater = spektra_get_field( $p . 'brands', $pid );
-		if ( ! empty( $repeater ) && is_array( $repeater ) ) {
-			$brands = array_map( function ( array $row ): string {
-				return $row['name'] ?? '';
-			}, $repeater );
-		}
-	}
 
 	if ( empty( $brands ) ) {
 		return null;
@@ -495,20 +379,7 @@ function spektra_build_bc_about( string $p, int $pid ): ?array {
 		return null;
 	}
 
-	// 1. Textarea+split (P13.2 primary source).
 	$content = spektra_bc_split_textarea( (string) spektra_get_field( $p . 'content_text', $pid, '' ) );
-
-	// 2. Legacy repeater fallback.
-	if ( empty( $content ) ) {
-		$repeater = spektra_get_field( $p . 'content', $pid );
-		if ( ! empty( $repeater ) && is_array( $repeater ) ) {
-			$content = array_map( function ( array $row ): string {
-				return $row['paragraph'] ?? '';
-			}, $repeater );
-			$content = array_filter( $content, static fn( string $s ): bool => trim( $s ) !== '' );
-			$content = array_values( $content );
-		}
-	}
 
 	if ( empty( $content ) ) {
 		return null;
@@ -526,21 +397,7 @@ function spektra_build_bc_about( string $p, int $pid ): ?array {
 		'colorScheme'   => spektra_get_field( $p . 'color_scheme', $pid, 'light' ),
 	];
 
-	// 1. Stat slots (P13.2 primary source).
 	$stats = spektra_bc_get_stat_slots( $p, $pid );
-
-	// 2. Legacy repeater fallback.
-	if ( empty( $stats ) ) {
-		$repeater = spektra_get_field( $p . 'stats', $pid );
-		if ( is_array( $repeater ) ) {
-			$stats = array_map( function ( array $row ): array {
-				return [
-					'value' => $row['value'] ?? '',
-					'label' => $row['label'] ?? '',
-				];
-			}, $repeater );
-		}
-	}
 
 	$data['stats'] = $stats;
 
@@ -605,27 +462,7 @@ function spektra_build_bc_team( string $p, int $pid ): ?array {
 		return null;
 	}
 
-	// P13.3 slot-first.
 	$members = spektra_bc_get_team_slots( $p, $pid );
-
-	// Legacy repeater fallback.
-	if ( empty( $members ) ) {
-		$repeater = spektra_get_field( $p . 'members', $pid );
-		if ( ! empty( $repeater ) && is_array( $repeater ) ) {
-			$members = array_map( function ( array $row ): array {
-				return [
-					'name'  => $row['name'] ?? '',
-					'role'  => $row['role'] ?? '',
-					'image' => spektra_normalize_media(
-						$row['image'] ?? null,
-						$row['image_alt'] ?? ''
-					),
-					'phone' => $row['phone'] ?? '',
-					'email' => $row['email'] ?? '',
-				];
-			}, $repeater );
-		}
-	}
 
 	if ( empty( $members ) ) {
 		return null;
