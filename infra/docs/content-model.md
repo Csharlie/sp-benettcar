@@ -1,6 +1,6 @@
 # Benettcar — Content Model Mapping
 
-**Verzió:** P3.2 initial  
+**Verzió:** P13.5e (slot-based, legacy repeaters removed)  
 **Forrás:** `sp-benettcar/src/data/site.ts` + `sp-benettcar/src/sections/bc-*/bc-*.schema.ts`  
 **Cél:** WP ACF field groups → REST API → frontend section props
 
@@ -84,11 +84,11 @@
 |---------|----------------|----------|-----|---------------|------------|
 | `title` | `bc_brand_title` | text | ✗ | empty → `undefined` | omit |
 | `description` | `bc_brand_description` | textarea | ✗ | empty → `undefined` | omit |
-| `brands` | `bc_brand_brands` | repeater | ✔ | — | **skip section** |
-| `brands[].name` | `bc_brand_brands_name` | text | ✔ | — | skip item |
-| `brands[].logo` | `bc_brand_brands_logo` | image | ✗ | ACF image → URL string | `undefined` |
-| `brands[].alt` | `bc_brand_brands_alt` | text | ✗ | empty → `undefined` | `undefined` |
-| `brands[].invert` | `bc_brand_brands_invert` | true_false | ✗ | — | `false` |
+| `brands` | `bc_brand_brand_{n}_*` | slots ×10 | ✔ | — | **skip section** |
+| `brands[].name` | `bc_brand_brand_{n}_name` | text | ✔ | — | skip slot |
+| `brands[].logo` | `bc_brand_brand_{n}_logo` | image | ✗ | ACF image → URL string | `undefined` |
+| `brands[].alt` | `bc_brand_brand_{n}_alt` | text | ✗ | empty → `undefined` | `undefined` |
+| `brands[].invert` | `bc_brand_brand_{n}_invert` | true_false | ✗ | — | `false` |
 
 ### 2.3. bc-gallery
 
@@ -100,11 +100,11 @@
 | `title` | `bc_gallery_title` | text | ✔ | — | **skip section** |
 | `subtitle` | `bc_gallery_subtitle` | text | ✗ | empty → `undefined` | omit |
 | `showCategories` | `bc_gallery_show_categories` | true_false | ✗ | — | `false` |
-| `images` | `bc_gallery_images` | repeater | ✔ | — | **skip section** |
-| `images[].src` | `bc_gallery_images_src` | image | ✔ | ACF image → URL string | skip item |
-| `images[].alt` | `bc_gallery_images_alt` | text | ✔ | — | skip item |
-| `images[].category` | `bc_gallery_images_category` | text | ✗ | empty → `undefined` | omit |
-| `images[].caption` | `bc_gallery_images_caption` | text | ✗ | empty → `undefined` | omit |
+| `images` | `bc_gallery_image_{n}_*` | slots ×10 | ✔ | — | **skip section** |
+| `images[].src` | `bc_gallery_image_{n}_src` | image | ✔ | ACF image → URL string | skip slot |
+| `images[].alt` | `bc_gallery_image_{n}_alt` | text | ✔ | — | skip slot |
+| `images[].category` | `bc_gallery_image_{n}_category` | text | ✗ | empty → `undefined` | omit |
+| `images[].caption` | `bc_gallery_image_{n}_caption` | text | ✗ | empty → `undefined` | omit |
 
 ### 2.4. bc-services
 
@@ -115,10 +115,10 @@
 |---------|----------------|----------|-----|---------------|------------|
 | `title` | `bc_services_title` | text | ✔ | — | **skip section** |
 | `subtitle` | `bc_services_subtitle` | text | ✗ | empty → `undefined` | omit |
-| `services` | `bc_services_services` | repeater | ✔ | — | **skip section** |
-| `services[].title` | `bc_services_services_title` | text | ✔ | — | skip item |
-| `services[].icon` | `bc_services_services_icon` | text | ✔ | Lucide icon name | skip item |
-| `services[].description` | `bc_services_services_description` | textarea | ✔ | — | skip item |
+| `services` | `bc_services_service_{n}_*` | slots ×6 | ✔ | — | **skip section** |
+| `services[].title` | `bc_services_service_{n}_title` | text | ✔ | — | skip slot |
+| `services[].icon` | `bc_services_service_{n}_icon` | text | ✔ | Lucide icon name | skip slot |
+| `services[].description` | `bc_services_service_{n}_description` | textarea | ✔ | — | skip slot |
 
 ### 2.5. bc-service
 
@@ -130,10 +130,10 @@
 | `title` | `bc_service_title` | text | ✔ | — | **skip section** |
 | `subtitle` | `bc_service_subtitle` | text | ✗ | empty → `undefined` | omit |
 | `description` | `bc_service_description` | textarea | ✔ | — | **skip section** |
-| `services` | `bc_service_services` | repeater | ✔ | — | **skip section** |
-| `services[].label` | `bc_service_services_label` | text | ✔ | — | skip item |
-| `brands` | `bc_service_brands` | repeater | ✔ | → `string[]` | **skip section** |
-| `brands[]` | `bc_service_brands_name` | text | ✔ | — | skip item |
+| `services` | `bc_service_services_text` | textarea | ✔ | split lines → `{label}[]` | **skip section** |
+| `services[].label` | _(line from textarea)_ | — | ✔ | — | skip line |
+| `brands` | `bc_service_brands_text` | textarea | ✔ | split lines → `string[]` | **skip section** |
+| `brands[]` | _(line from textarea)_ | — | ✔ | — | skip line |
 | `contact` | `bc_service_contact` | group | ✗ | — | omit |
 | `contact.title` | `bc_service_contact_title` | text | ✔‡ | — | omit group |
 | `contact.description` | `bc_service_contact_description` | textarea | ✔‡ | — | omit group |
@@ -155,13 +155,12 @@
 |---------|----------------|----------|-----|---------------|------------|
 | `title` | `bc_about_title` | text | ✔ | — | **skip section** |
 | `subtitle` | `bc_about_subtitle` | text | ✗ | empty → `undefined` | omit |
-| `content` | `bc_about_content` | repeater | ✔ | → `string[]` | **skip section** |
-| `content[]` | `bc_about_content_paragraph` | textarea | ✔ | — | skip item |
+| `content` | `bc_about_content_text` | textarea | ✔ | split lines → `string[]` | **skip section** |
 | `image` | `bc_about_image` | image | ✗ | ACF image → `Media` | `undefined` |
 | `imagePosition` | `bc_about_image_position` | select | ✗ | `'left'` \| `'right'` | `'right'` |
-| `stats` | `bc_about_stats` | repeater | ✗ | — | `undefined` |
-| `stats[].value` | `bc_about_stats_value` | text | ✔ | — | skip item |
-| `stats[].label` | `bc_about_stats_label` | text | ✔ | — | skip item |
+| `stats` | `bc_about_stat_{n}_*` | slots ×6 | ✗ | — | `[]` |
+| `stats[].value` | `bc_about_stat_{n}_value` | text | ✔ | — | skip slot |
+| `stats[].label` | `bc_about_stat_{n}_label` | text | ✔ | — | skip slot |
 | `cta` | — | — | ✗ | CTA group | `undefined` |
 | `cta.text` | `bc_about_cta_text` | text | ✗† | — | omit CTA |
 | `cta.href` | `bc_about_cta_href` | text | ✗† | — | **omit CTA** |
@@ -177,12 +176,12 @@
 | `title` | `bc_team_title` | text | ✔ | — | **skip section** |
 | `subtitle` | `bc_team_subtitle` | text | ✗ | empty → `undefined` | omit |
 | `description` | `bc_team_description` | textarea | ✗ | empty → `undefined` | omit |
-| `members` | `bc_team_members` | repeater | ✔ | — | **skip section** |
-| `members[].name` | `bc_team_members_name` | text | ✔ | — | skip item |
-| `members[].role` | `bc_team_members_role` | text | ✔ | — | skip item |
-| `members[].image` | `bc_team_members_image` | image | ✗ | ACF image → `Media` | `undefined` |
-| `members[].phone` | `bc_team_members_phone` | text | ✗ | empty → `undefined` | omit |
-| `members[].email` | `bc_team_members_email` | text | ✗ | empty → `undefined` | omit |
+| `members` | `bc_team_member_{n}_*` | slots ×8 | ✔ | — | **skip section** |
+| `members[].name` | `bc_team_member_{n}_name` | text | ✔ | — | skip slot |
+| `members[].role` | `bc_team_member_{n}_role` | text | ✔ | — | skip slot |
+| `members[].image` | `bc_team_member_{n}_image` | image | ✗ | ACF image → `Media` | `undefined` |
+| `members[].phone` | `bc_team_member_{n}_phone` | text | ✗ | empty → `undefined` | omit |
+| `members[].email` | `bc_team_member_{n}_email` | text | ✗ | empty → `undefined` | omit |
 
 ### 2.8. bc-assistance
 
@@ -240,13 +239,14 @@
 | Optional boolean hiányzik | `false` | ACF true_false default |
 | Optional select hiányzik | default érték | Egyedi per mező (lásd táblák) |
 
-### 3.2. Repeater Policies
+### 3.2. Slot / Textarea Collection Policies
 
 | Helyzet | Policy |
 |---------|--------|
-| Repeater üres | skip section (ha required) / `[]` (ha optional) |
-| Repeater item required mező üres | skip item (az adott item kihagyva) |
-| Repeater minden item invalid | = üres repeater → skip section |
+| Slot collection üres (minden slot name/value üres) | skip section (ha required) / `[]` (ha optional) |
+| Slot required mező üres | skip slot (az adott slot kihagyva) |
+| Textarea collection üres (üres text) | skip section (ha required) / `[]` (ha optional) |
+| Textarea minden sor empty after trim | = üres → skip section |
 
 ### 3.3. CTA Policies
 
@@ -284,7 +284,8 @@
 Prefix:    bc_hero_, bc_brand_, bc_gallery_, ...
 Separator: _ (underscore)
 Nesting:   bc_service_contact_phone (group field)
-Repeater:  bc_brand_brands (repeater), bc_brand_brands_name (sub-field)
+Slots:     bc_brand_brand_1_name, bc_brand_brand_2_name, ... (numbered slots)
+Textarea:  bc_service_services_text (split lines → array)
 ```
 
 | Pattern | Példa |
