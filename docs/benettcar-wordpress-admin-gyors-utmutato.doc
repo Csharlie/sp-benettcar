@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Benett Car gyors admin &uacute;tmutat&oacute;</title>
+  <style>
+    body {
+      font-family: Calibri, Arial, sans-serif;
+      line-height: 1.4;
+      color: #222;
+      margin: 24px;
+      font-size: 11pt;
+    }
+    h1, h2 {
+      color: #0f2d52;
+      margin: 0 0 10px 0;
+    }
+    h1 {
+      font-size: 22pt;
+      border-bottom: 2px solid #0f2d52;
+      padding-bottom: 8px;
+      margin-bottom: 14px;
+    }
+    h2 {
+      font-size: 14pt;
+      margin-top: 18px;
+    }
+    .lead, .tip, .warning {
+      padding: 10px 12px;
+      margin: 10px 0;
+      border-radius: 6px;
+    }
+    .lead {
+      background: #f4f8fc;
+      border: 1px solid #d6e2ef;
+    }
+    .tip {
+      background: #edf8ef;
+      border: 1px solid #b6dcbf;
+    }
+    .warning {
+      background: #fff4e8;
+      border: 1px solid #f0c48c;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0;
+    }
+    th, td {
+      border: 1px solid #cfd8e3;
+      padding: 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #eaf2fb;
+    }
+    .screenshot {
+      display: block;
+      width: 100%;
+      max-width: 900px;
+      border: 1px solid #cfd8e3;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Benett Car gyors admin &uacute;tmutat&oacute;</h1>
+
+  <div class="lead">
+    <strong>Ez az 1 oldalas seg&eacute;dlet a legfontosabb napi szerkeszt&eacute;sekhez k&eacute;sz&uuml;lt.</strong><br>
+    A hosszabb, r&eacute;szletes dokumentum a teljes kezel&eacute;si folyamatot tartalmazza.
+  </div>
+
+  <h2>1. Hov&aacute; kell kattintani?</h2>
+  <ol>
+    <li>L&eacute;pjen be a WordPress adminba.</li>
+    <li>Nyissa meg az <strong>Oldalak</strong> men&uuml;pontot.</li>
+    <li>Nyissa meg a <strong>F&#337;oldal</strong> oldalt.</li>
+    <li>A szekci&oacute;k alapb&oacute;l csukva vannak. Nyissa ki azt, amit szerkeszteni szeretne.</li>
+    <li>Kattintson a <strong>Friss&iacute;t&eacute;s</strong> gombra.</li>
+  </ol>
+
+  <img class="screenshot" src="screenshots/02-oldalak-lista.png" alt="Oldalak lista">
+
+  <h2>2. Mit jelent a lenyithat&oacute; blokk?</h2>
+  <table>
+    <tr><th>Elem</th><th>Jelent&eacute;s</th></tr>
+    <tr><td>Szekci&oacute; doboz</td><td>Egy teljes tartalmi egys&eacute;g, p&eacute;ld&aacute;ul M&aacute;rk&aacute;k vagy Szolg&aacute;ltat&aacute;sok.</td></tr>
+    <tr><td>Lenyithat&oacute; blokk</td><td>Egy darab elem a list&aacute;ban, p&eacute;ld&aacute;ul egy m&aacute;rka, egy szolg&aacute;ltat&aacute;s vagy egy csapattag.</td></tr>
+    <tr><td>&#220;res blokk</td><td>Nem jelenik meg az oldalon.</td></tr>
+  </table>
+
+  <img class="screenshot" src="screenshots/07-szolgaltatasok-lenyitva.png" alt="Szolg&aacute;ltat&aacute;sok blokk">
+
+  <h2>3. Ikonok szolg&aacute;ltat&aacute;s k&aacute;rty&aacute;khoz</h2>
+  <p>Haszn&aacute;lhat&oacute; ikonok: <strong>Wrench</strong>, <strong>Car</strong>, <strong>ShieldCheck</strong>, <strong>Battery</strong>, <strong>Gauge</strong>, <strong>Settings</strong>, <strong>CircleDollarSign</strong>, <strong>AlertCircle</strong>, <strong>AlertTriangle</strong>.</p>
+  <div class="tip"><strong>Fontos:</strong> A kis- &eacute;s nagybet&#369; nem sz&aacute;m&iacute;t. A <strong>wrench</strong> &eacute;s a <strong>Wrench</strong> is m&#369;k&ouml;dik.</div>
+
+  <h2>4. Men&uuml; szerkeszt&eacute;s</h2>
+  <p>A fejl&eacute;c &eacute;s a l&aacute;bl&eacute;c men&uuml; WordPress men&uuml;b&#337;l j&ouml;n.</p>
+  <table>
+    <tr><th>Men&uuml;</th><th>Mire szolg&aacute;l</th></tr>
+    <tr><td>spektra-primary</td><td>Fels&#337; men&uuml;</td></tr>
+    <tr><td>spektra-footer</td><td>L&aacute;bl&eacute;c men&uuml;</td></tr>
+  </table>
+  <img class="screenshot" src="screenshots/04-menuk-primary.png" alt="Men&uuml;szerkeszt&#337;">
+
+  <h2>5. Leggyakoribb hib&aacute;k</h2>
+  <div class="warning">
+    Ha a v&aacute;ltoz&aacute;s nem l&aacute;tszik, el&#337;sz&ouml;r mindig mentsen, majd friss&iacute;tse a weboldalt a b&ouml;ng&eacute;sz&#337;ben.<br>
+    Ha egy blokk elt&#369;nik, ellen&#337;rizze, hogy a k&ouml;telez&#337; mez&#337;k ki vannak-e t&ouml;ltve.
+  </div>
+</body>
+</html>
