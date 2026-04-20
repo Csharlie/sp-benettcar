@@ -31,14 +31,14 @@ for ( $i = 1; $i <= $max_slots; $i++ ) {
 
 	$slot_fields[] = [
 		'key'      => 'field_bc_services_service_' . $i . '_title',
-		'label'    => 'Szolgáltatás ' . $i . ' — Title',
+		'label'    => 'Szolgáltatás ' . $i . ' — Cím',
 		'name'     => 'bc_services_service_' . $i . '_title',
 		'type'     => 'text',
 		'wrapper'  => [ 'width' => '50' ],
 	];
 	$slot_fields[] = [
 		'key'          => 'field_bc_services_service_' . $i . '_icon',
-		'label'        => 'Szolgáltatás ' . $i . ' — Icon',
+		'label'        => 'Szolgáltatás ' . $i . ' — Ikon',
 		'name'         => 'bc_services_service_' . $i . '_icon',
 		'type'         => 'text',
 		'instructions' => 'Lucide icon name (e.g., Wrench, DollarSign, AlertCircle)',
@@ -46,7 +46,7 @@ for ( $i = 1; $i <= $max_slots; $i++ ) {
 	];
 	$slot_fields[] = [
 		'key'     => 'field_bc_services_service_' . $i . '_description',
-		'label'   => 'Szolgáltatás ' . $i . ' — Description',
+		'label'   => 'Szolgáltatás ' . $i . ' — Leírás',
 		'name'    => 'bc_services_service_' . $i . '_description',
 		'type'    => 'textarea',
 		'rows'    => 3,
@@ -58,19 +58,19 @@ for ( $i = 1; $i <= $max_slots; $i++ ) {
 
 return [
 	'key'      => 'group_bc_services',
-	'title'    => 'BC Services',
+	'title'    => 'Főoldal — Szolgáltatások (kártyák)',
 	'fields'   => array_merge(
 		[
 			[
 				'key'      => 'field_bc_services_title',
-				'label'    => 'Title',
+				'label'    => 'Cím',
 				'name'     => 'bc_services_title',
 				'type'     => 'text',
 				'required' => 1,
 			],
 			[
 				'key'   => 'field_bc_services_subtitle',
-				'label' => 'Subtitle',
+				'label' => 'Alcím',
 				'name'  => 'bc_services_subtitle',
 				'type'  => 'text',
 			],

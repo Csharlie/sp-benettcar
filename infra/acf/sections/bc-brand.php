@@ -30,14 +30,14 @@ for ( $i = 1; $i <= $max_slots; $i++ ) {
 
 	$slot_fields[] = [
 		'key'     => 'field_bc_brand_brand_' . $i . '_name',
-		'label'   => 'Márka ' . $i . ' — Name',
+		'label'   => 'Márka ' . $i . ' — Név',
 		'name'    => 'bc_brand_brand_' . $i . '_name',
 		'type'    => 'text',
 		'wrapper' => [ 'width' => '50' ],
 	];
 	$slot_fields[] = [
 		'key'           => 'field_bc_brand_brand_' . $i . '_logo',
-		'label'         => 'Márka ' . $i . ' — Logo',
+		'label'         => 'Márka ' . $i . ' — Logó',
 		'name'          => 'bc_brand_brand_' . $i . '_logo',
 		'type'          => 'image',
 		'return_format' => 'array',
@@ -46,14 +46,14 @@ for ( $i = 1; $i <= $max_slots; $i++ ) {
 	];
 	$slot_fields[] = [
 		'key'     => 'field_bc_brand_brand_' . $i . '_alt',
-		'label'   => 'Márka ' . $i . ' — Alt Text',
+		'label'   => 'Márka ' . $i . ' — Alt szöveg',
 		'name'    => 'bc_brand_brand_' . $i . '_alt',
 		'type'    => 'text',
 		'wrapper' => [ 'width' => '50' ],
 	];
 	$slot_fields[] = [
 		'key'           => 'field_bc_brand_brand_' . $i . '_invert',
-		'label'         => 'Márka ' . $i . ' — Invert (dark bg)',
+		'label'         => 'Márka ' . $i . ' — Invertálás (sötét háttérhez)',
 		'name'          => 'bc_brand_brand_' . $i . '_invert',
 		'type'          => 'true_false',
 		'default_value' => 0,
@@ -65,18 +65,18 @@ for ( $i = 1; $i <= $max_slots; $i++ ) {
 
 return [
 	'key'      => 'group_bc_brand',
-	'title'    => 'BC Brand',
+	'title'    => 'Főoldal — Márkák',
 	'fields'   => array_merge(
 		[
 			[
 				'key'   => 'field_bc_brand_title',
-				'label' => 'Title',
+				'label' => 'Cím',
 				'name'  => 'bc_brand_title',
 				'type'  => 'text',
 			],
 			[
 				'key'   => 'field_bc_brand_description',
-				'label' => 'Description',
+				'label' => 'Leírás',
 				'name'  => 'bc_brand_description',
 				'type'  => 'textarea',
 				'rows'  => 3,

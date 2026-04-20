@@ -30,7 +30,7 @@ for ( $i = 1; $i <= $max_slots; $i++ ) {
 
 	$slot_fields[] = [
 		'key'           => 'field_bc_gallery_image_' . $i . '_src',
-		'label'         => 'Kép ' . $i . ' — Image',
+		'label'         => 'Kép ' . $i . ' — Képfájl',
 		'name'          => 'bc_gallery_image_' . $i . '_src',
 		'type'          => 'image',
 		'return_format' => 'array',
@@ -39,21 +39,21 @@ for ( $i = 1; $i <= $max_slots; $i++ ) {
 	];
 	$slot_fields[] = [
 		'key'     => 'field_bc_gallery_image_' . $i . '_alt',
-		'label'   => 'Kép ' . $i . ' — Alt Text',
+		'label'   => 'Kép ' . $i . ' — Alt szöveg',
 		'name'    => 'bc_gallery_image_' . $i . '_alt',
 		'type'    => 'text',
 		'wrapper' => [ 'width' => '50' ],
 	];
 	$slot_fields[] = [
 		'key'     => 'field_bc_gallery_image_' . $i . '_category',
-		'label'   => 'Kép ' . $i . ' — Category',
+		'label'   => 'Kép ' . $i . ' — Kategória',
 		'name'    => 'bc_gallery_image_' . $i . '_category',
 		'type'    => 'text',
 		'wrapper' => [ 'width' => '50' ],
 	];
 	$slot_fields[] = [
 		'key'     => 'field_bc_gallery_image_' . $i . '_caption',
-		'label'   => 'Kép ' . $i . ' — Caption',
+		'label'   => 'Kép ' . $i . ' — Felirat',
 		'name'    => 'bc_gallery_image_' . $i . '_caption',
 		'type'    => 'text',
 		'wrapper' => [ 'width' => '50' ],
@@ -64,25 +64,25 @@ for ( $i = 1; $i <= $max_slots; $i++ ) {
 
 return [
 	'key'      => 'group_bc_gallery',
-	'title'    => 'BC Gallery',
+	'title'    => 'Főoldal — Galéria',
 	'fields'   => array_merge(
 		[
 			[
 				'key'      => 'field_bc_gallery_title',
-				'label'    => 'Title',
+				'label'    => 'Cím',
 				'name'     => 'bc_gallery_title',
 				'type'     => 'text',
 				'required' => 1,
 			],
 			[
 				'key'   => 'field_bc_gallery_subtitle',
-				'label' => 'Subtitle',
+				'label' => 'Alcím',
 				'name'  => 'bc_gallery_subtitle',
 				'type'  => 'text',
 			],
 			[
 				'key'           => 'field_bc_gallery_show_categories',
-				'label'         => 'Show Categories',
+				'label'         => 'Kategóriák mutatása',
 				'name'          => 'bc_gallery_show_categories',
 				'type'          => 'true_false',
 				'default_value' => 0,

@@ -11,43 +11,43 @@ defined( 'ABSPATH' ) || exit;
 
 return [
 	'key'      => 'group_bc_assistance',
-	'title'    => 'BC Assistance',
+	'title'    => 'Főoldal — Útmenti segítség',
 	'fields'   => [
 		[
 			'key'      => 'field_bc_assistance_title',
-			'label'    => 'Title',
+			'label'    => 'Cím',
 			'name'     => 'bc_assistance_title',
 			'type'     => 'text',
 			'required' => 1,
 		],
 		[
 			'key'   => 'field_bc_assistance_subtitle',
-			'label' => 'Subtitle',
+			'label' => 'Alcím',
 			'name'  => 'bc_assistance_subtitle',
 			'type'  => 'text',
 		],
 		[
 			'key'   => 'field_bc_assistance_description',
-			'label' => 'Description',
+			'label' => 'Leírás',
 			'name'  => 'bc_assistance_description',
 			'type'  => 'textarea',
 			'rows'  => 3,
 		],
 		[
 			'key'   => 'field_bc_assistance_request_label',
-			'label' => 'Request Button Label',
+			'label' => 'Kérés gomb felirat',
 			'name'  => 'bc_assistance_request_label',
 			'type'  => 'text',
 		],
 		[
 			'key'   => 'field_bc_assistance_request_href',
-			'label' => 'Request Button Link',
+			'label' => 'Kérés gomb hivatkozás',
 			'name'  => 'bc_assistance_request_href',
 			'type'  => 'text',
 		],
 		[
 			'key'   => 'field_bc_assistance_service_area',
-			'label' => 'Service Area',
+			'label' => 'Szolgáltatási terület',
 			'name'  => 'bc_assistance_service_area',
 			'type'  => 'text',
 		],

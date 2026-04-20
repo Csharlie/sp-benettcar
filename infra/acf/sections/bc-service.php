@@ -16,24 +16,24 @@ defined( 'ABSPATH' ) || exit;
 
 return [
 	'key'      => 'group_bc_service',
-	'title'    => 'BC Service',
+	'title'    => 'Főoldal — Szerviz részletek',
 	'fields'   => [
 		[
 			'key'      => 'field_bc_service_title',
-			'label'    => 'Title',
+			'label'    => 'Cím',
 			'name'     => 'bc_service_title',
 			'type'     => 'text',
 			'required' => 1,
 		],
 		[
 			'key'   => 'field_bc_service_subtitle',
-			'label' => 'Subtitle',
+			'label' => 'Alcím',
 			'name'  => 'bc_service_subtitle',
 			'type'  => 'text',
 		],
 		[
 			'key'      => 'field_bc_service_description',
-			'label'    => 'Description',
+			'label'    => 'Leírás',
 			'name'     => 'bc_service_description',
 			'type'     => 'textarea',
 			'required' => 1,
@@ -41,7 +41,7 @@ return [
 		],
 		[
 			'key'          => 'field_bc_service_services_text',
-			'label'        => 'Service Items',
+			'label'        => 'Szolgáltatás tételek',
 			'name'         => 'bc_service_services_text',
 			'type'         => 'textarea',
 			'required'     => 1,
@@ -50,7 +50,7 @@ return [
 		],
 		[
 			'key'          => 'field_bc_service_brands_text',
-			'label'        => 'Brands',
+			'label'        => 'Márkák',
 			'name'         => 'bc_service_brands_text',
 			'type'         => 'textarea',
 			'required'     => 1,
@@ -59,57 +59,57 @@ return [
 		],
 		[
 			'key'        => 'field_bc_service_contact',
-			'label'      => 'Contact',
+			'label'      => 'Kapcsolat',
 			'name'       => 'bc_service_contact',
 			'type'       => 'group',
 			'layout'     => 'block',
 			'sub_fields' => [
 				[
 					'key'   => 'field_bc_service_contact_title',
-					'label' => 'Title',
+					'label' => 'Cím',
 					'name'  => 'title',
 					'type'  => 'text',
 				],
 				[
 					'key'   => 'field_bc_service_contact_description',
-					'label' => 'Description',
+					'label' => 'Leírás',
 					'name'  => 'description',
 					'type'  => 'textarea',
 					'rows'  => 2,
 				],
 				[
 					'key'   => 'field_bc_service_contact_phone',
-					'label' => 'Phone',
+					'label' => 'Telefon',
 					'name'  => 'phone',
 					'type'  => 'text',
 				],
 				[
 					'key'   => 'field_bc_service_contact_message_cta_text',
-					'label' => 'Message CTA Text',
+					'label' => 'Üzenet gomb felirat',
 					'name'  => 'message_cta_text',
 					'type'  => 'text',
 				],
 				[
 					'key'   => 'field_bc_service_contact_message_cta_href',
-					'label' => 'Message CTA Link',
+					'label' => 'Üzenet gomb hivatkozás',
 					'name'  => 'message_cta_href',
 					'type'  => 'text',
 				],
 				[
 					'key'   => 'field_bc_service_contact_booking_note',
-					'label' => 'Booking Note',
+					'label' => 'Foglalási megjegyzés',
 					'name'  => 'booking_note',
 					'type'  => 'text',
 				],
 				[
 					'key'   => 'field_bc_service_contact_hours',
-					'label' => 'Hours',
+					'label' => 'Nyitvatartás',
 					'name'  => 'hours',
 					'type'  => 'text',
 				],
 				[
 					'key'   => 'field_bc_service_contact_weekend_hours',
-					'label' => 'Weekend Hours',
+					'label' => 'Hétvégi nyitvatartás',
 					'name'  => 'weekend_hours',
 					'type'  => 'text',
 				],

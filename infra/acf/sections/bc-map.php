@@ -11,25 +11,25 @@ defined( 'ABSPATH' ) || exit;
 
 return [
 	'key'      => 'group_bc_map',
-	'title'    => 'BC Map',
+	'title'    => 'Főoldal — Térkép',
 	'fields'   => [
 		[
 			'key'   => 'field_bc_map_title',
-			'label' => 'Title',
+			'label' => 'Cím',
 			'name'  => 'bc_map_title',
 			'type'  => 'text',
 		],
 		[
 			'key'      => 'field_bc_map_query',
-			'label'    => 'Map Query',
+			'label'    => 'Google Maps keresőkifejezés',
 			'name'     => 'bc_map_query',
 			'type'     => 'text',
 			'required' => 1,
-			'instructions' => 'Google Maps search query (e.g., "Benett Car Business KFT, Cegled")',
+			'instructions' => 'Google Maps keresési kifejezés (pl. "Benett Car Business KFT, Cegléd")',
 		],
 		[
 			'key'           => 'field_bc_map_height',
-			'label'         => 'Map Height (px)',
+			'label'         => 'Térkép magasság (képpont)',
 			'name'          => 'bc_map_height',
 			'type'          => 'number',
 			'default_value' => 400,

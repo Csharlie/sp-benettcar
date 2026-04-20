@@ -24,27 +24,27 @@ for ( $i = 1; $i <= $max_slots; $i++ ) {
 		'label'   => '',
 		'name'    => '',
 		'type'    => 'message',
-		'message' => '<strong>--- Tag ' . $i . ' ---</strong>',
+		'message' => '<strong>--- Csapattag ' . $i . ' ---</strong>',
 		'wrapper' => [ 'width' => '100' ],
 	];
 
 	$slot_fields[] = [
 		'key'     => 'field_bc_team_member_' . $i . '_name',
-		'label'   => 'Tag ' . $i . ' — Name',
+		'label'   => 'Csapattag ' . $i . ' — Név',
 		'name'    => 'bc_team_member_' . $i . '_name',
 		'type'    => 'text',
 		'wrapper' => [ 'width' => '50' ],
 	];
 	$slot_fields[] = [
 		'key'     => 'field_bc_team_member_' . $i . '_role',
-		'label'   => 'Tag ' . $i . ' — Role',
+		'label'   => 'Csapattag ' . $i . ' — Pozíció',
 		'name'    => 'bc_team_member_' . $i . '_role',
 		'type'    => 'text',
 		'wrapper' => [ 'width' => '50' ],
 	];
 	$slot_fields[] = [
 		'key'           => 'field_bc_team_member_' . $i . '_image',
-		'label'         => 'Tag ' . $i . ' — Image',
+		'label'         => 'Csapattag ' . $i . ' — Kép',
 		'name'          => 'bc_team_member_' . $i . '_image',
 		'type'          => 'image',
 		'return_format' => 'array',
@@ -53,21 +53,21 @@ for ( $i = 1; $i <= $max_slots; $i++ ) {
 	];
 	$slot_fields[] = [
 		'key'     => 'field_bc_team_member_' . $i . '_image_alt',
-		'label'   => 'Tag ' . $i . ' — Image Alt Text',
+		'label'   => 'Csapattag ' . $i . ' — Kép alt szöveg',
 		'name'    => 'bc_team_member_' . $i . '_image_alt',
 		'type'    => 'text',
 		'wrapper' => [ 'width' => '50' ],
 	];
 	$slot_fields[] = [
 		'key'     => 'field_bc_team_member_' . $i . '_phone',
-		'label'   => 'Tag ' . $i . ' — Phone',
+		'label'   => 'Csapattag ' . $i . ' — Telefon',
 		'name'    => 'bc_team_member_' . $i . '_phone',
 		'type'    => 'text',
 		'wrapper' => [ 'width' => '50' ],
 	];
 	$slot_fields[] = [
 		'key'     => 'field_bc_team_member_' . $i . '_email',
-		'label'   => 'Tag ' . $i . ' — Email',
+		'label'   => 'Csapattag ' . $i . ' — Email',
 		'name'    => 'bc_team_member_' . $i . '_email',
 		'type'    => 'text',
 		'wrapper' => [ 'width' => '50' ],
@@ -78,25 +78,25 @@ for ( $i = 1; $i <= $max_slots; $i++ ) {
 
 return [
 	'key'      => 'group_bc_team',
-	'title'    => 'BC Team',
+	'title'    => 'Főoldal — Csapat',
 	'fields'   => array_merge(
 		[
 			[
 				'key'      => 'field_bc_team_title',
-				'label'    => 'Title',
+				'label'    => 'Cím',
 				'name'     => 'bc_team_title',
 				'type'     => 'text',
 				'required' => 1,
 			],
 			[
 				'key'   => 'field_bc_team_subtitle',
-				'label' => 'Subtitle',
+				'label' => 'Alcím',
 				'name'  => 'bc_team_subtitle',
 				'type'  => 'text',
 			],
 			[
 				'key'   => 'field_bc_team_description',
-				'label' => 'Description',
+				'label' => 'Leírás',
 				'name'  => 'bc_team_description',
 				'type'  => 'textarea',
 				'rows'  => 3,
