@@ -41,7 +41,7 @@ for ( $i = 1; $i <= $max_slots; $i++ ) {
 		'label'        => 'Szolgáltatás ' . $i . ' — Ikon',
 		'name'         => 'bc_services_service_' . $i . '_icon',
 		'type'         => 'text',
-		'instructions' => 'Lucide icon name (e.g., Wrench, DollarSign, AlertCircle)',
+		'instructions' => 'Ikon neve — elérhető ikonok: Wrench (csavarkulcs), DollarSign (dollárjel), AlertCircle (felkiáltójel). Pontosan így írja be, kis-nagybetű számít.',
 		'wrapper'      => [ 'width' => '50' ],
 	];
 	$slot_fields[] = [
@@ -79,9 +79,9 @@ return [
 				'label'   => '',
 				'name'    => '',
 				'type'    => 'message',
-				'message' => 'Itt szerkeszthetők a Services section kártyái.<br>'
-					. 'Minden kitöltött slot egy szolgáltatás kártyaként jelenik meg.<br>'
-					. 'Üres slot nem jelenik meg az oldalon.',
+				'message' => 'Itt szerkeszthetők a szolgáltatás kártyák.<br>'
+					. 'Minden kitöltött slot egy kártyaként jelenik meg az oldalon.<br>'
+					. 'Üres slot nem jelenik meg.',
 			],
 		],
 		$slot_fields

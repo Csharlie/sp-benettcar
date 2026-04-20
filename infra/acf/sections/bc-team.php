@@ -108,7 +108,7 @@ return [
 				'type'    => 'message',
 				'message' => 'Itt szerkeszthetők a csapattagok (max 8).<br>'
 					. 'Minden kitöltött slot egy tagként jelenik meg.<br>'
-					. 'Üres slot nem jelenik meg az oldalon.',
+					. 'Üres slot nem jelenik meg.',
 			],
 		],
 		$slot_fields

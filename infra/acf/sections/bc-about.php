@@ -103,7 +103,7 @@ return [
 				'label'   => '',
 				'name'    => '',
 				'type'    => 'message',
-				'message' => 'Statisztikák — minden kitöltött value+label pár egy stat kártyaként jelenik meg. Üres slot nem jelenik meg.',
+				'message' => 'Statisztikák — minden kitöltött érték+felirat pár egy statisztika kártyaként jelenik meg. Üres slot nem jelenik meg.',
 			],
 		],
 		$stat_slots,

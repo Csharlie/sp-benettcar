@@ -88,7 +88,7 @@ return [
 				'type'    => 'message',
 				'message' => 'Itt szerkeszthetők a márka logók (max 10).<br>'
 					. 'Minden kitöltött slot egy márkaként jelenik meg.<br>'
-					. 'Üres slot nem jelenik meg az oldalon.',
+					. 'Üres slot nem jelenik meg.',
 			],
 		],
 		$slot_fields

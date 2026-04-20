@@ -14,6 +14,13 @@ return [
 	'title'    => 'Főoldal — Bevezető',
 	'fields'   => [
 		[
+			'key'     => 'field_bc_hero_instructions',
+			'label'   => '',
+			'name'    => '',
+			'type'    => 'message',
+			'message' => 'A főoldal tetején megjelenő bevezető szekció. A háttérkép, cím, leírás és gombok itt szerkeszthetők.',
+		],
+		[
 			'key'      => 'field_bc_hero_title',
 			'label'    => 'Cím',
 			'name'     => 'bc_hero_title',

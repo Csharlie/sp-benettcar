@@ -94,7 +94,7 @@ return [
 				'type'    => 'message',
 				'message' => 'Itt szerkeszthetők a galéria képei (max 10).<br>'
 					. 'Minden kitöltött slot egy képként jelenik meg.<br>'
-					. 'Üres slot nem jelenik meg az oldalon.',
+					. 'Üres slot nem jelenik meg.',
 			],
 		],
 		$slot_fields
