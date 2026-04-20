@@ -1,7 +1,7 @@
 (function ($) {
 	'use strict';
 
-	const EMPTY_LABEL = 'Ures tartalom';
+	const EMPTY_LABEL = 'Üres tartalom';
 
 	const imageSlots = [];
 	const textSlots = [];
@@ -11,7 +11,7 @@
 			accordionKey: `field_bc_brand_sep_${i}`,
 			imageName: `bc_brand_brand_${i}_logo`,
 			textName: `bc_brand_brand_${i}_name`,
-			slotLabel: `Marka ${i}`,
+			slotLabel: `Márka ${i}`,
 			kind: 'brand',
 		});
 		imageSlots.push({
@@ -19,7 +19,7 @@
 			imageName: `bc_gallery_image_${i}_src`,
 			textName: `bc_gallery_image_${i}_caption`,
 			altTextName: `bc_gallery_image_${i}_alt`,
-			slotLabel: `Kep ${i}`,
+			slotLabel: `Kép ${i}`,
 			kind: 'gallery',
 		});
 	}
@@ -39,7 +39,7 @@
 			accordionKey: `field_bc_services_sep_${i}`,
 			primaryTextName: `bc_services_service_${i}_title`,
 			secondaryTextName: `bc_services_service_${i}_icon`,
-			slotLabel: `Szolgaltatas ${i}`,
+			slotLabel: `Szolgáltatás ${i}`,
 			kind: 'service',
 		});
 		textSlots.push({
@@ -105,11 +105,13 @@
 		let $mount = $title.find('> .spk-acf-preview');
 		if ($mount.length) {
 			$mount.empty();
+			$title.addClass('spk-has-preview');
 			return $mount;
 		}
 
 		$mount = $('<span class="spk-acf-preview" />');
 		$title.prepend($mount);
+		$title.addClass('spk-has-preview');
 		return $mount;
 	}
 
@@ -128,7 +130,7 @@
 		if (src) {
 			$thumb.append($('<img alt="" />').attr('src', src));
 		} else {
-			$thumb.addClass('is-empty').append($('<span aria-hidden="true">-</span>'));
+			$thumb.addClass('is-empty');
 		}
 		$mount.append($thumb);
 	}

@@ -9,6 +9,10 @@
 	min-width: 0;
 }
 
+.acf-field-accordion .acf-accordion-title.spk-has-preview label {
+	display: none;
+}
+
 .spk-acf-preview {
 	display: inline-flex;
 	align-items: center;
@@ -43,9 +47,7 @@
 
 .spk-acf-preview-thumb.is-empty {
 	background: #f2f4f7;
-	color: #98a2b3;
-	font-size: 12px;
-	font-weight: 600;
+	border-style: dashed;
 }
 
 .spk-acf-preview-text {
