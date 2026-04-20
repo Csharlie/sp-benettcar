@@ -41,6 +41,13 @@
 	object-fit: cover;
 }
 
+.spk-acf-preview-thumb.is-empty {
+	background: #f2f4f7;
+	color: #98a2b3;
+	font-size: 12px;
+	font-weight: 600;
+}
+
 .spk-acf-preview-text {
 	display: inline-block;
 	max-width: 100%;

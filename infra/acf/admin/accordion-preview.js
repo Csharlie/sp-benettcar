@@ -1,6 +1,8 @@
 (function ($) {
 	'use strict';
 
+	const EMPTY_LABEL = 'Ures tartalom';
+
 	const imageSlots = [];
 	const textSlots = [];
 
@@ -9,7 +11,7 @@
 			accordionKey: `field_bc_brand_sep_${i}`,
 			imageName: `bc_brand_brand_${i}_logo`,
 			textName: `bc_brand_brand_${i}_name`,
-			fallbackText: `Marka ${i}`,
+			slotLabel: `Marka ${i}`,
 			kind: 'brand',
 		});
 		imageSlots.push({
@@ -17,7 +19,7 @@
 			imageName: `bc_gallery_image_${i}_src`,
 			textName: `bc_gallery_image_${i}_caption`,
 			altTextName: `bc_gallery_image_${i}_alt`,
-			fallbackText: `Kep ${i}`,
+			slotLabel: `Kep ${i}`,
 			kind: 'gallery',
 		});
 	}
@@ -27,7 +29,7 @@
 			accordionKey: `field_bc_team_sep_${i}`,
 			imageName: `bc_team_member_${i}_image`,
 			textName: `bc_team_member_${i}_name`,
-			fallbackText: `Csapattag ${i}`,
+			slotLabel: `Csapattag ${i}`,
 			kind: 'team',
 		});
 	}
@@ -37,14 +39,14 @@
 			accordionKey: `field_bc_services_sep_${i}`,
 			primaryTextName: `bc_services_service_${i}_title`,
 			secondaryTextName: `bc_services_service_${i}_icon`,
-			fallbackText: `Szolgaltatas ${i}`,
+			slotLabel: `Szolgaltatas ${i}`,
 			kind: 'service',
 		});
 		textSlots.push({
 			accordionKey: `field_bc_about_stat_sep_${i}`,
 			primaryTextName: `bc_about_stat_${i}_value`,
 			secondaryTextName: `bc_about_stat_${i}_label`,
-			fallbackText: `Statisztika ${i}`,
+			slotLabel: `Statisztika ${i}`,
 			kind: 'stat',
 		});
 	}
@@ -122,13 +124,18 @@
 	}
 
 	function addThumb($mount, src, kind) {
-		if (!src) {
-			return;
-		}
-
 		const $thumb = $('<span class="spk-acf-preview-thumb" />').attr('data-kind', kind || '');
-		$thumb.append($('<img alt="" />').attr('src', src));
+		if (src) {
+			$thumb.append($('<img alt="" />').attr('src', src));
+		} else {
+			$thumb.addClass('is-empty').append($('<span aria-hidden="true">-</span>'));
+		}
 		$mount.append($thumb);
+	}
+
+	function composeSlotText(slotLabel, primary, secondary) {
+		const value = primary || secondary || EMPTY_LABEL;
+		return `${slotLabel} - ${value}`;
 	}
 
 	function updateImageSlot(slot) {
@@ -138,11 +145,12 @@
 		}
 
 		const $mount = ensureMount($title);
-		addThumb($mount, readImageSrc(slot.imageName), slot.kind);
+		const imageSrc = readImageSrc(slot.imageName);
+		addThumb($mount, imageSrc, slot.kind);
 
 		const primary = readTextValue(slot.textName);
 		const secondary = readTextValue(slot.altTextName);
-		addText($mount, primary || secondary || slot.fallbackText);
+		addText($mount, composeSlotText(slot.slotLabel, primary, secondary));
 	}
 
 	function updateTextSlot(slot) {
@@ -155,7 +163,7 @@
 		const primary = readTextValue(slot.primaryTextName);
 		const secondary = readTextValue(slot.secondaryTextName);
 		const text = [primary, secondary].filter(Boolean).join(' · ');
-		addText($mount, text || slot.fallbackText);
+		addText($mount, `${slot.slotLabel} - ${text || EMPTY_LABEL}`);
 	}
 
 	function refreshAll() {
