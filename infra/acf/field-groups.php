@@ -97,20 +97,18 @@ add_action( 'admin_enqueue_scripts', function ( string $hook ): void {
 	$asset_dir     = __DIR__ . '/admin';
 	$script_path   = $asset_dir . '/accordion-preview.js';
 	$style_path    = $asset_dir . '/accordion-preview.css';
-	$content_dir   = wp_normalize_path( WP_CONTENT_DIR );
-	$script_normal = wp_normalize_path( $script_path );
-	$style_normal  = wp_normalize_path( $style_path );
 
-	if ( ! file_exists( $script_path ) || ! str_starts_with( $script_normal, $content_dir ) ) {
+	if ( ! file_exists( $script_path ) ) {
 		return;
 	}
 
-	if ( ! file_exists( $style_path ) || ! str_starts_with( $style_normal, $content_dir ) ) {
+	if ( ! file_exists( $style_path ) ) {
 		return;
 	}
 
-	$script_url = content_url( str_replace( $content_dir, '', $script_normal ) );
-	$style_url  = content_url( str_replace( $content_dir, '', $style_normal ) );
+	$asset_base_url = content_url( '/plugins/spektra-config/acf/admin' );
+	$script_url     = $asset_base_url . '/accordion-preview.js';
+	$style_url      = $asset_base_url . '/accordion-preview.css';
 
 	wp_enqueue_style(
 		'spektra-bc-acf-accordion-preview',
