@@ -20,12 +20,12 @@ $max_slots   = 10;
 
 for ( $i = 1; $i <= $max_slots; $i++ ) {
 	$slot_fields[] = [
-		'key'     => 'field_bc_gallery_sep_' . $i,
-		'label'   => '',
-		'name'    => '',
-		'type'    => 'message',
-		'message' => '<strong>--- Kép ' . $i . ' ---</strong>',
-		'wrapper' => [ 'width' => '100' ],
+		'key'          => 'field_bc_gallery_sep_' . $i,
+		'label'        => 'Kép ' . $i,
+		'type'         => 'accordion',
+		'open'         => 0,
+		'multi_expand' => 1,
+		'endpoint'     => 0,
 	];
 
 	$slot_fields[] = [

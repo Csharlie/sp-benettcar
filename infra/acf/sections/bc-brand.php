@@ -20,12 +20,12 @@ $max_slots   = 10;
 
 for ( $i = 1; $i <= $max_slots; $i++ ) {
 	$slot_fields[] = [
-		'key'     => 'field_bc_brand_sep_' . $i,
-		'label'   => '',
-		'name'    => '',
-		'type'    => 'message',
-		'message' => '<strong>--- Márka ' . $i . ' ---</strong>',
-		'wrapper' => [ 'width' => '100' ],
+		'key'          => 'field_bc_brand_sep_' . $i,
+		'label'        => 'Márka ' . $i,
+		'type'         => 'accordion',
+		'open'         => 0,
+		'multi_expand' => 1,
+		'endpoint'     => 0,
 	];
 
 	$slot_fields[] = [

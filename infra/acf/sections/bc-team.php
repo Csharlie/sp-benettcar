@@ -20,12 +20,12 @@ $max_slots   = 8;
 
 for ( $i = 1; $i <= $max_slots; $i++ ) {
 	$slot_fields[] = [
-		'key'     => 'field_bc_team_sep_' . $i,
-		'label'   => '',
-		'name'    => '',
-		'type'    => 'message',
-		'message' => '<strong>--- Csapattag ' . $i . ' ---</strong>',
-		'wrapper' => [ 'width' => '100' ],
+		'key'          => 'field_bc_team_sep_' . $i,
+		'label'        => 'Csapattag ' . $i,
+		'type'         => 'accordion',
+		'open'         => 0,
+		'multi_expand' => 1,
+		'endpoint'     => 0,
 	];
 
 	$slot_fields[] = [

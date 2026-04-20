@@ -21,12 +21,12 @@ $max_stats   = 6;
 
 for ( $i = 1; $i <= $max_stats; $i++ ) {
 	$stat_slots[] = [
-		'key'     => 'field_bc_about_stat_sep_' . $i,
-		'label'   => '',
-		'name'    => '',
-		'type'    => 'message',
-		'message' => '<strong>--- Statisztika ' . $i . ' ---</strong>',
-		'wrapper' => [ 'width' => '100' ],
+		'key'          => 'field_bc_about_stat_sep_' . $i,
+		'label'        => 'Statisztika ' . $i,
+		'type'         => 'accordion',
+		'open'         => 0,
+		'multi_expand' => 1,
+		'endpoint'     => 0,
 	];
 	$stat_slots[] = [
 		'key'     => 'field_bc_about_stat_' . $i . '_value',

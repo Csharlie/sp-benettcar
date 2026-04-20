@@ -19,14 +19,13 @@ $slot_fields = [];
 $max_slots   = 6;
 
 for ( $i = 1; $i <= $max_slots; $i++ ) {
-	// Message separator for admin readability (ACF Free compatible).
 	$slot_fields[] = [
-		'key'     => 'field_bc_services_sep_' . $i,
-		'label'   => '',
-		'name'    => '',
-		'type'    => 'message',
-		'message' => '<strong>--- Szolgáltatás ' . $i . ' ---</strong>',
-		'wrapper' => [ 'width' => '100' ],
+		'key'          => 'field_bc_services_sep_' . $i,
+		'label'        => 'Szolgáltatás ' . $i,
+		'type'         => 'accordion',
+		'open'         => 0,
+		'multi_expand' => 1,
+		'endpoint'     => 0,
 	];
 
 	$slot_fields[] = [
