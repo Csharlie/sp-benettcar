@@ -10,3 +10,10 @@ dist
 # .env committed (defaults), .env.local gitignored (overrides)
 .env.local
 .env.*.local
+
+# === Office lock files ===
+# Temporary lock files created by Word/Excel while a file is open
+~$*.doc
+~$*.docx
+~$*.xlsx
+~$*.xls
