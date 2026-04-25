@@ -46,7 +46,7 @@ function resolveServiceIcon(iconName: string): LucideIcon {
   if (iconMap[iconName]) return iconMap[iconName]
   const normalized = iconName.trim().toLowerCase()
   const alias = iconAliases[normalized]
-  return alias ? iconMap[alias] : Wrench
+  return alias ? (iconMap[alias] ?? Wrench) : Wrench
 }
 
 export function BcServices({ title, subtitle, services }: BcServicesData) {
