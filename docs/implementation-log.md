@@ -35,6 +35,7 @@
 | 29 | 7b09968 | feat: update implementation log | log frissítés |
 | 30 | ce61bc9 | chore: scaffold benettcar infra overlay | #32 → [infra-log.md](infra-log.md) |
 | 31 | f3170f0 | chore: extend .gitignore — .local/ + .env rules | #33 → [infra-log.md](infra-log.md) |
+| 32 | 0854ca2 | feat(bc): P14.2 finalize content, footer rebuild, schema editability | #34 P14.2 lezárás |
 
 > **Infra overlay bejegyzések** → külön fájl: [infra-log.md](infra-log.md)
 
@@ -1019,5 +1020,65 @@ sp-clients/sp-benettcar/
 - `sp-clients/sp-benettcar/docs/bc-migration-plan.md` (6 csere)
 - `spektra-dev/spektra-bootstrap-prompt.md` (5 csere)
 - `spektra-dev/spektra-architecture-layers.md` (4 csere)
+
+**Státusz:** ✅ Kész
+
+---
+
+## 32. P14.2 — Content finalization, footer rebuild, schema editability
+
+**Dátum:** 2026-05-12
+**Commit:** #34 – `0854ca2`
+
+**Cél:** A P14.2 Client Feedback Frontend Implementation fázis lezárása. Footer teljes újraírás, bc-service komponens szövegek szerkeszthetővé tétele, meta adatok és site.description frissítése, bc-assistance CTA telefon linkre állítása.
+
+**Miért:**
+- A Footer.tsx `#car-service` dead filter miatt a "Szolgáltatások" szekció hibásan rendelt tartalmat; a teljes footer struktúra átdolgozásra szorult.
+- Három szöveg (`"Miért a Benett Car?"`, `"Támogatott márkák"`, opening hours template) hardkódolt volt a komponensben — CMS-ből nem volt szerkeszthető.
+- A meta title / meta description / site.description nem tükrözték a végleges üzleti fókuszt és a Volkswagen-konszern írásmódot.
+- A bc-assistance CTA `#contact` anchor helyett azonnali telefonhívásra kell mutatnia.
+
+**Hogyan:**
+
+1. **`bc-service.schema.ts`** — 3 új opcionális mező:
+   - `BcServiceData.serviceListTitle?: string`
+   - `BcServiceData.brandsTitle?: string`
+   - `BcServiceContact.hoursNote?: string`
+   - `BcServiceData.description` required → optional
+
+2. **`bc-service.component.tsx`** — hardkódolt szövegek props-ra cserélve, fallback az eredeti értékre. Unused import (`Wrench`, `Phone`) eltávolítva.
+
+3. **`site.ts`** — módosítások:
+   - `site.description` → `"Volkswagen-konszern modellek szakértői háttérrel Cegléden."`
+   - `meta.title` → `"Benett Car Business Kft. | Autókereskedés, állapotfelmérés, autóbérlés – Cegléd"`
+   - `meta.description` → Volkswagen-konszern, teljesebb tartalom
+   - `bc-service.data` kiegészítve: `serviceListTitle`, `brandsTitle`, `contact.hoursNote`
+   - `bc-assistance.requestHref` → `tel:+36301234567`
+   - `navigation.footer` → `#roadside` kivéve, `Galéria → #gallery` hozzáadva
+
+4. **`Footer.tsx`** — teljes újraírás (FooterBlock platform komponens elhagyva, custom footer):
+   - 4 oszlopos grid: brand + Szolgáltatások + Információ + Kapcsolat
+   - Szolgáltatások: bc-services szekció `services[].title`-ből húzott 4 link → mind `#services`
+   - Információ: Rólunk / Galéria / Kapcsolat (navigation.footer-ből szűrt)
+   - Kapcsolat: telefon (tel: link) / email (mailto: link) / cím — bc-contact szekció adatából
+   - Facebook placeholder link (neon-blue) a brand col aljára
+   - Bottom bar: `© 2026 Benett Car Business Kft.` bal, jogi linkek + `Created by PSPro` (neon-blue) jobb
+   - Teljes `data-ui-*` attribútum lefedettség
+
+**Döntések:**
+- FooterBlock platform komponens helyett custom footer — kliens-specifikus layout igény miatt, platform módosítás nélkül.
+- Facebook URL és PSPro URL egyelőre placeholder — valódi értékek P14.3 előfeltételei.
+- Kapcsolat grid adatai a bc-contact szekció `contactInfo`-ból jönnek — egységes adatforrás.
+- `hoursNote` `{hours}` interpolációs string — elveszti a bold styling-ot, de CMS-ből szerkeszthető. Default fallback megtartja az eredeti styled renderinget.
+
+**Fájlok:**
+- `src/sections/bc-service/bc-service.schema.ts`
+- `src/sections/bc-service/bc-service.component.tsx`
+- `src/data/site.ts`
+- `src/shell/Footer.tsx`
+
+**Validáció:**
+- `npm run build` PASS (2875 module)
+- `npm test -- --run` PASS (50/50)
 
 **Státusz:** ✅ Kész
