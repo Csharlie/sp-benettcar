@@ -21,6 +21,15 @@ function FacebookIcon({ className }: { className?: string }) {
   )
 }
 
+function smoothScroll(href: string) {
+  return (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (href.startsWith('#')) {
+      e.preventDefault()
+      document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+}
+
 export function AppFooter({ siteData }: LayoutShellProps) {
   const sections = siteData.pages.flatMap((p) => p.sections)
 
@@ -118,6 +127,7 @@ export function AppFooter({ siteData }: LayoutShellProps) {
                 <li key={service.title}>
                   <a
                     href="#services"
+                    onClick={smoothScroll('#services')}
                     data-ui-type="link"
                     data-ui-id={`footer-service-link-${i}`}
                     data-ui-action="navigate"
@@ -153,6 +163,7 @@ export function AppFooter({ siteData }: LayoutShellProps) {
                 <li key={link.href}>
                   <a
                     href={link.href}
+                    onClick={smoothScroll(link.href)}
                     data-ui-type="link"
                     data-ui-id={`footer-info-link-${i}`}
                     data-ui-action="navigate"
@@ -249,6 +260,7 @@ export function AppFooter({ siteData }: LayoutShellProps) {
               <a
                 key={link.href}
                 href={link.href}
+                onClick={smoothScroll(link.href)}
                 data-ui-type="link"
                 data-ui-id={`footer-legal-link-${i}`}
                 data-ui-action="navigate"
