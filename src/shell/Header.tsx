@@ -9,6 +9,9 @@ export function AppHeader({ siteData }: LayoutShellProps) {
   const links = siteData.navigation.primary.map((item) => ({
     label: item.label,
     href: item.href,
+    onClick: () => {
+      document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' })
+    },
   }))
 
   return (

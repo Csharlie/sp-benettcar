@@ -129,7 +129,9 @@
 |---------|----------------|----------|-----|---------------|------------|
 | `title` | `bc_service_title` | text | ✔ | — | **skip section** |
 | `subtitle` | `bc_service_subtitle` | text | ✗ | empty → `undefined` | omit |
-| `description` | `bc_service_description` | textarea | ✔ | — | **skip section** |
+| `description` | `bc_service_description` | textarea | ✗ | empty → `undefined` | omit |
+| `serviceListTitle` | `bc_service_service_list_title` | text | ✗ | empty → `undefined` | omit (fallback: "Miért a Benett Car?") |
+| `brandsTitle` | `bc_service_brands_title` | text | ✗ | empty → `undefined` | omit (fallback: "Támogatott márkák") |
 | `services` | `bc_service_services_text` | textarea | ✔ | split lines → `{label}[]` | **skip section** |
 | `services[].label` | _(line from textarea)_ | — | ✔ | — | skip line |
 | `brands` | `bc_service_brands_text` | textarea | ✔ | split lines → `string[]` | **skip section** |
@@ -143,8 +145,11 @@
 | `contact.bookingNote` | `bc_service_contact_booking_note` | text | ✗ | empty → `undefined` | omit |
 | `contact.hours` | `bc_service_contact_hours` | text | ✗ | — | omit |
 | `contact.weekendHours` | `bc_service_contact_weekend_hours` | text | ✗ | — | omit |
+| `contact.hoursNote` | `bc_service_contact_hours_note` | text | ✗ | `{hours}` → runtime interpolation | omit (fallback: built-in template) |
 
 > ‡ Required within the group — if `contact.title` is empty, the whole `contact` group is omitted.
+>
+> **P14.2 schema változások:** `description` required → optional (üres string elfogadott). `serviceListTitle`, `brandsTitle`, `contact.hoursNote` új opcionális mezők — ha WP-ből nem érkeznek, a komponens fallback értékkel renderel.
 
 ### 2.6. bc-about
 

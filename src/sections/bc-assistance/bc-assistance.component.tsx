@@ -15,7 +15,7 @@ export function BcAssistance({
       data-ui-id="section-bc-assistance"
       data-ui-component="bc-assistance"
       data-ui-role="support-section"
-      className="bg-graphite-950 py-16"
+      className="bg-graphite-950 py-16 scroll-mt-16"
     >
       <div className="container mx-auto px-6 max-w-7xl">
         {/* Header */}

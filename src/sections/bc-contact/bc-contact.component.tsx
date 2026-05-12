@@ -15,7 +15,7 @@ export function BcContact({
       data-ui-id="section-bc-contact"
       data-ui-component="bc-contact"
       data-ui-role="contact-section"
-      className="bg-graphite-900 py-24"
+      className="bg-graphite-900 py-24 scroll-mt-16"
     >
       <div className="container mx-auto px-6 max-w-4xl">
         <div className="text-center mb-12">

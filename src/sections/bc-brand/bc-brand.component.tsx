@@ -7,7 +7,7 @@ export function BcBrand({ title, description, brands }: BcBrandData) {
       data-ui-id="section-bc-brand"
       data-ui-component="bc-brand"
       data-ui-role="brand-bar"
-      className="bg-graphite-900 py-20 border-t border-graphite-800"
+      className="bg-graphite-900 py-20 border-t border-graphite-800 scroll-mt-16"
     >
       <div className="container mx-auto px-6 max-w-7xl">
         {/* Section header */}

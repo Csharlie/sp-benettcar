@@ -1,6 +1,7 @@
 import type { CallToAction, Media } from '@spektra/types'
 
 export interface BcHeroData {
+  eyebrow?: string
   title: string
   subtitle?: string
   description: string

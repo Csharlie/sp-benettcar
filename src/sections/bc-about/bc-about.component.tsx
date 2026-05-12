@@ -14,7 +14,7 @@ export function BcAbout({
       data-ui-id="section-bc-about"
       data-ui-component="bc-about"
       data-ui-role="about"
-      className="bg-graphite-900 text-foreground py-24"
+      className="bg-graphite-900 text-foreground pt-24 scroll-mt-16"
     >
       <div className="container mx-auto px-6 max-w-7xl">
         <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
@@ -74,7 +74,7 @@ export function BcAbout({
           <div
             data-ui-id="about-stats"
             data-ui-role="stats-grid"
-            className="grid grid-cols-2 md:grid-cols-3 gap-8 mb-24 pb-24 border-b border-graphite-800"
+            className="grid grid-cols-2 md:grid-cols-3 gap-8 pb-24 border-b border-graphite-800"
           >
             {stats.map((stat) => (
               <div key={stat.label} className="text-center">

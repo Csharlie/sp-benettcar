@@ -1,8 +1,8 @@
 # BenettCar — Ügyfél Feedback Tracker (P14.2)
 
-> **Státusz:** 🟡 Nyitott — feedback lista feltöltése folyamatban  
+> **Státusz:** ✅ Lezárva — P14.3 Content & Media Freeze triggerelhető  
 > **Fázis:** P14.2 — Frontend Feedback Implementation  
-> **Freeze trigger:** Minden sor ✅ → P14.3 tartalomzár  
+> **Lezárva:** 2026-05-12  
 > **Forrás:** Ügyfél visszajelzés, kézbesítve P14.2 indításakor  
 > **Módosítás szabálya:** Minden item = külön prompt az agentnek. Agent commitol, kihúzza.
 
@@ -12,15 +12,38 @@
 
 | # | Szekció | Leírás | Típus | Státusz | Commit |
 |---|---------|--------|-------|---------|--------|
-| — | — | *Feedback lista feltöltésre vár* | — | ⬜ Várakozás | — |
+| — | — | *Nincs függőben lévő módosítás* | — | ✅ | — |
 
 ---
 
 ## Lezárt módosítások
 
-| # | Szekció | Leírás | Commit |
-|---|---------|--------|--------|
-| — | — | — | — |
+| # | Szekció | Volt | Lett | Commit |
+|---|---------|------|------|--------|
+| 1 | `site.description` | "Autószerviz, felvásárlás és útmenti segítség Cegléden." | "Autókereskedés és útmenti segítség Cegléden." | — |
+| 2 | `nav.primary` | Galéria / Szolgáltatások / **Szerviz** / Rólunk / Útmenti segítség | Galéria / Szolgáltatások / Rólunk / Útmenti segítség | — |
+| 3 | `nav.footer` | **Autószerviz** / Útmenti segítség / Rólunk / Kapcsolat / … | Útmenti segítség / Rólunk / Kapcsolat / … | — |
+| 4 | `meta.title` | "Benett Car Business \| Autószerviz Cegléd" | "Benett Car Business \| Autókereskedés Cegléd" | — |
+| 5 | `meta.description` | "…Autószerviz, felvásárlás…VW Konszern és Audi szakszerviz." | "…Autókereskedés és útmenti segítség…Prémium VW Konszern és Audi járművek." | — |
+| 6 | `bc-hero` subtitle | "VW Konszern és Audi járművekre specializált **műhely**" | "Volkswagen Konszern és Audi járművek **szakértői**" | — |
+| 7 | `bc-hero` primaryCTA | "Szerviz egyeztetés" → `#car-service` | "Autók megtekintése" → `#gallery` | — |
+| 8 | `bc-brand` title | "…járművek **karbantartása és javítása**" | "…**prémium járművek**" | — |
+| 9 | `bc-gallery` képek | kategóriák: Karbantartás / Diagnosztika / Szerviz / Javítás | kategóriák: Értékesítés / Ellenőrzés / Autópark / Telephely | — |
+| 10 | `bc-services` | 3 card: Autószerviz + Értékesítés + Útmenti segítség | 2 card: Értékesítés + Útmenti segítség (Autószerviz card eltávolítva) | — |
+| 11 | `bc-service` blokk | Részletes szerviz oldal: 5 szolgáltatás + márkalista + időpontfoglalás | **Teljes blokk eltávolítva** | — |
+| 12 | `bc-about` title | "Kiszámítható szakértelem, valódi **műhely**" | "Kiszámítható szakértelem, megbízható **partner**" | — |
+| 13 | `bc-about` content | "…helyi **autószerviz**…nem általános **szerelők**…" | "…helyi **kereskedés**…nem általános hozzáállás…" | — |
+| 14 | `bc-about` stat | "Helyi **Műhely**" | "Helyi **Kereskedés**" | — |
+| 15 | `bc-team` Kovács Péter role | "**Diagnosztikai** Szakértő" | "**Értékesítési** Szakértő" | — |
+| 16 | `bc-assistance` description | "…meglévő **szervizügyfeleink** számára…" | "…**ügyfeleink** számára…" | — |
+| 17 | `bc-contact` title | "**Időpont vagy árajánlat** kérése" | "**Érdeklődés vagy ajánlatkérés**" | — |
+| 18 | `Footer.tsx` | `FooterBlock`-alapú, `#car-service` dead filter, fix copyright | 4 oszlopos custom footer: Szolgáltatások (×4, → `#services`), Információ (Rólunk/Galéria/Kapcsolat), Kapcsolat (tel/email/cím), jogi linkek + Facebook + PSPro bottom barban | — |
+| 19 | `bc-service` schema + komponens | Hardkódolt: "Miért a Benett Car?", "Támogatott márkák", opening hours template | `serviceListTitle`, `brandsTitle`, `hoursNote` — mind szerkeszthetők `site.ts`-ből | — |
+| 20 | `site.ts` meta title | "Benett Car Business \| Autókereskedés Cegléd" | "Benett Car Business Kft. \| Autókereskedés, állapotfelmérés, autóbérlés – Cegléd" | — |
+| 21 | `site.ts` meta description | "…Prémium VW Konszern és Audi járművek." | "…Volkswagen-konszern modellek szakértői háttérrel." | — |
+| 22 | `site.ts` site.description | "Autókereskedés és útmenti segítség Cegléden." | "Volkswagen-konszern modellek szakértői háttérrel Cegléden." | — |
+| 23 | `bc-assistance` requestHref | `#contact` (form scroll) | `tel:+36301234567` (közvetlen hívás) | — |
+| 24 | `navigation.footer` | `#roadside` + about + contact + privacy + terms | about + **gallery** + contact + privacy + terms (`#roadside` kivéve, `#gallery` hozzáadva) | — |
 
 ---
 

@@ -18,7 +18,7 @@ import bugattiLogo from '../assets/brands/bugatti-logo-white.png'
 export const siteData: SiteData = {
   site: {
     name: 'Benett Car',
-    description: 'Autószerviz, felvásárlás és útmenti segítség Cegléden.',
+    description: 'Volkswagen-konszern modellek szakértői háttérrel Cegléden.',
     url: 'https://benettcar.hu',
     locale: 'hu',
   },
@@ -27,14 +27,12 @@ export const siteData: SiteData = {
     primary: [
       { label: 'Galéria', href: '#gallery' },
       { label: 'Szolgáltatások', href: '#services' },
-      { label: 'Szerviz', href: '#car-service' },
       { label: 'Rólunk', href: '#about' },
       { label: 'Útmenti segítség', href: '#roadside' },
     ],
     footer: [
-      { label: 'Autószerviz', href: '#car-service' },
-      { label: 'Útmenti segítség', href: '#roadside' },
       { label: 'Rólunk', href: '#about' },
+      { label: 'Galéria', href: '#gallery' },
       { label: 'Kapcsolat', href: '#contact' },
       { label: 'Adatvédelem', href: '#privacy' },
       { label: 'ÁSZF', href: '#terms' },
@@ -46,9 +44,9 @@ export const siteData: SiteData = {
       slug: 'home',
       title: 'Főoldal',
       meta: {
-        title: 'Benett Car Business | Autószerviz Cegléd',
+        title: 'Benett Car Business Kft. | Autókereskedés, állapotfelmérés, autóbérlés – Cegléd',
         description:
-          'Benett Car Business - Autószerviz, felvásárlás és útmenti segítség Cegléden. VW Konszern és Audi szakszerviz.',
+          'Benett Car Business Kft. – Ellenőrzött járműbeszerzés, műszaki állapotfelmérés, diagnosztika, autóbérlés és útmenti segítség Cegléden. Volkswagen-konszern modellek szakértői háttérrel.',
       },
       sections: [
         // ---------------------------------------------------------------
@@ -58,16 +56,16 @@ export const siteData: SiteData = {
           id: 'hero-1',
           type: 'bc-hero',
           data: {
-            title: 'Precíz munka. Valódi odafigyelés.',
-            subtitle:
-              'Volkswagen Konszern és Audi járművekre specializált műhely',
+            eyebrow: 'AUDI · VW · ŠKODA · PORSCHE · LAMBORGHINI · BUGATTI',
+            title: 'Átfogó típusismeret. Műszaki biztonság.',
+            subtitle: '',
             description:
-              'Minden munkát az adott autóra szabunk – személyes felelősséggel.',
-            primaryCTA: { text: 'Szerviz egyeztetés', href: '#car-service' },
+              'A Volkswagen-konszern márkáira specializálódva biztosítjuk a járművek beszerzését, a folyamatos mobilitást és a szakértői állapotfelmérést.',
+            primaryCTA: { text: 'Szolgáltatásaink', href: '#services' },
             secondaryCTA: { text: 'Kapcsolat', href: '#contact' },
             backgroundImage: {
               src: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1920&auto=format&fit=crop&q=80',
-              alt: 'Autószerviz műhely',
+              alt: 'Benett Car prémium autók',
             },
           },
         },
@@ -79,7 +77,7 @@ export const siteData: SiteData = {
           id: 'brand-1',
           type: 'bc-brand',
           data: {
-            title: 'Volkswagen Konszern és Audi járművek karbantartása és javítása',
+            title: 'Volkswagen-konszern modellek szakértői háttérrel',
             description:
               'Típusismeret és gyári megoldások azokhoz az autókhoz, amelyekkel nap mint nap dolgozunk.',
             brands: [
@@ -107,50 +105,50 @@ export const siteData: SiteData = {
               {
                 src: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&auto=format&fit=crop&q=80',
                 alt: 'Átadás előtti ellenőrzés',
-                category: 'Karbantartás',
+                category: 'Értékesítés',
                 caption: 'Átadás előtti ellenőrzés',
               },
               {
                 src: 'https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=800&auto=format&fit=crop&q=80',
-                alt: 'Diagnosztika munka közben',
-                category: 'Diagnosztika',
-                caption: 'Diagnosztika munka közben',
+                alt: 'Műszaki állapot ellenőrzés',
+                category: 'Ellenőrzés',
+                caption: 'Műszaki állapot ellenőrzés',
               },
               {
                 src: 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=800&auto=format&fit=crop&q=80',
-                alt: 'Prémium autó szervízelés',
-                category: 'Szerviz',
-                caption: 'Prémium autó szervízelés',
+                alt: 'Prémium jármű',
+                category: 'Autópark',
+                caption: 'Prémium jármű',
               },
               {
                 src: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&auto=format&fit=crop&q=80',
                 alt: 'Prémium autó',
-                category: 'Karbantartás',
-                caption: 'Karbantartott jármű',
+                category: 'Autópark',
+                caption: 'Prémium jármű',
               },
               {
                 src: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800&auto=format&fit=crop&q=80',
-                alt: 'Szervizfolyamat – motorjavítás',
-                category: 'Javítás',
-                caption: 'Szervizfolyamat – motorjavítás',
+                alt: 'Prémium autó részletei',
+                category: 'Autópark',
+                caption: 'Prémium autó részletei',
               },
               {
                 src: 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&auto=format&fit=crop&q=80',
-                alt: 'Szerviz épület',
-                category: 'Szerviz',
-                caption: 'Szerviz épület',
+                alt: 'Benett Car telephely',
+                category: 'Telephely',
+                caption: 'Benett Car telephely',
               },
               {
                 src: 'https://images.unsplash.com/photo-1542362567-b07e54358753?w=800&auto=format&fit=crop&q=80',
-                alt: 'BMW szakszervizelés',
-                category: 'Javítás',
-                caption: 'BMW szakszervizelés',
+                alt: 'Prémium jármű értékesítés',
+                category: 'Értékesítés',
+                caption: 'Prémium jármű értékesítés',
               },
               {
                 src: 'https://images.unsplash.com/photo-1502877338535-766e1452684a?w=800&auto=format&fit=crop&q=80',
-                alt: 'Porsche karbantartás',
-                category: 'Karbantartás',
-                caption: 'Porsche karbantartás',
+                alt: 'Porsche jármű',
+                category: 'Autópark',
+                caption: 'Porsche jármű',
               },
             ],
           },
@@ -163,48 +161,56 @@ export const siteData: SiteData = {
           id: 'services-1',
           type: 'bc-services',
           data: {
-            title: 'Teljes körű szolgáltatások prémium autókhoz',
+            title: 'Biztonság és mobilitás szakértői háttérrel',
             subtitle: 'Szolgáltatások',
             services: [
               {
-                title: 'Autószerviz',
-                icon: 'Wrench',
-                description:
-                  'Amikor autója prémium márka-kompetenciát igényel. Volkswagen Konszern és Audi szakszervizelés.',
-              },
-              {
-                title: 'Értékesítés',
+                title: 'Ellenőrzött járműbeszerzés',
                 icon: 'DollarSign',
                 description:
-                  'Prémium kategóriás használt autók értékesítése. Átlátható árazás, valós műszaki állapot.',
+                  'Kizárólag igazolt előéletű, műszakilag auditált modellek közvetítése és értékesítése. Dokumentált múlt és a kifogástalan állapot.',
               },
               {
-                title: 'Útmenti segítség',
+                title: 'Műszaki állapotfelmérés',
+                icon: 'CheckCircle',
+                description:
+                  'Átfogó ellenőrzés és diagnosztikai vizsgálat. Segítünk, hogy járműve állapotával kapcsolatban ne megérzésekre, hanem valós adatokra alapozhasson.',
+              },
+              {
+                title: 'Rugalmas mobilitás',
+                icon: 'Car',
+                description:
+                  'Autóbérlési lehetőségek meglévő ügyfeleink zavartalan mozgástere érdekében. Megoldások, hogy Ön egy pillanatra se maradjon autó nélkül.',
+              },
+              {
+                title: 'Útmenti segítségnyújtás',
                 icon: 'AlertCircle',
                 description:
-                  'Kiegészítő szolgáltatás meglévő szervizügyfeleink számára, váratlan helyzetekben.',
+                  'Biztonság minden helyzetben. Segélyszolgálatunkkal kiemelt figyelmet és támogatást nyújtunk partnereinknek a váratlan helyzetekben is.',
               },
             ],
           },
         },
 
         // ---------------------------------------------------------------
-        // 5. bc-service
+        // 5. bc-service — Értékesítés részletei
         // ---------------------------------------------------------------
         {
           id: 'service-1',
           type: 'bc-service',
           data: {
-            title: 'Szervizszolgáltatások',
-            subtitle: 'Autószerviz',
-            description:
-              'Általános szervizelési és javítási munkák Volkswagen Konszern járművekhez.',
+            title: 'Személyre szabott megoldások',
+            subtitle: 'Megoldásaink',
+            description: '',
+            serviceListTitle: 'Miért a Benett Car?',
+            brandsTitle: 'Támogatott márkák',
             services: [
-              { label: 'Általános karbantartás és átvizsgálás' },
-              { label: 'Diagnosztika és hibafeltárás' },
-              { label: 'Motor- és hajtáslánc javítás' },
-              { label: 'Fék- és futómű szerviz' },
-              { label: 'Felkészítés műszaki vizsgára' },
+              { label: 'Ellenőrzött járműbeszerzés és értékesítés' },
+              { label: 'Kizárólag igazolt előéletű modellek' },
+              { label: 'Állapotfelmérés valós műszaki képpel' },
+              { label: 'Átfogó diagnosztikai vizsgálat' },
+              { label: 'Bérautó szolgáltatás partnereink számára' },
+              { label: 'Partneri segítségnyújtás váratlan helyzetekben' },
             ],
             brands: [
               'Volkswagen',
@@ -215,14 +221,16 @@ export const siteData: SiteData = {
               'Lamborghini',
             ],
             contact: {
-              title: 'Szerviz egyeztetés',
-              description: 'Időpont egyeztetés telefonon vagy üzenetben.',
+              title: 'Tervezhető és rendezett ügyintézés',
+              description:
+                'Annak érdekében, hogy minden járműre és megkeresésre kellő figyelmet fordíthassunk, kérjük egyeztessen velünk időpontot — kérjen visszahívást vagy küldjön üzenetet.',
               phone: '+36301234567',
               messageCta: { text: 'Üzenet küldése', href: '#contact' },
               bookingNote:
-                'Online időpontfoglalási rendszer fejlesztés alatt. Ha Önt is érdekli a funkció, jelezze munkatársaink felé – visszajelzése alapján döntjük el a bevezetést.',
+                'Járműbeszerzéssel és értékesítéssel, állapotfelméréssel, diagnosztikával, autóbérléssel vagy partneri segítségnyújtással kapcsolatban is szívesen tájékoztatjuk.',
               hours: '8:00–16:00',
               weekendHours: 'Zárva',
+              hoursNote: 'Munkatársaink minden hétköznap {hours} óra között állnak rendelkezésre.',
             },
           },
         },
@@ -234,24 +242,24 @@ export const siteData: SiteData = {
           id: 'about-1',
           type: 'bc-about',
           data: {
-            title: 'Kiszámítható szakértelem, valódi műhely',
+            title: 'Kiszámítható szakértelem, megbízható partner',
             subtitle: 'Benett Car Business Kft.',
             content: [
-              'Három prémium márkára szakosodott helyi autószerviz. Tapasztalt szakértők, akik ismerik a Volkswagen Konszern és Audi rendszereket – nem általános szerelők, hanem specializált profi csapat.',
-              'Pontos árajánlat, reális határidők, egyértelmű kommunikáció. Marketing ígéretek helyett mérhető eredmény.',
+              'A Benett Car járműbeszerzésben, értékesítési támogatásban, állapotfelmérésben, diagnosztikában és mobilitási megoldásokban segít ügyfeleinek.',
+              'Mély típusismerettel és szakértői szemlélettel, átlátható kommunikációval és személyes egyeztetéssel dolgozunk, hogy minden döntés valós műszaki képre és rendezett ügyintézésre épülhessen.',
             ],
             image: {
               src: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&auto=format&fit=crop',
-              alt: 'Benett Car műhely',
+              alt: 'Benett Car telephely',
             },
             imagePosition: 'right' as const,
             stats: [
               {
-                value: 'Prémium',
+                value: 'Típusismeret',
                 label: 'Volkswagen · Audi · Škoda\nPorsche · Bugatti · Lamborghini',
               },
-              { value: 'Helyi', label: 'Műhely' },
-              { value: '10+', label: 'Év tapasztalat' },
+              { value: 'Helyi jelenlét', label: 'Cegléd és környéke' },
+              { value: '10+ év', label: 'Gyakorlati tapasztalat' },
             ],
             cta: { text: 'Kapcsolatfelvétel', href: '#contact' },
             colorScheme: 'dark' as const,
@@ -282,7 +290,7 @@ export const siteData: SiteData = {
               },
               {
                 name: 'Kovács Péter',
-                role: 'Diagnosztikai Szakértő',
+                role: 'Értékesítési Szakértő',
                 image: {
                   src: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&q=80',
                   alt: 'Kovács Péter',
@@ -304,9 +312,9 @@ export const siteData: SiteData = {
             title: 'Útmenti segítség, amikor szükséges',
             subtitle: 'Kiegészítő szolgáltatás',
             description:
-              'Kiegészítő szolgáltatás meglévő szervizügyfeleink számára, váratlan helyzetekben.',
+              'Kiegészítő szolgáltatás ügyfeleink számára, váratlan helyzetekben.',
             requestLabel: 'Útmenti segítség igénylése',
-            requestHref: '#contact',
+            requestHref: 'tel:+36301234567',
             serviceArea: '30 km-es körzetben',
           },
         },
@@ -318,7 +326,7 @@ export const siteData: SiteData = {
           id: 'contact-1',
           type: 'bc-contact',
           data: {
-            title: 'Időpont vagy árajánlat kérése',
+            title: 'Érdeklődés vagy ajánlatkérés',
             subtitle: 'Kapcsolat',
             description: 'Írjon nekünk, és hamarosan jelentkezünk.',
             contactInfo: {

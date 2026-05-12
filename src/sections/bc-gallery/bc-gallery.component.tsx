@@ -37,7 +37,7 @@ export function BcGallery({
       data-ui-id="section-bc-gallery"
       data-ui-component="bc-gallery"
       data-ui-role="gallery"
-      className="bg-graphite-950 text-foreground py-20 md:py-32"
+      className="bg-graphite-950 text-foreground py-20 md:py-32 scroll-mt-16"
     >
       <div className="container mx-auto px-6 max-w-7xl">
         <div className="text-center mb-12">

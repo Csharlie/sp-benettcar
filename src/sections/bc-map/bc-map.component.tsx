@@ -9,7 +9,7 @@ export function BcMap({ title, query, height = 500 }: BcMapData) {
       data-ui-id="section-bc-map"
       data-ui-component="bc-map"
       data-ui-role="map"
-      className="bg-graphite-950 text-foreground border-t-8 border-b-8 border-neon-blue"
+      className="bg-graphite-950 text-foreground border-t-8 border-b-8 border-neon-blue scroll-mt-16"
     >
       {title && (
         <h2

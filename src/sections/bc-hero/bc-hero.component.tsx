@@ -1,6 +1,7 @@
 import type { BcHeroData } from './bc-hero.schema'
 
 export function BcHero({
+  eyebrow,
   title,
   subtitle,
   description,
@@ -34,10 +35,21 @@ export function BcHero({
       {/* Content — left-aligned */}
       <div className="container mx-auto px-6 relative z-10 max-w-7xl">
         <div className="max-w-3xl">
+          {/* Eyebrow — brand line, muted, above title */}
+          {eyebrow && (
+            <p
+              className="text-sm md:text-base font-medium text-neon-blue uppercase tracking-[0.2em] mb-12"
+              data-ui-id="hero-eyebrow"
+              data-ui-role="hero-eyebrow"
+            >
+              {eyebrow}
+            </p>
+          )}
+
           {/* Subtitle — neon-blue accent, uppercase tracking */}
           {subtitle && (
             <p
-              className="text-sm md:text-base font-medium text-neon-blue uppercase tracking-[0.2em] mb-6"
+              className="text-sm md:text-base font-medium text-neon-blue uppercase tracking-[0.2em] mb-8"
               data-ui-id="hero-subtitle"
               data-ui-role="hero-subtitle"
             >
@@ -47,7 +59,7 @@ export function BcHero({
 
           {/* Title — text-shadow for depth */}
           <h1
-            className="text-5xl md:text-6xl lg:text-7xl font-semibold text-white mb-8 leading-tight tracking-tight [text-shadow:0_4px_20px_rgba(0,0,0,0.8),0_2px_8px_rgba(0,0,0,0.6)]"
+            className="text-5xl md:text-6xl lg:text-7xl font-semibold text-white mb-12 leading-tight tracking-tight [text-shadow:0_4px_20px_rgba(0,0,0,0.8),0_2px_8px_rgba(0,0,0,0.6)]"
             data-ui-id="hero-title"
             data-ui-role="hero-title"
           >
@@ -72,6 +84,12 @@ export function BcHero({
             {primaryCTA && (
               <a
                 href={primaryCTA.href}
+                onClick={(e) => {
+                  if (primaryCTA.href.startsWith('#')) {
+                    e.preventDefault()
+                    document.querySelector(primaryCTA.href)?.scrollIntoView({ behavior: 'smooth' })
+                  }
+                }}
                 data-ui-type="link"
                 data-ui-id="hero-primary-cta"
                 data-ui-action="navigate"
@@ -86,6 +104,12 @@ export function BcHero({
             {secondaryCTA && (
               <a
                 href={secondaryCTA.href}
+                onClick={(e) => {
+                  if (secondaryCTA.href.startsWith('#')) {
+                    e.preventDefault()
+                    document.querySelector(secondaryCTA.href)?.scrollIntoView({ behavior: 'smooth' })
+                  }
+                }}
                 data-ui-type="link"
                 data-ui-id="hero-secondary-cta"
                 data-ui-action="navigate"

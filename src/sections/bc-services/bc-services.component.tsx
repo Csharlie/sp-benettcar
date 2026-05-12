@@ -3,6 +3,7 @@ import {
   AlertTriangle,
   Battery,
   Car,
+  CheckCircle,
   CircleDollarSign,
   Gauge,
   Settings,
@@ -18,6 +19,7 @@ const iconMap: Record<string, LucideIcon> = {
   AlertCircle,
   AlertTriangle,
   Battery,
+  CheckCircle,
   Gauge,
   Settings,
   ShieldCheck,
@@ -56,7 +58,7 @@ export function BcServices({ title, subtitle, services }: BcServicesData) {
       data-ui-id="section-bc-services"
       data-ui-component="bc-services"
       data-ui-role="features-section"
-      className="bg-graphite-900 py-24"
+      className="bg-graphite-900 py-24 scroll-mt-16"
     >
       <div className="container mx-auto px-6 max-w-7xl">
         <div className="text-center mb-16">
@@ -81,7 +83,7 @@ export function BcServices({ title, subtitle, services }: BcServicesData) {
         <div
           data-ui-id="services-grid"
           data-ui-role="feature-grid"
-          className="grid md:grid-cols-3 gap-8"
+          className={`grid gap-8 ${services.length === 2 ? 'md:grid-cols-2' : services.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}
         >
           {services.map((service, index) => {
             const Icon = resolveServiceIcon(service.icon)
@@ -108,7 +110,7 @@ export function BcServices({ title, subtitle, services }: BcServicesData) {
                   <p
                     data-ui-id={`services-item-desc-${index}`}
                     data-ui-role="item-description"
-                    className="text-gray-400 leading-relaxed mb-4"
+                    className="text-gray-200 leading-relaxed mb-4"
                   >
                     {service.description}
                   </p>

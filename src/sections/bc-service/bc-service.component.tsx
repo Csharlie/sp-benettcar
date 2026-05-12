@@ -1,4 +1,4 @@
-import { Wrench, CheckCircle, Phone, MessageCircle } from 'lucide-react'
+import { Check, MessageCircle } from 'lucide-react'
 import type { BcServiceData } from './bc-service.schema'
 
 export function BcService({
@@ -7,6 +7,8 @@ export function BcService({
   description,
   services,
   brands,
+  serviceListTitle,
+  brandsTitle,
   contact,
 }: BcServiceData) {
   return (
@@ -15,11 +17,15 @@ export function BcService({
       data-ui-id="section-bc-service"
       data-ui-component="bc-service"
       data-ui-role="service-detail"
-      className="py-24 bg-graphite-950"
+      className="py-24 bg-graphite-950 scroll-mt-16"
     >
       <div className="container mx-auto px-6 max-w-7xl">
         {/* Header */}
-        <div className="mb-16">
+        <div
+          data-ui-id="service-header"
+          data-ui-role="section-header"
+          className="mb-16"
+        >
           {subtitle && (
             <p
               data-ui-id="service-subtitle"
@@ -46,26 +52,43 @@ export function BcService({
         </div>
 
         {/* Content Grid */}
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
+        <div
+          data-ui-id="service-content-grid"
+          data-ui-role="content-grid"
+          className="grid lg:grid-cols-2 gap-12 items-start"
+        >
           {/* Left: Service List & Brands */}
-          <div className="space-y-8">
+          <div
+            data-ui-id="service-col-left"
+            data-ui-role="content-column"
+            className="space-y-8"
+          >
             {/* Service List */}
-            <div className="bg-graphite-900 border border-neon-blue/30 p-8 rounded-lg">
+            <div
+              data-ui-id="service-list-card"
+              data-ui-role="feature-card"
+              className="bg-graphite-900 border border-neon-blue/30 p-8 rounded-lg"
+            >
               <h3
                 data-ui-id="service-list-heading"
                 data-ui-role="item-title"
-                className="text-xl font-semibold text-white mb-6 flex items-center"
+                className="text-2xl font-semibold text-white mb-6"
               >
-                <Wrench className="w-5 h-5 text-neon-blue mr-3" />
-                Szolgáltatásaink
+                {serviceListTitle ?? 'Miért a Benett Car?'}
               </h3>
-              <ul className="space-y-4">
-                {services.map((service) => (
+              <ul
+                data-ui-id="service-list"
+                data-ui-role="service-list"
+                className="space-y-4"
+              >
+                {services.map((service, index) => (
                   <li
                     key={service.label}
+                    data-ui-id={`service-item-${index}`}
+                    data-ui-role="service-item"
                     className="flex items-start text-gray-300 leading-relaxed"
                   >
-                    <CheckCircle className="w-5 h-5 text-neon-blue mr-3 flex-shrink-0 mt-0.5" />
+                    <Check className="w-6 h-6 text-neon-blue mr-3 flex-shrink-0" strokeWidth={1.5} />
                     <span>{service.label}</span>
                   </li>
                 ))}
@@ -73,19 +96,28 @@ export function BcService({
             </div>
 
             {/* Supported Brands */}
-            <div className="bg-graphite-900 border border-neon-blue/30 p-8 rounded-lg">
+            <div
+              data-ui-id="service-brands-card"
+              data-ui-role="feature-card"
+              className="bg-graphite-900 border border-neon-blue/30 p-8 rounded-lg"
+            >
               <h3
                 data-ui-id="service-brands-heading"
                 data-ui-role="item-title"
-                className="text-xl font-semibold text-white mb-4 flex items-center"
+                className="text-2xl font-semibold text-white mb-4 flex items-center"
               >
-                <Wrench className="w-5 h-5 text-neon-blue mr-3" />
-                Támogatott márkák
+                {brandsTitle ?? 'Támogatott márkák'}
               </h3>
-              <div className="flex flex-wrap gap-3">
+              <div
+                data-ui-id="service-brands-list"
+                data-ui-role="brand-list"
+                className="flex flex-wrap gap-3"
+              >
                 {brands.map((brand) => (
                   <span
                     key={brand}
+                    data-ui-id={`service-brand-${brand.toLowerCase()}`}
+                    data-ui-role="brand-item"
                     className="px-4 py-2 bg-graphite-900 border border-graphite-700 text-gray-300 rounded-lg text-sm font-medium"
                   >
                     {brand}
@@ -97,8 +129,15 @@ export function BcService({
 
           {/* Right: Contact CTA */}
           {contact && (
-            <div className="space-y-8">
-              <div className="bg-graphite-900 border border-neon-blue/30 p-10 rounded-lg">
+            <div
+              data-ui-id="service-col-right"
+              data-ui-role="content-column"
+            >
+              <div
+                data-ui-id="service-contact-card"
+                data-ui-role="contact-card"
+                className="bg-graphite-900 border border-neon-blue/30 p-10 rounded-lg"
+              >
                 <h3
                   data-ui-id="service-contact-heading"
                   data-ui-role="item-title"
@@ -106,6 +145,19 @@ export function BcService({
                 >
                   {contact.title}
                 </h3>
+
+                {/* Online Booking Info */}
+                {contact.bookingNote && (
+                  <div className="mb-4 pb-4">
+                    <p
+                      data-ui-id="service-booking-note"
+                      data-ui-role="meta"
+                      className="text-gray-400 leading-relaxed"
+                    >
+                      {contact.bookingNote}
+                    </p>
+                  </div>
+                )}
 
                 <p
                   data-ui-id="service-contact-description"
@@ -116,21 +168,11 @@ export function BcService({
                 </p>
 
                 {/* Contact Options */}
-                <div className="space-y-4">
-                  {contact.phone && (
-                    <a
-                      href={`tel:${contact.phone}`}
-                      data-ui-type="link"
-                      data-ui-id="service-phone-cta"
-                      data-ui-action="call"
-                      data-ui-trigger="click"
-                      className="flex items-center justify-center gap-3 w-full px-8 py-4 bg-neon-blue text-graphite-950 font-semibold rounded-lg hover:bg-neon-blue-light transition-colors"
-                    >
-                      <Phone className="w-5 h-5" />
-                      Hívjon most
-                    </a>
-                  )}
-
+                <div
+                  data-ui-id="service-cta-group"
+                  data-ui-role="cta-group"
+                  className="space-y-4"
+                >
                   {contact.messageCta && (
                     <a
                       href={contact.messageCta.href}
@@ -138,26 +180,13 @@ export function BcService({
                       data-ui-id="service-message-cta"
                       data-ui-action="navigate"
                       data-ui-trigger="click"
-                      className="flex items-center justify-center gap-3 w-full px-8 py-4 bg-graphite-700 text-white font-semibold rounded-lg hover:bg-graphite-600 border border-graphite-600 transition-colors"
+                      className="flex items-center justify-center gap-3 w-full px-8 py-4 bg-neon-blue text-graphite-950 font-semibold rounded-lg hover:bg-neon-blue-light transition-colors"
                     >
                       <MessageCircle className="w-5 h-5" />
                       {contact.messageCta.text}
                     </a>
                   )}
                 </div>
-
-                {/* Online Booking Info */}
-                {contact.bookingNote && (
-                  <div className="mt-6 pt-6 border-t border-graphite-700/50">
-                    <p
-                      data-ui-id="service-booking-note"
-                      data-ui-role="meta"
-                      className="text-xs text-gray-500 leading-relaxed"
-                    >
-                      {contact.bookingNote}
-                    </p>
-                  </div>
-                )}
 
                 {/* Opening Hours */}
                 {contact.hours && (
@@ -167,11 +196,19 @@ export function BcService({
                       data-ui-role="meta"
                       className="text-sm font-medium text-gray-300 leading-relaxed"
                     >
-                      Munkatársaink minden hétköznap{' '}
-                      <span className="text-white font-semibold">{contact.hours}</span>{' '}
-                      óra között állnak rendelkezésre.
+                      {contact.hoursNote
+                        ? contact.hoursNote.replace('{hours}', contact.hours)
+                        : (
+                          <>
+                            Munkatársaink minden hétköznap{' '}
+                            <span className="text-white font-semibold">{contact.hours}</span>{' '}
+                            óra között állnak rendelkezésre.
+                          </>
+                        )
+                      }
                       {contact.weekendHours && (
                         <>
+                          <br />
                           <br />
                           Hétvégén:{' '}
                           <span className="text-white font-semibold">{contact.weekendHours}</span>.

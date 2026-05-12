@@ -8,7 +8,7 @@ export function BcTeam({ title, subtitle, description, members }: BcTeamData) {
       data-ui-id="section-bc-team"
       data-ui-component="bc-team"
       data-ui-role="team"
-      className="bg-graphite-900 py-24"
+      className="bg-graphite-900 py-24 scroll-mt-16"
     >
       <div className="container mx-auto px-6 max-w-7xl">
         <div className="text-center mb-16">
