@@ -81,7 +81,7 @@ export function AppFooter({ siteData }: LayoutShellProps) {
               </p>
             )}
             <a
-              href="https://facebook.com/placeholder"
+              href="https://www.facebook.com/profile.php?id=61554864909316"
               target="_blank"
               rel="noopener noreferrer"
               data-ui-type="link"
