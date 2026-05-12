@@ -11,6 +11,10 @@ dist
 .env.local
 .env.*.local
 
+# === Local task tracker ===
+# Lokális munkafájl — nem kerül remote-ra
+docs/bc-tasks.md
+
 # === Office lock files ===
 # Temporary lock files created by Word/Excel while a file is open
 ~$*.doc
