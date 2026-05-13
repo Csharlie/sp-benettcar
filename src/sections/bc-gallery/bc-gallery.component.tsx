@@ -1,7 +1,7 @@
 import { cn } from '@spektra/components'
 import { X } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
-import type { BcGalleryData, BcGalleryImage } from './bc-gallery.schema'
+import type { BcGalleryData } from './bc-gallery.schema'
 
 export function BcGallery({
   title,
@@ -193,6 +193,7 @@ export function BcGallery({
       {/* Lightbox Modal */}
       {lightboxIndex !== null && (() => {
         const image = filteredImages[lightboxIndex]
+        if (!image) return null
         return (
           <div
             data-ui-id="gallery-lightbox"

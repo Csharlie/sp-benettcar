@@ -1,8 +1,11 @@
+import { useState } from 'react'
 import { Phone, Mail, MapPin } from 'lucide-react'
 import type { LayoutShellProps } from '@spektra/layouts'
 import type { BcServicesData } from '../sections/bc-services/bc-services.schema'
 import type { BcContactData } from '../sections/bc-contact/bc-contact.schema'
 import bcLogo from '../assets/bc-logo-128.png'
+import { LegalModal } from './LegalModal'
+import { privacyPolicy, termsOfService } from '../data/legal'
 
 function FacebookIcon({ className }: { className?: string }) {
   return (
@@ -32,6 +35,7 @@ function smoothScroll(href: string) {
 }
 
 export function AppFooter({ siteData }: LayoutShellProps) {
+  const [openModal, setOpenModal] = useState<'privacy' | 'terms' | null>(null)
   const sections = siteData.pages.flatMap((p) => p.sections)
 
   const serviceLinks =
@@ -251,52 +255,54 @@ export function AppFooter({ siteData }: LayoutShellProps) {
         className="border-t border-graphite-800"
       >
         <div className="container mx-auto px-6 max-w-7xl py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p
-            data-ui-id="footer-copyright"
-            data-ui-role="footer-copyright"
-            className="text-xs text-gray-600"
-          >
-            &copy; {new Date().getFullYear()} Benett Car Business Kft. Minden jog fenntartva.
-          </p>
-
           <div
-            data-ui-id="footer-bottom-right"
-            data-ui-role="footer-bottom-right"
+            data-ui-id="footer-bottom-left"
+            data-ui-role="footer-bottom-left"
             className="flex items-center gap-4 text-xs text-gray-600"
           >
+            <p data-ui-id="footer-copyright" data-ui-role="footer-copyright">
+              &copy; {new Date().getFullYear()} Benett Car Business Kft. Minden jog fenntartva.
+            </p>
             {legalLinks.map((link, i) => (
-              <a
+              <button
                 key={link.href}
-                href={link.href}
-                onClick={smoothScroll(link.href)}
-                data-ui-type="link"
+                type="button"
+                data-ui-type="button"
                 data-ui-id={`footer-legal-link-${i}`}
-                data-ui-action="navigate"
+                data-ui-action="open-modal"
                 data-ui-trigger="click"
+                onClick={() => setOpenModal(link.href === '#privacy' ? 'privacy' : 'terms')}
                 className="hover:text-gray-400 transition-colors"
               >
                 {link.label}
-              </a>
+              </button>
             ))}
-            <span className="text-gray-700" aria-hidden="true">·</span>
-            <span data-ui-id="footer-credit" data-ui-role="footer-credit">
-              Created by{' '}
-              <a
-                href="https://pspro.hu/"
-                target="_blank"
-                rel="noopener noreferrer"
-                data-ui-type="link"
-                data-ui-id="footer-credit-link"
-                data-ui-action="external"
-                data-ui-trigger="click"
-                className="text-neon-blue hover:text-neon-blue-light transition-colors"
-              >
-                PSPro
-              </a>
-            </span>
           </div>
+
+          <span data-ui-id="footer-credit" data-ui-role="footer-credit" className="text-xs text-gray-600">
+            Created by{' '}
+            <a
+              href="https://pspro.hu/"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-ui-type="link"
+              data-ui-id="footer-credit-link"
+              data-ui-action="external"
+              data-ui-trigger="click"
+              className="text-neon-blue hover:text-neon-blue-light transition-colors"
+            >
+              PSPro
+            </a>
+          </span>
         </div>
       </div>
+
+      {openModal && (
+        <LegalModal
+          doc={openModal === 'privacy' ? privacyPolicy : termsOfService}
+          onClose={() => setOpenModal(null)}
+        />
+      )}
     </footer>
   )
 }

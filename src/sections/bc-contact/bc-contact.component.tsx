@@ -5,7 +5,6 @@ export function BcContact({
   title,
   subtitle,
   description,
-  contactInfo,
 }: BcContactData) {
   const [submitted, setSubmitted] = useState(false)
 
