@@ -38,7 +38,7 @@
 | 32 | 0854ca2 | feat(bc): P14.2 finalize content, footer rebuild, schema editability | #34 P14.2 lezárás |
 | 33 | 8843f7e | feat(bc): P14.3 content data, logo integration, platform UX improvements | #35 P14.3 in progress |
 | 34 | d9a1a80 | feat(bc): PSPro link, gallery pagination, lightbox navigation | #36 |
-| 35 | pending | feat(bc): legal modals, footer bottom restructure, build fixes, P14.3 freeze gate | #37 |
+| 35 | 95f07a2 | feat(bc): legal modals, footer bottom restructure, build fixes, P14.3 freeze gate | #37 |
 
 > **Infra overlay bejegyzések** → külön fájl: [infra-log.md](infra-log.md)
 
