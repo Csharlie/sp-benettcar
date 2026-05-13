@@ -40,7 +40,7 @@
 | 34 | d9a1a80 | feat(bc): PSPro link, gallery pagination, lightbox navigation | #36 |
 | 35 | 95f07a2 | feat(bc): legal modals, footer bottom restructure, build fixes, P14.3 freeze gate | #37 |
 | 36 | 08074d3 | chore(bc): P14.4 seed export — 193 fields, 6 brand logo warnings documented | #38 |
-| 37 | pending | feat(bc): P14.4 lokális WP runtime átállás — eyebrow pipeline, ACF/dump fixek, mobil layout | #39 |
+| 37 | 477c15a | feat(bc): P14.4 lokális WP runtime átállás — eyebrow pipeline, ACF/dump fixek, mobil layout | #39 |
 
 > **Infra overlay bejegyzések** → külön fájl: [infra-log.md](infra-log.md)
 
@@ -1163,7 +1163,7 @@ sp-clients/sp-benettcar/
 ## 37. P14.4 — Lokális WP runtime átállás, eyebrow pipeline, mobile fixes
 
 **Dátum:** 2026-05-13
-**Commit:** #39 — pending
+**Commit:** #39 — `477c15a`
 
 **Cél:** Átállás `site.ts` mock adatról a lokális WP REST endpointra (`benettcar.local`), a teljes seed → import → REST → frontend pipeline futtatása parity check-kel, közben felmerülő hibák javítása és a tapasztalatok dokumentálása.
 
