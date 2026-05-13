@@ -282,7 +282,9 @@ export function AppFooter({ siteData }: LayoutShellProps) {
             <span data-ui-id="footer-credit" data-ui-role="footer-credit">
               Created by{' '}
               <a
-                href="#"
+                href="https://pspro.hu/"
+                target="_blank"
+                rel="noopener noreferrer"
                 data-ui-type="link"
                 data-ui-id="footer-credit-link"
                 data-ui-action="external"

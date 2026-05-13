@@ -9,5 +9,6 @@ export interface BcGalleryData {
   title: string
   subtitle?: string
   showCategories?: boolean
+  perPage?: number
   images: BcGalleryImage[]
 }

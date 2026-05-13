@@ -23,6 +23,8 @@
 | 33 | `Footer.tsx` Facebook | Brand col alján | Kapcsolat col aljára áthelyezve | pending |
 | 34 | `vite.config.ts` | Nincs resolve alias, platform dist-ből tölt | `@spektra/components`, `layouts`, `types` → platform forrás TS — build nélküli hot reload | pending |
 | 35 | `NavigationBar.tsx` | `h-8` hardcoded logo méret; azonnali mobil menü megjelenés | `logoClassName` prop (default: `h-8`); mobil menü `max-height` CSS slide animáció (300ms) | pending |
+| 36 | `Footer.tsx` credit link | `href="#"` placeholder | `https://pspro.hu/` + `target="_blank"` + `rel="noopener noreferrer"` | pending |
+| 37 | `bc-gallery` | Minden kép egyszerre látható, lightbox csak bezárható | Lapozó (`perPage?: number`, default 8); lightbox ← → navigáció + számlálő + billentyű (←→ Esc) | pending |
 
 ---
 
