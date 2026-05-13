@@ -36,7 +36,7 @@
 | 30 | ce61bc9 | chore: scaffold benettcar infra overlay | #32 → [infra-log.md](infra-log.md) |
 | 31 | f3170f0 | chore: extend .gitignore — .local/ + .env rules | #33 → [infra-log.md](infra-log.md) |
 | 32 | 0854ca2 | feat(bc): P14.2 finalize content, footer rebuild, schema editability | #34 P14.2 lezárás |
-| 33 | pending | feat(bc): P14.3 content data, logo integration, platform UX improvements | #35 P14.3 in progress |
+| 33 | 8843f7e | feat(bc): P14.3 content data, logo integration, platform UX improvements | #35 P14.3 in progress |
 
 > **Infra overlay bejegyzések** → külön fájl: [infra-log.md](infra-log.md)
 
@@ -1089,7 +1089,7 @@ sp-clients/sp-benettcar/
 ## 33. P14.3 — Content data entry, logo integration, platform UX improvements
 
 **Dátum:** 2026-05-13
-**Commit:** #35 — pending
+**Commit:** #35 — `8843f7e`
 
 **Cél:** P14.3 Content & Media Freeze előrehaladás: valós ügyféladatok beépítése, Benett Car logo integrálása navbarba és footerbe, platform dev ergonómia javítása és NavigationBar UX fejlesztések.
 
