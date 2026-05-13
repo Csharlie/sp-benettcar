@@ -21,6 +21,13 @@ return [
 			'message' => 'A főoldal tetején megjelenő bevezető szekció. A háttérkép, cím, leírás és gombok itt szerkeszthetők.',
 		],
 		[
+			'key'          => 'field_bc_hero_eyebrow',
+			'label'        => 'Felső sor (eyebrow)',
+			'name'         => 'bc_hero_eyebrow',
+			'type'         => 'text',
+			'instructions' => 'A cím fölött megjelenő kis szöveg, pl. márkafelsorolás.',
+		],
+		[
 			'key'      => 'field_bc_hero_title',
 			'label'    => 'Cím',
 			'name'     => 'bc_hero_title',

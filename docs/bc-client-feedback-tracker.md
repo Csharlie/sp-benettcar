@@ -27,6 +27,10 @@
 | 37 | `bc-gallery` | Minden kép egyszerre látható, lightbox csak bezárható | Lapozó (`perPage?: number`, default 8); lightbox ← → navigáció + számláló + billentyű (←→ Esc) | pending |
 | 38 | `Footer.tsx` jogi linkek | Bottom bar jobb oldalán: Adatvédelem · ÁSZF · Created by PSPro | Adatvédelem + ÁSZF bal oldalra (copyright mellé); Created by PSPro jobb oldalon önállóan | pending |
 | 39 | `#privacy` / `#terms` | Nem létező anchor — dead link | `LegalModal.tsx` + `legal.ts`: részletes magyar szövegű modál (GDPR adatvédelem + ÁSZF), Escape/X zárható | pending |
+| 40 | `bc-hero` eyebrow mező | Csak a sémában létezett, sem ACF, sem builder, sem wp-mapper nem ismerte → WP runtime alatt eltűnt | Teljes pipeline integráció: `bc-hero.php` ACF text mező, `mapping.ts` extract, `builders.php` `spektra_build_bc_hero` olvasás, `wp-mapper.ts` `mapBcHero` átadás | pending |
+| 41 | `bc-service` ACF validation | `bc_service_description` required ACF-ben, de P14.2-ben optional lett a sémában → üres mentés validation errort dobott WP adminban | `required => 1` eltávolítva a `bc-service.php`-ból | pending |
+| 42 | `bc-team` mobil layout | Avatar a végén (`w-20`) CTA-k előtt — szakadt, fordított sorrend | Identity-first centrált kártya: avatar `w-28` elöl → név → role (neon-blue) → full-width CTA gombok | pending |
+| 43 | `.env.local` data-source override | P14.1 `VITE_DATA_SOURCE=json` érvényben maradt, felülírta a `.env` `wordpress` értékét → frontend mock adatot mutatott WP módosítás után is | `.env.local` `VITE_DATA_SOURCE=wordpress`-re állítva + troubleshooting doc készítve | pending |
 
 ---
 

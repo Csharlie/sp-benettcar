@@ -40,6 +40,7 @@
 | 34 | d9a1a80 | feat(bc): PSPro link, gallery pagination, lightbox navigation | #36 |
 | 35 | 95f07a2 | feat(bc): legal modals, footer bottom restructure, build fixes, P14.3 freeze gate | #37 |
 | 36 | 08074d3 | chore(bc): P14.4 seed export — 193 fields, 6 brand logo warnings documented | #38 |
+| 37 | pending | feat(bc): P14.4 lokális WP runtime átállás — eyebrow pipeline, ACF/dump fixek, mobil layout | #39 |
 
 > **Infra overlay bejegyzések** → külön fájl: [infra-log.md](infra-log.md)
 
@@ -1156,3 +1157,73 @@ sp-clients/sp-benettcar/
 - `sp-platform/packages/components/src/modules/NavigationBar.tsx`
 
 **Státusz:** 🟡 In progress (P14.3 Content & Media Freeze folyamatban)
+
+---
+
+## 37. P14.4 — Lokális WP runtime átállás, eyebrow pipeline, mobile fixes
+
+**Dátum:** 2026-05-13
+**Commit:** #39 — pending
+
+**Cél:** Átállás `site.ts` mock adatról a lokális WP REST endpointra (`benettcar.local`), a teljes seed → import → REST → frontend pipeline futtatása parity check-kel, közben felmerülő hibák javítása és a tapasztalatok dokumentálása.
+
+**Miért:**
+- P14.4 lényege a WP adatforrás validálása az átadás előtt — a JSON ↔ WP parity bizonyítása.
+- A P14.2-ben hozzáadott `eyebrow` mező csak a sémában és komponensben létezett, az infra (ACF, mapping, builder, wp-mapper) sosem kapta meg → WP módba átállva eltűnt.
+- A P14.2-ben optional-lá tett `bc_service_description` még `required => 1`-en volt az ACF-ben → WP admin Save validation hibát dobott.
+- A seed import nem frissítette a cached attachment alt textjét → parity check 14 alt mismatch.
+- A bc-team mobil layout az avatar-t utolsónak rakta kis méretben — UX szempontból fordított.
+- A `.env.local` (P14.1 örökség) `VITE_DATA_SOURCE=json`-t tartalmazott, felülírta a `.env`-ben lévő `wordpress` értéket → frontend a JSON adaptert használta WP módba állás helyett.
+
+**Hogyan:**
+
+1. **`.env` + `.env.local` (data source)**:
+   - `.env`-ben hozzáadva: `VITE_DEV_ORIGIN=http://localhost:5174`, `SPEKTRA_CLIENT_CONFIG=...infra/config.php`
+   - `.env.local` `VITE_DATA_SOURCE=json` → `wordpress` (P14.1 örökség véglegesítve P14.4-re)
+
+2. **`eyebrow` mező teljes pipeline (4 helyen)**:
+   - `infra/acf/sections/bc-hero.php` — `field_bc_hero_eyebrow` text mező hozzáadva a title fölé
+   - `infra/seed/mapping.ts` — `{ acfKey: 'bc_hero_eyebrow', extract: (d) => str(d.eyebrow) }`
+   - `infra/acf/builders.php` `spektra_build_bc_hero` — `'eyebrow' => spektra_get_field( $p . 'eyebrow', $pid, '' )`
+   - `src/data/wp-mapper.ts` `mapBcHero` — `optionalString(raw.eyebrow)` átadás a SiteData-ba
+
+3. **ACF validation fix (`infra/acf/sections/bc-service.php`)**:
+   - `bc_service_description` `required => 1` eltávolítva (P14.2-ben optional lett a sémában)
+
+4. **Seed pipeline alt text fixek (sp-infra)**:
+   - `seed/import-seed.php` — cached attachmenteknél is `update_post_meta(_wp_attachment_image_alt)`, nemcsak új sideload-nál
+   - `seed/dump-acf.php` — image alt olvasás `get_post_meta($attachment_id, '_wp_attachment_image_alt')`-ról, nem nem-létező `${key}_alt` ACF mezőről
+
+5. **`bc-team` mobil layout (`bc-team.component.tsx`)**:
+   - Régi: name → role → CTA-k → kicsi avatar a végén (`w-20`)
+   - Új: avatar elöl (`w-28`, centrált) → név → role neon-blue → full-width CTA gombok
+   - Desktop layout érintetlen
+
+**Eredmény:**
+- Seed pipeline PASS (196/196 field match, 0 mismatch, 17/17 image OK)
+- `bc_hero_eyebrow = "AUDI · VW · ŠKODA · PORSCHE · LAMBORGHINI · BUGATTI"` WP-ben látható, REST endpointon megjelenik, frontend rendereli
+- WP admin Save már nem dob validation hibát
+- Frontend `localhost:5174` WP adapterről húzza az adatot — Network tabon látható a `benettcar.local/wp-json/spektra/v1/site` request
+
+**Döntések:**
+- ACF field group + mapping + builder + wp-mapper négy szinten kell egyszerre módosítani új mezőhöz — ez most már explicit dokumentálva, content-model.md is hivatkozza.
+- Az alt text az attachment `_wp_attachment_image_alt` post meta-n él, nem külön ACF mezőn — a dump-acf.php-t ezzel összhangba hoztuk.
+- A `.env.local` Vite prioritás gotcha kanonikus troubleshooting docként rögzítve sp-docs-ban.
+
+**Fájlok:**
+- `.env`, `.env.local`
+- `infra/acf/sections/bc-hero.php`, `bc-service.php`
+- `infra/acf/builders.php`
+- `infra/seed/mapping.ts`
+- `infra/env/README.md`
+- `src/data/wp-mapper.ts`
+- `src/sections/bc-team/bc-team.component.tsx`
+- `sp-infra/seed/import-seed.php`, `dump-acf.php` (külön commit)
+- `sp-docs/knowledge/troubleshooting/data-source-env-override.md` (új)
+
+**Validáció:**
+- `seed-pipeline.ps1 -Verbose` PARITY CHECK PASS (196/196)
+- Endpoint smoke: 17 OK, 0 BROKEN
+- Frontend Network tab: WP REST request 200-as válasz
+
+**Státusz:** ✅ Kész (P14.4 WP runtime parity lokálisan validálva)

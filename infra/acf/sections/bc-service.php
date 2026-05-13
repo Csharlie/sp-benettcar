@@ -32,12 +32,11 @@ return [
 			'type'  => 'text',
 		],
 		[
-			'key'      => 'field_bc_service_description',
-			'label'    => 'Leírás',
-			'name'     => 'bc_service_description',
-			'type'     => 'textarea',
-			'required' => 1,
-			'rows'     => 3,
+			'key'  => 'field_bc_service_description',
+			'label' => 'Leírás',
+			'name'  => 'bc_service_description',
+			'type'  => 'textarea',
+			'rows'  => 3,
 		],
 		[
 			'key'          => 'field_bc_service_services_text',

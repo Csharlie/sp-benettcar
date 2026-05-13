@@ -69,6 +69,7 @@ function spektra_build_bc_hero( string $p, int $pid ): ?array {
 	}
 
 	$data = [
+		'eyebrow'         => spektra_get_field( $p . 'eyebrow', $pid, '' ),
 		'title'           => $title,
 		'subtitle'        => spektra_get_field( $p . 'subtitle', $pid, '' ),
 		'description'     => $desc,

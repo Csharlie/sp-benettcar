@@ -295,6 +295,9 @@ function mapBcHero(raw: Record<string, unknown>): Record<string, unknown> {
     title: asString(raw.title) ?? '',
     description: asString(raw.description) ?? '',
   }
+  const eyebrow = optionalString(raw.eyebrow)
+  if (eyebrow !== undefined) data.eyebrow = eyebrow
+
   const subtitle = optionalString(raw.subtitle)
   if (subtitle !== undefined) data.subtitle = subtitle
 

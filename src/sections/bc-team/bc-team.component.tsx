@@ -47,25 +47,31 @@ export function BcTeam({ title, subtitle, description, members }: BcTeamData) {
               data-ui-role="team-member"
               className="flex flex-col md:flex-row md:items-start md:gap-6"
             >
-              {/* Mobile: Contact-first layout */}
-              <div className="md:hidden flex flex-col">
-                <div className="mb-4">
-                  <h3
-                    data-ui-id={`team-member-name-${member.name.toLowerCase().replace(/\s+/g, '-')}`}
-                    data-ui-role="item-title"
-                    className="text-2xl font-bold text-white mb-2"
-                  >
-                    {member.name}
-                  </h3>
-                  <p
-                    data-ui-id={`team-member-role-${member.name.toLowerCase().replace(/\s+/g, '-')}`}
-                    data-ui-role="item-description"
-                    className="text-gray-400 text-base font-medium"
-                  >
-                    {member.role}
-                  </p>
-                </div>
-                <div className="flex flex-col gap-3 mb-6">
+              {/* Mobile: identity-first centered card */}
+              <div className="md:hidden flex flex-col items-center text-center">
+                {member.image && (
+                  <img
+                    src={member.image.src}
+                    alt={member.image.alt}
+                    className="w-28 h-28 rounded-full object-cover border-2 border-graphite-700 mb-5"
+                    loading="lazy"
+                  />
+                )}
+                <h3
+                  data-ui-id={`team-member-name-${member.name.toLowerCase().replace(/\s+/g, '-')}`}
+                  data-ui-role="item-title"
+                  className="text-2xl font-bold text-white mb-1"
+                >
+                  {member.name}
+                </h3>
+                <p
+                  data-ui-id={`team-member-role-${member.name.toLowerCase().replace(/\s+/g, '-')}`}
+                  data-ui-role="item-description"
+                  className="text-neon-blue text-sm font-medium mb-6"
+                >
+                  {member.role}
+                </p>
+                <div className="flex flex-col gap-3 w-full">
                   {member.phone && (
                     <a
                       href={`tel:${member.phone.replace(/\s/g, '')}`}
@@ -91,16 +97,6 @@ export function BcTeam({ title, subtitle, description, members }: BcTeamData) {
                     </a>
                   )}
                 </div>
-                {member.image && (
-                  <div className="flex justify-center">
-                    <img
-                      src={member.image.src}
-                      alt={member.image.alt}
-                      className="w-20 h-20 rounded-full object-cover border-2 border-graphite-700"
-                      loading="lazy"
-                    />
-                  </div>
-                )}
               </div>
 
               {/* Desktop: Avatar + info layout */}

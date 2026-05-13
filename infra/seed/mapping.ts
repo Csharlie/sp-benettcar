@@ -177,6 +177,7 @@ const getAboutStats = (d: Record<string, unknown>): StatItem[] => {
 const bcHero: SectionMapping = {
   sectionType: 'bc-hero',
   fields: [
+    { acfKey: 'bc_hero_eyebrow', kind: 'scalar', extract: (d) => str(d.eyebrow) },
     { acfKey: 'bc_hero_title', kind: 'scalar', extract: (d) => str(d.title) },
     {
       acfKey: 'bc_hero_subtitle',

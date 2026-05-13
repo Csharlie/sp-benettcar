@@ -2,34 +2,65 @@
 
 Benettcar client runtime environment configuration.
 
-## Files
+## Fájlok és prioritás
 
-| File | Tracked | Purpose |
-|------|---------|--------|
-| `.env.example` | yes | Template with all variables and defaults |
-| `.env` | **no** (gitignored) | Your local overrides |
+A kliens gyökerében (`sp-benettcar/`):
+
+| Fájl | Git | Prioritás | Cél |
+|------|-----|-----------|-----|
+| `.env` | tracked | alacsony | Csapat-szintű default értékek |
+| `.env.local` | **gitignored** | **MAGAS — felülírja a `.env`-et** | Lokális developer override |
+| `.env.example` (ebben a mappában) | tracked | — | Template, másold át `.env`-re |
+
+> ⚠️ **Gotcha**: Ha `.env`-ben átállítasz egy `VITE_*` változót de a böngészőben nem érvényesül, ellenőrizd az `.env.local`-t — Vite azt magasabb prioritással kezeli. Részletek: [`sp-docs/knowledge/troubleshooting/data-source-env-override.md`](../../../../sp-docs/knowledge/troubleshooting/data-source-env-override.md).
 
 ## Setup
 
 ```powershell
-cp .env.example .env
-# Edit .env — fill in SPEKTRA_CLIENT_CONFIG and WAMP_VHOST_DIR
+cp infra/env/.env.example .env
+# Töltsd ki SPEKTRA_CLIENT_CONFIG-ot és WAMP_VHOST_DIR-t
 ```
 
-## Variables
+## Változók
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `SPEKTRA_WP_URL` | yes | WordPress local site URL (e.g. `http://benettcar.local`) |
-| `SPEKTRA_CLIENT_CONFIG` | yes | Absolute path to `infra/config.php` on your machine |
-| `VITE_DEV_ORIGIN` | yes | Vite dev server origin, must match `config.php` `allowed_origins` |
-| `WAMP_WWW` | Phase 4 | WAMP www root (e.g. `C:\wamp64\www`) |
-| `WAMP_VHOST_DIR` | Phase 4 | WAMP vhost config directory |
-| `SPEKTRA_WP_DEBUG` | no | Enable WordPress debug mode (`true`/`false`) |
-| `SPEKTRA_DEBUG` | no | Enable Spektra plugin debug logging (`true`/`false`) |
+### Vite frontend (`VITE_` prefix kötelező, böngészőben elérhetők)
 
-## How it's used
+| Változó | Kötelező | Leírás |
+|---------|----------|--------|
+| `VITE_DATA_SOURCE` | igen | Adatforrás: `wordpress` (WP REST) vagy `json` (site.ts mock) |
+| `VITE_WP_API_BASE` | ha `wordpress` | WordPress site URL (pl. `http://benettcar.local`) |
+| `VITE_DEV_ORIGIN` | igen | Vite dev origin, egyeznie kell a `config.php` `allowed_origins`-szel |
 
-- `scripts/setup-env.ps1` reads `.env` to configure the local WordPress environment
-- `SPEKTRA_CLIENT_CONFIG` is passed as an environment variable to WordPress so the plugin can locate `config.php`
-- `VITE_DEV_ORIGIN` is a reference value; the actual CORS allowlist lives in `config.php` `allowed_origins`
+### WordPress / seed pipeline (PowerShell / WP-CLI olvassa)
+
+| Változó | Kötelező | Leírás |
+|---------|----------|--------|
+| `SPEKTRA_CLIENT_CONFIG` | igen | Abszolút útvonal a kliens `infra/config.php`-jához |
+| `WAMP_WWW` | Phase 4 | WAMP www root (pl. `C:\wamp64\www`) |
+| `WAMP_VHOST_DIR` | Phase 4 | WAMP vhost konfig könyvtár |
+| `SPEKTRA_WP_DEBUG` | nem | WordPress debug mode (`true`/`false`) |
+| `SPEKTRA_DEBUG` | nem | Spektra plugin debug log (`true`/`false`) |
+
+## Adatforrás váltás (JSON ↔ WordPress)
+
+A `VITE_DATA_SOURCE` dönti el honnan jön a `siteData`:
+
+| Érték | Forrás | Mikor |
+|-------|--------|-------|
+| `wordpress` | `http://benettcar.local/wp-json/spektra/v1/site` (REST) | P14.4 után — éles WP runtime ellen fejlesztés, parity check |
+| `json` | `src/data/site.ts` (mock) | P14.1 alatt — frontend változtatások WP nélkül |
+
+**Váltás menete:**
+
+1. Állítsd át a `VITE_DATA_SOURCE`-ot a megfelelő fájlban (`.env` VAGY `.env.local`)
+2. Ellenőrizd hogy a **másik fájl** nem írja-e felül (`.env.local` mindig nyer)
+3. **Indítsd újra a Vite dev servert** (`Ctrl+C` → `npm run dev`) — Vite nem mindig veszi fel auto a változást
+4. Hard refresh a böngészőben (`Ctrl+Shift+R`)
+5. Verifikáció: Network tab → ha `wordpress` mode, látszania kell a `benettcar.local/wp-json/spektra/v1/site` requestnek
+
+## Hogyan kerülnek felhasználásra
+
+- `scripts/setup-env.ps1` olvassa az `.env`-et a lokális WordPress környezet beállításához
+- `SPEKTRA_CLIENT_CONFIG` környezeti változóként megy át a WP-nek, hogy a plugin megtalálja a `config.php`-t
+- `VITE_DEV_ORIGIN` referenciaérték; a tényleges CORS allowlist a `config.php` `allowed_origins`-ben él
+- `import.meta.env.VITE_DATA_SOURCE` a frontend `create-adapter.ts`-ben dönti el a JSON vs WP útat
