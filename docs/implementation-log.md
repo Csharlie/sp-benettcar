@@ -37,7 +37,7 @@
 | 31 | f3170f0 | chore: extend .gitignore — .local/ + .env rules | #33 → [infra-log.md](infra-log.md) |
 | 32 | 0854ca2 | feat(bc): P14.2 finalize content, footer rebuild, schema editability | #34 P14.2 lezárás |
 | 33 | 8843f7e | feat(bc): P14.3 content data, logo integration, platform UX improvements | #35 P14.3 in progress |
-| 34 | pending | feat(bc): PSPro link, gallery pagination, lightbox navigation | #36 |
+| 34 | d9a1a80 | feat(bc): PSPro link, gallery pagination, lightbox navigation | #36 |
 
 > **Infra overlay bejegyzések** → külön fájl: [infra-log.md](infra-log.md)
 
