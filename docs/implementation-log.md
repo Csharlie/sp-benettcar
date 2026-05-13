@@ -36,6 +36,7 @@
 | 30 | ce61bc9 | chore: scaffold benettcar infra overlay | #32 → [infra-log.md](infra-log.md) |
 | 31 | f3170f0 | chore: extend .gitignore — .local/ + .env rules | #33 → [infra-log.md](infra-log.md) |
 | 32 | 0854ca2 | feat(bc): P14.2 finalize content, footer rebuild, schema editability | #34 P14.2 lezárás |
+| 33 | pending | feat(bc): P14.3 content data, logo integration, platform UX improvements | #35 P14.3 in progress |
 
 > **Infra overlay bejegyzések** → külön fájl: [infra-log.md](infra-log.md)
 
@@ -1082,3 +1083,73 @@ sp-clients/sp-benettcar/
 - `npm test -- --run` PASS (50/50)
 
 **Státusz:** ✅ Kész
+
+---
+
+## 33. P14.3 — Content data entry, logo integration, platform UX improvements
+
+**Dátum:** 2026-05-13
+**Commit:** #35 — pending
+
+**Cél:** P14.3 Content & Media Freeze előrehaladás: valós ügyféladatok beépítése, Benett Car logo integrálása navbarba és footerbe, platform dev ergonómia javítása és NavigationBar UX fejlesztések.
+
+**Miért:**
+- Az ügyfél megadta a valós telefonszámot, pontos címet és a kapcsolattartó nevét — ezek bekerülnek a site.ts-be és minden érintett szekcióba.
+- A bc-logo-128.png asset rendelkezésre állt — navigáció és footer brand col professzionálisabb megjelenést igényelt.
+- A platform package `dist`-ből való betöltése lassította a fejlesztési iterációt (minden platform módosítás után rebuild kellett).
+- A mobil menü animáció és logo méret szabályozás hiánya UX regresziónak minősült.
+
+**Hogyan:**
+
+1. **Valós adatok beépítése (`site.ts`)**:
+   - Telefon: `+36 20 240 1601` (László Béla) — bc-service, bc-team, bc-contact, bc-assistance
+   - Cím: `Cegléd, Kőrösi út 01144/14, 2700` — bc-contact contactInfo.address
+   - bc-assistance requestHref: `tel:+36202401601`
+   - bc-team: csak László Béla (Értékesítés és ügyfélkapcsolat), Kovács Péter és Nagy Benett eltávolítva, placeholder kép törölve
+   - bc-team section: title `Személyes kapcsolattartás`, subtitle `Elérhetőség`
+
+2. **bc-map zoom (`bc-map.schema.ts` + `bc-map.component.tsx` + `site.ts`)**:
+   - `zoom?: number` opcionális mező hozzáadva a sémához
+   - URL: `&z=${zoom}` paraméter az embed src-ben
+   - Default: `14`, Benett Car: `13` (városnegyed nézet)
+
+3. **bc-team layout (`bc-team.component.tsx`)**:
+   - Egy tagnál: `flex justify-center` wrapper — centrált blokk
+   - Desktop inner div: `items-start` → `items-center` — szöveg a profilkép közepéhez igazítva
+   - `flex-1` eltávolítva a szöveg oldalról — nem nyúl szélességre
+
+4. **contact-info-grid eltávolítása (`bc-contact.component.tsx`)**:
+   - A form alatti telefon/email/cím grid blokk eltávolítva — redundáns a footer Kapcsolat col-lal
+
+5. **Logo integráció (`Header.tsx`, `Footer.tsx`)**:
+   - `bc-logo-128.png` importálva mindkét shell komponensben
+   - Header: `logo={bcLogo}`, `logoClassName=""` (természetes 150×60px méret), `onLogoClick` → `window.scrollTo({ top: 0, behavior: 'smooth' })`
+   - Footer brand col: `Benett Car Business Kft.` cím + logo img (`self-center`, természetes méret) + description + Facebook (Kapcsolat col aljára áthelyezve)
+
+6. **Vite resolve aliases (`vite.config.ts`)**:
+   - `@spektra/components`, `@spektra/layouts`, `@spektra/types` → platform forrás TS fájlok
+   - Hatás: platform módosítások azonnal hot-reload-olnak, nincs szükség `npm run build`-re a components package-ben fejlesztés közben
+
+7. **NavigationBar platform fejlesztések (`sp-platform/.../NavigationBar.tsx`)**:
+   - `logoClassName?: string` prop (default: `'h-8'`) — kliensek szabadon állíthatják a logo méretét
+   - Mobil menü: `{mobileMenuOpen && ...}` conditional render → mindig renderelt div `max-height` CSS átmenettel (`transition-[max-height] duration-300 ease-in-out`), `max-h-0` ↔ `max-h-96`
+   - `border-t` áthelyezve a belső div-re — nem jelenik meg zárt állapotban
+
+**Döntések:**
+- `logoClassName=""` (üres string) a Header.tsx-ben — a NavigationBar default `'h-8'`-at felülírja, a Tailwind preflight `height: auto` érvényesül → természetes kép méret.
+- `max-h-96` (384px) a mobil menü max magasságaként — bőven elég a 4 link + CTA gombnak, az animáció nem stall.
+- `vite.config.ts` alias — fejlesztési konvenció, nem befolyásolja a production buildet.
+- Platform `logoClassName` generic prop — nem Benett Car-specifikus, bármely kliens hasznára válik.
+
+**Fájlok:**
+- `src/data/site.ts`
+- `src/sections/bc-map/bc-map.schema.ts`
+- `src/sections/bc-map/bc-map.component.tsx`
+- `src/sections/bc-team/bc-team.component.tsx`
+- `src/sections/bc-contact/bc-contact.component.tsx`
+- `src/shell/Header.tsx`
+- `src/shell/Footer.tsx`
+- `vite.config.ts`
+- `sp-platform/packages/components/src/modules/NavigationBar.tsx`
+
+**Státusz:** 🟡 In progress (P14.3 Content & Media Freeze folyamatban)

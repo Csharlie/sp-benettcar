@@ -1,6 +1,6 @@
 import type { BcMapData } from './bc-map.schema'
 
-export function BcMap({ title, query, height = 500 }: BcMapData) {
+export function BcMap({ title, query, height = 500, zoom = 14 }: BcMapData) {
   const encodedQuery = encodeURIComponent(query)
 
   return (
@@ -22,7 +22,7 @@ export function BcMap({ title, query, height = 500 }: BcMapData) {
       )}
       <iframe
         title={title ?? 'Térkép'}
-        src={`https://www.google.com/maps?q=${encodedQuery}&output=embed`}
+        src={`https://www.google.com/maps?q=${encodedQuery}&z=${zoom}&output=embed`}
         width="100%"
         height={height}
         style={{ border: 0 }}

@@ -12,7 +12,17 @@
 
 | # | Szekció | Leírás | Típus | Státusz | Commit |
 |---|---------|--------|-------|---------|--------|
-| — | — | *Nincs függőben lévő módosítás* | — | ✅ | — |
+| 25 | `site.ts` bc-team | Kovács Péter + Nagy Benett placeholder | Csak László Béla (Értékesítés és ügyfélkapcsolat), kép eltávolítva | pending |
+| 26 | `site.ts` phone | `+36 30 123 4567` placeholder | `+36 20 240 1601` (László Béla) — bc-service, bc-team, bc-contact, bc-assistance mind | pending |
+| 27 | `site.ts` address | `Cegléd, Magyarország` placeholder | `Cegléd, Kőrösi út 01144/14, 2700` | pending |
+| 28 | `bc-map` zoom | Nincs zoom paraméter (Maps default) | `zoom: 13` — városnegyed szintű nézet; `zoom?: number` schema mező + komponens URL param | pending |
+| 29 | `bc-team` layout | `grid md:grid-cols-2` — egy tagnál balra igazított | `flex justify-center` + `items-center` — centrált, profil kép közepénél igazított szöveg | pending |
+| 30 | `bc-contact` | contact-info-grid blokk a form alatt | Eltávolítva — telefon/email/cím csak a footerben és a team szekcióban | pending |
+| 31 | `Header.tsx` logo | Szöveges logo (`Benett Car`) | `bc-logo-128.png` természetes méretben; kattintásra smooth scroll az oldal tetejére | pending |
+| 32 | `Footer.tsx` brand col | Site name szöveg, nincs logo | `Benett Car Business Kft.` cím + `bc-logo-128.png` középre igazítva + description + Facebook | pending |
+| 33 | `Footer.tsx` Facebook | Brand col alján | Kapcsolat col aljára áthelyezve | pending |
+| 34 | `vite.config.ts` | Nincs resolve alias, platform dist-ből tölt | `@spektra/components`, `layouts`, `types` → platform forrás TS — build nélküli hot reload | pending |
+| 35 | `NavigationBar.tsx` | `h-8` hardcoded logo méret; azonnali mobil menü megjelenés | `logoClassName` prop (default: `h-8`); mobil menü `max-height` CSS slide animáció (300ms) | pending |
 
 ---
 

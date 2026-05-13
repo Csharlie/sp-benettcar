@@ -171,52 +171,6 @@ export function BcContact({
               </button>
             </div>
           )}
-
-          {/* Contact Info */}
-          <div
-            data-ui-id="contact-info-grid"
-            data-ui-role="contact-info"
-            className="mt-10 pt-10 border-t border-graphite-800"
-          >
-            <div className="grid md:grid-cols-3 gap-6 text-center">
-              {contactInfo.phone && (
-                <div>
-                  <p className="text-sm text-gray-400 mb-1">Telefon</p>
-                  <a
-                    href={`tel:${contactInfo.phone}`}
-                    data-ui-type="link"
-                    data-ui-id="contact-phone"
-                    data-ui-action="call"
-                    data-ui-trigger="click"
-                    className="text-white font-medium hover:text-neon-blue transition-colors"
-                  >
-                    {contactInfo.phone}
-                  </a>
-                </div>
-              )}
-              {contactInfo.email && (
-                <div>
-                  <p className="text-sm text-gray-400 mb-1">Email</p>
-                  <a
-                    href={`mailto:${contactInfo.email}`}
-                    data-ui-type="link"
-                    data-ui-id="contact-email"
-                    data-ui-action="email"
-                    data-ui-trigger="click"
-                    className="text-white font-medium hover:text-neon-blue transition-colors"
-                  >
-                    {contactInfo.email}
-                  </a>
-                </div>
-              )}
-              {contactInfo.address && (
-                <div>
-                  <p className="text-sm text-gray-400 mb-1">Helyszín</p>
-                  <p className="text-white font-medium">{contactInfo.address}</p>
-                </div>
-              )}
-            </div>
-          </div>
         </div>
       </div>
     </section>

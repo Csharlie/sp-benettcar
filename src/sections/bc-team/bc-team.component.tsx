@@ -39,7 +39,7 @@ export function BcTeam({ title, subtitle, description, members }: BcTeamData) {
           )}
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+        <div className={members.length === 1 ? 'flex justify-center' : 'grid md:grid-cols-2 gap-12 max-w-5xl mx-auto'}>
           {members.map((member, index) => (
             <div
               key={member.name}
@@ -68,7 +68,7 @@ export function BcTeam({ title, subtitle, description, members }: BcTeamData) {
                 <div className="flex flex-col gap-3 mb-6">
                   {member.phone && (
                     <a
-                      href={`tel:${member.phone}`}
+                      href={`tel:${member.phone.replace(/\s/g, '')}`}
                       data-ui-type="link"
                       data-ui-id={`team-phone-${member.name.toLowerCase().replace(/\s+/g, '-')}`}
                       data-ui-action="call"
@@ -104,7 +104,7 @@ export function BcTeam({ title, subtitle, description, members }: BcTeamData) {
               </div>
 
               {/* Desktop: Avatar + info layout */}
-              <div className="hidden md:flex md:items-start md:gap-6 md:flex-1">
+              <div className="hidden md:flex md:items-center md:gap-8">
                 {member.image && (
                   <div className="flex-shrink-0">
                     <img
@@ -115,30 +115,30 @@ export function BcTeam({ title, subtitle, description, members }: BcTeamData) {
                     />
                   </div>
                 )}
-                <div className="flex-1">
+                <div>
                   <h3
                     data-ui-id={`team-member-name-desktop-${member.name.toLowerCase().replace(/\s+/g, '-')}`}
                     data-ui-role="item-title"
-                    className="text-xl font-semibold text-white mb-1"
+                    className="text-3xl font-semibold text-white mb-1"
                   >
                     {member.name}
                   </h3>
                   <p
                     data-ui-id={`team-member-role-desktop-${member.name.toLowerCase().replace(/\s+/g, '-')}`}
                     data-ui-role="item-description"
-                    className="text-neon-blue text-sm font-medium mb-4"
+                    className="text-neon-blue text-lg font-medium mb-4"
                   >
                     {member.role}
                   </p>
                   <div className="space-y-2">
                     {member.phone && (
                       <a
-                        href={`tel:${member.phone}`}
+                        href={`tel:${member.phone.replace(/\s/g, '')}`}
                         data-ui-type="link"
                         data-ui-id={`team-phone-desktop-${member.name.toLowerCase().replace(/\s+/g, '-')}`}
                         data-ui-action="call"
                         data-ui-trigger="click"
-                        className="flex items-center text-sm text-gray-400 hover:text-neon-blue transition-colors"
+                        className="flex items-center text-gray-400 hover:text-neon-blue transition-colors"
                       >
                         <Phone className="w-4 h-4 mr-2" /> {member.phone}
                       </a>
@@ -150,7 +150,7 @@ export function BcTeam({ title, subtitle, description, members }: BcTeamData) {
                         data-ui-id={`team-email-desktop-${member.name.toLowerCase().replace(/\s+/g, '-')}`}
                         data-ui-action="email"
                         data-ui-trigger="click"
-                        className="flex items-center text-sm text-gray-400 hover:text-neon-blue transition-colors"
+                        className="flex items-center text-gray-400 hover:text-neon-blue transition-colors"
                       >
                         <Mail className="w-4 h-4 mr-2" /> {member.email}
                       </a>

@@ -1,5 +1,6 @@
 import { NavigationBar } from '@spektra/components'
 import type { LayoutShellProps } from '@spektra/layouts'
+import bcLogo from '../assets/bc-logo-128.png'
 
 /**
  * Benettcar header — maps SiteData to NavigationBar props.
@@ -16,7 +17,10 @@ export function AppHeader({ siteData }: LayoutShellProps) {
 
   return (
     <NavigationBar
+      logo={bcLogo}
       logoText={siteData.site.name}
+      logoClassName=""
+      onLogoClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       links={links}
       cta={{
         text: 'Kapcsolat',

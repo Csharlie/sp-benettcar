@@ -224,7 +224,7 @@ export const siteData: SiteData = {
               title: 'Tervezhető és rendezett ügyintézés',
               description:
                 'Annak érdekében, hogy minden járműre és megkeresésre kellő figyelmet fordíthassunk, kérjük egyeztessen velünk időpontot — kérjen visszahívást vagy küldjön üzenetet.',
-              phone: '+36301234567',
+              phone: '+36 20 240 1601',
               messageCta: { text: 'Üzenet küldése', href: '#contact' },
               bookingNote:
                 'Járműbeszerzéssel és értékesítéssel, állapotfelméréssel, diagnosztikával, autóbérléssel vagy partneri segítségnyújtással kapcsolatban is szívesen tájékoztatjuk.',
@@ -273,30 +273,20 @@ export const siteData: SiteData = {
           id: 'team-1',
           type: 'bc-team',
           data: {
-            title: 'Kapcsolattartók',
-            subtitle: 'Csapatunk',
+            title: 'Személyes kapcsolattartás',
+            subtitle: 'Elérhetőség',
             description:
-              'Közvetlenül elérhető szakértőink állnak rendelkezésére.',
+              'Kérdéssel, érdeklődéssel forduljon hozzánk közvetlenül — igény szerint visszahívást is kérhet.',
             members: [
               {
-                name: 'Nagy Benett',
-                role: 'Tulajdonos, Műszaki Vezető',
+                name: 'László Béla',
+                role: 'Értékesítés és ügyfélkapcsolat',
                 image: {
                   src: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&q=80',
-                  alt: 'Nagy Benett',
+                  alt: 'László Béla',
                 },
-                phone: '+36 30 123 4567',
-                email: 'benett@example.com',
-              },
-              {
-                name: 'Kovács Péter',
-                role: 'Értékesítési Szakértő',
-                image: {
-                  src: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&q=80',
-                  alt: 'Kovács Péter',
-                },
-                phone: '+36 30 234 5678',
-                email: 'peter@example.com',
+                phone: '+36 20 240 1601',
+                email: 'info@benettcar.hu',
               },
             ],
           },
@@ -314,7 +304,7 @@ export const siteData: SiteData = {
             description:
               'Kiegészítő szolgáltatás ügyfeleink számára, váratlan helyzetekben.',
             requestLabel: 'Útmenti segítség igénylése',
-            requestHref: 'tel:+36301234567',
+            requestHref: 'tel:+36202401601',
             serviceArea: '30 km-es körzetben',
           },
         },
@@ -330,9 +320,9 @@ export const siteData: SiteData = {
             subtitle: 'Kapcsolat',
             description: 'Írjon nekünk, és hamarosan jelentkezünk.',
             contactInfo: {
-              phone: '+36 30 123 4567',
+              phone: '+36 20 240 1601',
               email: 'info@benettcar.hu',
-              address: 'Cegléd, Magyarország',
+              address: 'Cegléd, Kőrösi út 01144/14, 2700',
             },
             colorScheme: 'dark' as const,
           },
@@ -346,8 +336,9 @@ export const siteData: SiteData = {
           type: 'bc-map',
           data: {
             title: 'Benett Car Business KFT - Cegléd',
-            query: 'Benett Car Business KFT, Cegléd',
+            query: 'Benett Car Business Kft, Kőrösi út, Cegléd',
             height: 500,
+            zoom: 12,
           },
         },
       ],
