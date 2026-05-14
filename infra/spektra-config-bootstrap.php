@@ -18,6 +18,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
+// Admin UX extensions (P14 handover): "Főoldal szerkesztése" menu shortcut.
+require_once __DIR__ . '/admin-menu.php';
+
 // ---------------------------------------------------------------------------
 // CF7 CORS filter — mirror of spektra-api/includes/class-cors.php behavior
 // for the /contact-form-7/ REST namespace.
