@@ -82,7 +82,7 @@ function spektra_bc_render_cms_gateway( string $login_html ): void {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>BenettCar CMS</title>
+  <title>Benett Car CMS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -244,8 +244,8 @@ function spektra_bc_render_cms_gateway( string $login_html ): void {
 
       <div class="bc-header">
         <div class="bc-badge">Tartalomkezelő</div>
-        <h1 class="bc-title">BenettCar CMS</h1>
-        <p class="bc-subtitle">Ez a BenettCar tartalomkezelő felülete.</p>
+        <h1 class="bc-title">Benett Car CMS</h1>
+        <p class="bc-subtitle">Ez a Benett Car tartalomkezelő felülete.</p>
       </div>
 
       <?php echo $login_html; ?>
