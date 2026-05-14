@@ -1367,4 +1367,55 @@ sp-clients/sp-benettcar/
 
 **Státusz:** 🟡 P14.7 IN PROGRESS — stage-ready elérve, **nyitva:** SMTP konfig + P14.6 contact form integráció + P14.8 final smoke test + auth gate disable workflow átadáskor.
 
-**Következő mérföldkő:** `p14.7-contact-form-done` (P14.6 lezárás után — `@spektra/data` `FormHandler` absztrakció + WP-Spektra REST contact endpoint + WP Mail SMTP).
+**Következő mérföldkő:** `p14.8-final-smoke` (P14.8 final smoke test + release freeze).
+
+---
+
+## 41. P14.6 — Contact Form: FormHandler absztrakció + CF7 driver
+
+**Dátum:** 2026-05-14
+**Commit-ok:**
+- sp-platform `2717f47` — `feat(data): add formhandler abstraction with cf7/noop/mailto drivers`
+- sp-platform `643899b` — `feat(runtime): add formhandlerprovider + useformhandler — mirror sitedataprovider`
+- sp-platform `3ab9768` — `fix(data): inject _wpcf7_unit_tag in cf7 driver for headless requests`
+- sp-benettcar `244c2d1` — `feat(bc): wire bc-contact through formhandler — real submit, ui unchanged`
+- sp-benettcar `160319e` — `feat(infra): extend cors to cf7 namespace + production bootstrap plugin`
+- sp-benettcar `2dd9c26` — `fix(bc): set cf7 form id to 24 in .env.production`
+**Tag:** `p14.6-contact-form-done` (sp-platform + sp-benettcar)
+
+**Cél:** A bc-contact form fake `setSubmitted(true)` success-állapotának kiváltása valódi CF7 email küldéssel, CMS-agnosztikus `FormHandler` driver-absztrakcióval.
+
+**Miért:** Hard blocker az átadáshoz — az ügyfél kezébe nem kerülhet olyan oldal, ahol az „Üzenet küldése" gomb semmit sem csinál de sikerességet mutat.
+
+**Hogyan:**
+
+A platform write-oldali absztrakciója a read-oldali `DataSource` (`VITE_DATA_SOURCE`) tükörképe:
+
+```
+@spektra/data    → FormHandler interface + factory + drivers (pure async, NO React)
+@spektra/runtime → FormHandlerProvider + useFormHandler (React context/hook)
+```
+
+Driverek: `cf7` (production), `noop` (dev), `mailto` (emergency fallback). Driver-választás `VITE_FORM_HANDLER` env var-on — ugyanaz a konvenció mint `VITE_DATA_SOURCE`.
+
+CF7 headless integration: a CF7 REST endpoint megköveteli a `_wpcf7_unit_tag` anti-CSRF mezőt (normálisan a WP shortcode rendereli). A driver automatikusan injektálja `wpcf7-f{formId}-p1-o1` formátumban.
+
+**Eredmény:**
+
+| Komponens | Státusz |
+|---|---|
+| `@spektra/data` FormHandler abstraction | ✅ 33 unit teszt zöld |
+| `@spektra/runtime` Provider + hook | ✅ |
+| CF7 form #24 (`wp.benettcar.hu`) | ✅ mezők: your-name, your-email, your-phone, your-message, gdpr-accept |
+| WP Mail SMTP | ✅ `info@benettcar.hu`, SMTP Test PASS |
+| CORS CF7 namespace | ✅ preflight `Access-Control-Allow-Origin: https://benettcar.hu` |
+| Production smoke | ✅ email kézbesítve `info@benettcar.hu`-ra, frontend „Köszönjük" state |
+
+**Döntések:**
+
+- **CF7 Honeypot addon (CF7 Apps) nem telepíthető headless integrációval:** Az addon minden form-betöltéskor nonce-t generál a rejtett mezőbe; headless submission sosem kapja meg ezt a nonce-t → minden beküldés `spam`. Megoldás: az addon ne legyen aktív. A React form off-screen honeypot mezője kliens-oldali védelmet biztosít.
+- **`acceptance_missing` → `error`, NEM `rate_limited`:** A GDPR pipa hiánya field-szintű validáció hiba — a React UI a gdpr-accept checkbox alá rakja a hibaüzenetet.
+- **CF7 form ID = 24:** A WP admin URL-jéből (`post=24`). Rögzítve `.env.production`-ben.
+- **Honeypot driver:** a `contact-form-7-honeypot` / CF7 Apps plugin ne legyen aktív a `wp.benettcar.hu`-n (headless-inkompatibilis). Ha spamvédelem kell, reCAPTCHA v3 bekötés P14.6 utáni feladat.
+
+**Státusz:** ✅ P14.6 DONE — production smoke PASS.
