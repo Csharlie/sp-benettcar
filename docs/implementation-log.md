@@ -1419,3 +1419,31 @@ CF7 headless integration: a CF7 REST endpoint megköveteli a `_wpcf7_unit_tag` a
 - **Honeypot driver:** a `contact-form-7-honeypot` / CF7 Apps plugin ne legyen aktív a `wp.benettcar.hu`-n (headless-inkompatibilis). Ha spamvédelem kell, reCAPTCHA v3 bekötés P14.6 utáni feladat.
 
 **Státusz:** ✅ P14.6 DONE — production smoke PASS.
+
+---
+
+## 42. P14 admin UX — „Főoldal szerkesztése" menüpont
+
+**Dátum:** 2026-05-14
+**Commit:** sp-benettcar `73ca195`
+
+**Cél:** Az ügyfél egy kattintással elérhesse a főoldal szerkesztő felületét a WP admin bal oldalsávjából.
+
+**Változtatások:**
+
+- `infra/admin-menu.php` (ÚJ) — önálló admin modul a `spektra-config` overlay-ban:
+  - `add_menu_page()`: „Főoldal szerkesztése", `edit_pages` capability, `dashicons-home` ikon, pozíció 3
+  - `load-toplevel_page_bc-fooldal-szerkesztese` hook: `wp_safe_redirect` → `post.php?post={id}&action=edit`
+  - `get_option('page_on_front')` dinamikus ID-feloldás — nem hardcoded
+  - Fallback admin notice ha nincs statikus főoldal beállítva (Settings → Reading útmutatóval)
+  - Default Pages menü érintetlen
+
+- `infra/spektra-config-bootstrap.php` — `require_once admin-menu.php` hozzáadva
+
+**Admin UX — az ügyfélnek:**
+A WP admin bal sávjában megjelenik a 🏠 **Főoldal szerkesztése** menüpont közvetlenül a Dashboard alatt. Kattintás után azonnal a főoldal ACF-szerkesztő felülete nyílik, a szokásos Oldalak → Főoldal → Szerkesztés navigáció helyett.
+
+**„Meta Boxes" felirat — limitation:**
+A Gutenberg blokk-szerkesztőben az ACF mezők felett megjelenő „Meta Boxes" szekciócím WordPress core JavaScript string (`@wordpress/edit-post`). PHP `gettext` filterrel nem érhető el — JS oldalon renderelődik. Globális DOM-manipulációs megoldás törékeny lenne, ezért nem alkalmazzuk. Az ACF field group title-ök maguk már megfelelő magyar feliratokkal rendelkeznek: „Főoldal — Bevezető", „Főoldal — Márkák" stb. — ezek láthatóak, ha a szekció ki van bontva.
+
+**Státusz:** ✅ DONE — FTP-n deployolva, live.
