@@ -40,7 +40,7 @@ add_action( 'admin_menu', static function (): void {
 		'edit_pages',            // required capability
 		'bc-fooldal-szerkesztese', // slug (used by load hook below)
 		'__return_empty_string', // content callback — page never renders, redirect fires first
-		'dashicons-home',        // WP dashicon — house icon
+		'data:image/svg+xml;base64,' . base64_encode( '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="black" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>' ),
 		3                        // position: just below Dashboard, above separator
 	);
 } );
