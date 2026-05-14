@@ -35,12 +35,12 @@ defined( 'ABSPATH' ) || exit;
 
 add_action( 'admin_menu', static function (): void {
 	add_menu_page(
-		'Főoldal szerkesztése',  // page <title>
-		'Főoldal szerkesztése',  // sidebar label
+		'Főoldal',               // page <title>
+		'Főoldal',               // sidebar label
 		'edit_pages',            // required capability
 		'bc-fooldal-szerkesztese', // slug (used by load hook below)
 		'__return_empty_string', // content callback — page never renders, redirect fires first
-		'dashicons-home',        // WP dashicon
+		'dashicons-home',        // WP dashicon — house icon
 		3                        // position: just below Dashboard, above separator
 	);
 } );
