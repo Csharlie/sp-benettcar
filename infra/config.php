@@ -25,6 +25,15 @@ return [
 		'https://www.benettcar.hu',
 	],
 
+	// CF7 (Contact Form 7) and similar 3rd-party REST namespaces also need
+	// the same CORS treatment as our /spektra/ routes — the frontend POSTs
+	// directly to them. Without this, browser preflight blocks the request
+	// with "No 'Access-Control-Allow-Origin'".
+	// Used by spektra-config-bootstrap.php (Benettcar overlay plugin).
+	'cors_extra_namespaces' => [
+		'/contact-form-7/',
+	],
+
 	// ── Site defaults ────────────────────────────────────────────
 	// Fallback values when ACF fields are empty or missing.
 	'site_defaults' => [
