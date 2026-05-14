@@ -41,8 +41,10 @@
 | 35 | 95f07a2 | feat(bc): legal modals, footer bottom restructure, build fixes, P14.3 freeze gate | #37 |
 | 36 | 08074d3 | chore(bc): P14.4 seed export — 193 fields, 6 brand logo warnings documented | #38 |
 | 37 | 477c15a | feat(bc): P14.4 lokális WP runtime átállás — eyebrow pipeline, ACF/dump fixek, mobil layout | #39 |
+| 38 | b8054fb | feat(bc): P14.7 stage-ready — Rackforest /v2/ deployment + auth gate | #40 P14.7 stage-ready (tag: `p14.7-stage-ready`) |
 
 > **Infra overlay bejegyzések** → külön fájl: [infra-log.md](infra-log.md)
+> **sp-infra párhuzamos commit P14.7-hez:** `2202032` — PHP 8.4 `true|\WP_Error` → `bool|\WP_Error` fix a `class-rest-controller.php`-ban (lásd a #40 bejegyzést, illetve [sp-docs/troubleshooting/php-84-true-type-literal.md](../../../sp-docs/knowledge/troubleshooting/php-84-true-type-literal.md)).
 
 ---
 
@@ -1227,3 +1229,142 @@ sp-clients/sp-benettcar/
 - Frontend Network tab: WP REST request 200-as válasz
 
 **Státusz:** ✅ Kész (P14.4 WP runtime parity lokálisan validálva)
+
+---
+
+## 38. P14.7 — Rackforest /v2/ stage-ready: production deployment + auth gate
+
+**Dátum:** 2026-05-14
+**Commit:** #40 — `b8054fb` (sp-benettcar) + `2202032` (sp-infra)
+**Tag:** `p14.7-stage-ready`
+
+**Cél:** Eljutni odáig, hogy a BenettCar éles produkciós WordPress backenden (`wp.benettcar.hu`) fusson, a frontend pedig a `benettcar.hu/v2/` URL-en, cookie-alapú auth gate mögött, ügyfél-átadás-ready állapotban. Mindez a `public_html/` root érintése nélkül — a v1 React build változatlanul, nyilvánosan a `/` alatt marad átadásig.
+
+**Miért:**
+- A P14.4 lokálisan (benettcar.local) bizonyította a WP runtime parity-t. P14.7 ennek éles megfelelője Rackforest cPanel hosting környezetben.
+- Az ügyfél (és a fejlesztők) előzetes review-t kell hogy futtassanak az új oldalon **anélkül, hogy a régi v1 elérhetetlenné válna**, vagy a nyilvánosság / kereső-motorok megtalálnák a stage-tartalmat.
+- A WordPress önmagában nem garantált forrás — be kell hogy bizonyosodjon, hogy a teljes pipeline (seed → ACF → REST → CORS → SPA fetch) éles infrastruktúrán is végigfut.
+- A `class-rest-controller.php` PHP 8.4-en class-not-found fatal-t dobott a `true|\WP_Error` return type literal miatt — ezt a forrás-repo-ban is rögzíteni kellett (sosem volt committed a session-szintű hot-fix).
+
+**Hogyan:**
+
+1. **Vite production base `/v2/` (`vite.config.ts`)**
+   - `defineConfig(({ mode }) => ({ base: mode === 'production' ? '/v2/' : '/' }))`
+   - Dev (`npm run dev`) változatlanul `/` alatt fut localhost:5174-en
+   - Build (`npm run build`) az asset URL-eket `/v2/assets/…`-ra írja az `index.html`-ben → Rackforest `/public_html/v2/`-be feltöltve közvetlenül helyes az asset path
+
+2. **Production WP data source (`.env.production` — új fájl)**
+   ```env
+   VITE_DATA_SOURCE=wordpress
+   VITE_WP_API_BASE=https://wp.benettcar.hu
+   ```
+   A build a `@spektra/data` `createDataSource()`-án keresztül a WP adaptert választja, a `/wp-json/spektra/v1/site` endpointot `https://wp.benettcar.hu`-ról fetcheli.
+
+3. **CORS prod origin-ek (`infra/config.php`)**
+   - `'allowed_origins'` tömb bővítve `'https://benettcar.hu'` és `'https://www.benettcar.hu'`-val
+   - Ennek hiánya „Failed to fetch" hibát okozott a böngészőben — preflight OPTIONS-re nem ment vissza `Access-Control-Allow-Origin` header
+   - Footer navigation (`'footer'` blokk) frissítve: `#privacy` és `#terms` linkek a modalokhoz illeszkednek (`Footer.tsx` `legalLinks` filter)
+
+4. **bc-hero mobile readability (`bc-hero.component.tsx`)**
+   - `pt-24` → `pt-32 md:pt-24`: a nav bar mobilon ~112px magas, az eyebrow szöveg `pt-24`-gyel (96px) alá csúszott
+   - `items-center` → `items-start md:items-center`: mobilon top-alignment ad helyet a hosszabb hero-content-nek
+   - Title visszaállítva `text-5xl`-re (kliens-jóváhagyott méret)
+   - Scroll indicator: `block` → `hidden md:block` (mobilon felesleges vertikális helyet vett el)
+
+5. **Footer brand col átrendezés (`Footer.tsx`)**
+   - Brand col-ból logo asset kiszedve (a logót a navbar adja, footer-ben dupla volt)
+   - Facebook link visszahelyezve a brand col-ba (előtte a Kapcsolat col-ban volt, ahol nem illett a kontextusba)
+   - Information col most explicite a `navigation.footer`-ből szűr (`#about`, `#gallery`, `#contact`) — Galéria link mostantól látszik
+   - Bottom-bar legal linkek (`#privacy`, `#terms`) → modal trigger button-ök (`LegalModal`)
+
+6. **Mobile overflow-x védelem (`src/index.css`)**
+   ```css
+   html, body { overflow-x: hidden; width: 100%; }
+   ```
+   - Egy túllógó section (átmenetileg) horizontal scroll-t okozott mobilon → viewport zoom-out → minden „kicsivé" zsugorodott
+   - A `width: 100%` + `overflow-x: hidden` páros megakadályozza, hogy bármilyen section-hiba az egész layout-ot eldeformálja
+
+7. **ACF builder bc-service nullable description (`infra/acf/builders.php`)**
+   - Régi: `if ( $title === null || $desc === null ) return null;` → ha description üres az ACF-ben, az egész section eltűnt a REST-ből
+   - Új: csak `$title === null` esetén skip — a `description` mező P14.2 óta optional a sémában, builder-szinten is konzisztens
+
+8. **PHP 8.4 fix (sp-infra `2202032`)**
+   - `plugin/spektra-api/includes/class-rest-controller.php`:
+     `public static function validate_preview_param(...): true|\WP_Error` →
+     `public static function validate_preview_param(...): bool|\WP_Error`
+   - PHP 8.4 a `true` return type literal-t (egy bizonyos kontextusban) class-referenciaként parse-olja → `Spektra\API\true class not found` fatal plugin aktiváláskor
+   - A `bool|\WP_Error` szemantikailag ekvivalens (a függvény vagy `true`-t vagy `WP_Error`-t ad vissza, `false`-t soha — a sanitize hook validál), és 8.1–8.4 mindegyiken működik
+   - Részletek: [sp-docs/troubleshooting/php-84-true-type-literal.md](../../../sp-docs/knowledge/troubleshooting/php-84-true-type-literal.md)
+
+9. **v2 auth gate (gitignored — `.local-deploy/v2-auth/` mappa)**
+   - `login.php` — apr1-hash-elt jelszó-ellenőrzés, custom UI v1 React BejelentkezesPage parity-vel (dark theme, neon-blue accent)
+   - `auth-check.php` — cookie validáció, success esetén `index.html` szolgálása
+   - `.htaccess` — `DirectoryIndex auth-check.php`, asset védelem cookie nélkül 302 → login.php, SPA fallback
+   - Cookie: `bc_v2_auth`, HttpOnly, Secure, 7 nap TTL
+   - Credentials: `benettcar` / `BcPsp26!`
+   - **Átadáskor disable workflow:** lásd `docs/deployment-runbook.md` §10.7
+
+10. **Deployment runbook + guide (gitignored — credentials inline)**
+    - `docs/deployment-runbook.md` (1925 sor, 19 fejezet) — technikai runbook konkrét credentials-szal, copy-paste FTP parancsokkal, troubleshooting katalógussal
+    - `docs/deployment-guide.md` (235 sor) — közérthető overview, hivatkozik a runbook fejezeteire
+    - Mindkettő `.gitignore`-olt (`docs/deployment-runbook.md`, `docs/deployment-guide.md` sorok) — FTP / WP admin / DB jelszavak inline szerepelnek, sosem mehet remote-ra
+    - Külön csatornán (1Password / Signal) is megosztandó ha más fejlesztőnek vagy agentnek kell
+
+**Eredmény:**
+
+| Komponens | Cím | Státusz |
+|-----------|-----|---------|
+| WP backend | `https://wp.benettcar.hu` | ✅ live, spektra-api + spektra-config + ACF Pro aktív |
+| REST endpoint | `https://wp.benettcar.hu/wp-json/spektra/v1/site` | ✅ 200 OK, 10 section, valid JSON |
+| CORS | `Origin: https://benettcar.hu` preflight | ✅ `Access-Control-Allow-Origin` echo-back |
+| Frontend | `https://benettcar.hu/v2/` | ✅ login gate → SPA renderel, mind a 10 section vizuálisan parity a JSON-buildhez |
+| Brand média | `wp.benettcar.hu/wp-content/uploads/brands/` | ✅ 6 logo feltöltve, alt text parity |
+| Auth gate | cookie-based | ✅ 7-nap TTL, HttpOnly, Secure |
+| Mobile | iPhone 12 + Pixel 5 valódi eszközön | ✅ overflow-x nincs, eyebrow nem csúszik nav alá |
+| SSL | mindkét domain | ✅ AutoSSL zöld |
+
+**Döntések:**
+
+- **`/v2/` path vs root migration:** P14.7 keretében a v2 alatt marad. A v1 React build változatlanul a `/` alatt él. Átadáskor két opció — vagy v2 átköltözik `/`-ba (build base `/`-ra állítás, dist root deploy), vagy v2 URL marad és csak az auth gate kerül kikapcsolásra. **A döntést a kliens-átadás során közösen.**
+- **PHP verzió:** Rackforest cPanel-en jelenleg PHP 8.x (8.1/8.2 ajánlott). 8.4-en is fut a `2202032` fix után, de a stage-en a konzervatív 8.1/8.2 marad biztonság kedvéért. Ezt a `deployment-runbook §3.4` rögzíti.
+- **Auth gate technológia:** PHP-alapú custom cookie auth (apr1 + HttpOnly), nem WP-natív (mert a v2 a `/v2/`-ban él, nem a WP-mappában). Egyszerű disable workflow, semmi external dependency.
+- **`docs/deployment-runbook.md` gitignored:** A teljes credentials-katalógus inline szerepel (FTP, WP admin, DB, v2 auth, SMTP). Gitre kerülve azonnali security-incidents. A doksi-tartalom verzionálása ettől függetlenül megtörténhet majd egy "scrubbed" placeholder verzióval, ha szükséges.
+- **Contact form FormHandler absztrakció:** P14.6 megvalósítás során a contact form **driver-abstrakció** mögé kerül (`@spektra/data` `FormHandler` interfész), drivers: `wp-spektra` (default WP backend), `web3forms` / `formspree` (static deployment), `mailto` (zero-infra fallback), `noop` (preview/demo). Ezzel a CMS-függetlenség architekturálisan rögzítve marad — pont, mint a read-oldali `DataSource` abstrakció. Részletek: `deployment-runbook §12` + külön P14.6 implementation entry.
+
+**Fájlok (sp-benettcar):**
+- `vite.config.ts` — production base `/v2/`
+- `.env.production` (új) — VITE_DATA_SOURCE=wordpress + VITE_WP_API_BASE
+- `src/index.css` — `overflow-x: hidden` html/body
+- `src/sections/bc-hero/bc-hero.component.tsx` — `pt-32 md:pt-24`, `items-start md:items-center`, scroll indicator `hidden md:block`, title `text-5xl`
+- `src/shell/Footer.tsx` — brand col átrendezés (logo eltávolítva, Facebook visszahelyezve), info col `navigation.footer`-ből
+- `infra/config.php` — `allowed_origins` prod origins, `navigation.footer` legal modal linkek
+- `infra/acf/builders.php` — `bc-service` builder nullable description
+- `.gitignore` — `docs/deployment-runbook.md`, `docs/deployment-guide.md` (credentials, soha remote-ra)
+
+**Fájlok (sp-infra, külön commit `2202032`):**
+- `plugin/spektra-api/includes/class-rest-controller.php` — `true|\WP_Error` → `bool|\WP_Error`
+
+**Fájlok (gitignored, deploy artifactok):**
+- `docs/deployment-runbook.md` (új, 1925 sor) — technikai runbook
+- `docs/deployment-guide.md` (új, 235 sor) — közérthető overview
+- `.local-deploy/v2-auth/login.php`, `auth-check.php`, `htaccess` — auth gate források
+
+**Fájlok (server-side, repo-tól független):**
+- `wp.benettcar.hu/wp-content/plugins/spektra-config/config.php`, `acf/builders.php` — overlay deployed (FTP)
+- `wp.benettcar.hu/wp-content/plugins/spektra-api/` — REST plugin (a `2202032` fix javított verziója)
+- `benettcar.hu/public_html/v2/index.html`, `assets/*` — frontend dist (FTP)
+- `benettcar.hu/public_html/v2/login.php`, `auth-check.php`, `.htaccess` — auth gate (FTP)
+
+**Validáció:**
+- `npm run build` PASS (sp-platform/packages/components + sp-benettcar)
+- `npm test -- --run` PASS (50/50)
+- REST endpoint külső: `curl -i https://wp.benettcar.hu/wp-json/spektra/v1/site` → 200, valid JSON, 10 section
+- CORS preflight: `curl -i -X OPTIONS -H "Origin: https://benettcar.hu" ...` → `Access-Control-Allow-Origin: https://benettcar.hu` header válaszban
+- Frontend smoke: `https://benettcar.hu/v2/` → login → SPA → minden section + képek + nav scroll + CTA modal-ok működnek
+- Mobile (valódi iPhone 12): eyebrow látszik a nav alatt, nincs horizontal scroll, scroll indicator hidden, layout responsive
+
+**Tag-elve:** `p14.7-stage-ready` (annotated, push-olva origin/main-re)
+
+**Státusz:** 🟡 P14.7 IN PROGRESS — stage-ready elérve, **nyitva:** SMTP konfig + P14.6 contact form integráció + P14.8 final smoke test + auth gate disable workflow átadáskor.
+
+**Következő mérföldkő:** `p14.7-contact-form-done` (P14.6 lezárás után — `@spektra/data` `FormHandler` absztrakció + WP-Spektra REST contact endpoint + WP Mail SMTP).
