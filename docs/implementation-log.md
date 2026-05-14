@@ -1447,3 +1447,48 @@ A WP admin bal sávjában megjelenik a 🏠 **Főoldal szerkesztése** menüpont
 A Gutenberg blokk-szerkesztőben az ACF mezők felett megjelenő „Meta Boxes" szekciócím WordPress core JavaScript string (`@wordpress/edit-post`). PHP `gettext` filterrel nem érhető el — JS oldalon renderelődik. Globális DOM-manipulációs megoldás törékeny lenne, ezért nem alkalmazzuk. Az ACF field group title-ök maguk már megfelelő magyar feliratokkal rendelkeznek: „Főoldal — Bevezető", „Főoldal — Márkák" stb. — ezek láthatóak, ha a szekció ki van bontva.
 
 **Státusz:** ✅ DONE — FTP-n deployolva, live.
+
+---
+
+## 43. P14 admin UX — Branded CMS login gateway (wp.benettcar.hu root)
+
+**Dátum:** 2026-05-14
+**Commit-ok:**
+- sp-benettcar `4b98dc7` — `feat(bc): branded CMS login gateway at wp.benettcar.hu root`
+- sp-benettcar `35edd88` — `fix(bc): Benett Car CMS — helyes névalak a gateway oldalon`
+
+**Cél:** A `https://wp.benettcar.hu/` root URL-en ne a nyers/default WordPress frontend jelenjen meg, hanem egy Benett Car-branded CMS bejelentkezési oldal.
+
+**Miért:** A WP adminba belépésre váró ügyfél professionális, branded felületet lát — nem a WP default twenty-something témát. Egyben anti-indexing védelmet is kap (nem kerülhet be a nyilvános keresőkbe a CMS felülete).
+
+**Hogyan:**
+
+`infra/cms-gateway.php` új modul a `spektra-config` overlay-ban:
+- `template_redirect` hook (priority 1) — `is_front_page() || is_home()` check
+- Bejelentkezett user: `wp_safe_redirect(admin_url())` → egyből admin
+- Kijelentkezett user: branded HTML oldal `wp_login_form()` beágyazással
+- `X-Robots-Tag: noindex, nofollow` header
+- WP-CLI kontextusban nem fut le
+- `/wp-admin`, `/wp-login.php`, `/wp-json/*`, `/wp-content/*` érintetlen
+
+Autentikációs logika: kizárólag WordPress core (`wp-login.php`). Sem custom endpoint, sem jelszótárolás, sem nonce bypass.
+
+**Vizuális design:** graphite-950 / neon-blue paletta — a `benettcar.hu/v2` login kapuval azonos vizuális nyelv. Inter betűtípus, radial glow, kártya layout, neon-blue CTA gomb.
+
+**Eredmény:**
+
+| Ellenőrzés | Státusz |
+|---|---|
+| `https://wp.benettcar.hu/` → branded login | ✅ |
+| `X-Robots-Tag: noindex, nofollow` a válaszban | ✅ |
+| `/wp-json/spektra/v1/site` → 200 JSON | ✅ |
+| `/wp-login.php` → 200 (érintetlen) | ✅ |
+| `/wp-admin/` → 302 redirect (érintetlen) | ✅ |
+
+**Döntések:**
+
+- **`wp_login_form()` — natív WP auth:** Nem custom login endpoint. A form `wp-login.php`-ra POST-ol, a `redirect_to` hidden field viszi az `admin_url()`-t. Hibás jelszó esetén WP natívan kezeli a hibaállapotot (átirányítás `wp-login.php`-ra hibaüzenettel) — ez elfogadható admin kontextusban.
+- **`spektra-config` overlay plugin:** Nem mu-plugin, nem sp-infra core — BenettCar-specifikus, az overlay pluginba tartozik. A modul különálló fájlban van (`cms-gateway.php`), a bootstrap `require_once`-szal hívja.
+- **„Meta Boxes" label:** WP core Gutenberg JS string — nem módosítható biztonságosan PHP-ból. Dokumentálva, nem javítva.
+
+**Státusz:** ✅ DONE — production-on live.
