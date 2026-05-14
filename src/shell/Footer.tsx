@@ -3,7 +3,6 @@ import { Phone, Mail, MapPin } from 'lucide-react'
 import type { LayoutShellProps } from '@spektra/layouts'
 import type { BcServicesData } from '../sections/bc-services/bc-services.schema'
 import type { BcContactData } from '../sections/bc-contact/bc-contact.schema'
-import bcLogo from '../assets/bc-logo-128.png'
 import { LegalModal } from './LegalModal'
 import { privacyPolicy, termsOfService } from '../data/legal'
 
@@ -85,13 +84,6 @@ export function AppFooter({ siteData }: LayoutShellProps) {
             >
               Benett Car Business Kft.
             </p>
-            <img
-              src={bcLogo}
-              alt="Benett Car Business Kft."
-              data-ui-id="footer-logo-img"
-              data-ui-role="footer-logo-image"
-              className="self-center"
-            />
             {siteData.site.description && (
               <p
                 data-ui-id="footer-description"
@@ -101,6 +93,20 @@ export function AppFooter({ siteData }: LayoutShellProps) {
                 {siteData.site.description}
               </p>
             )}
+            <a
+              href="https://www.facebook.com/profile.php?id=61554864909316"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-ui-type="link"
+              data-ui-id="footer-facebook-link"
+              data-ui-action="external"
+              data-ui-trigger="click"
+              aria-label="Benett Car Facebook"
+              className="flex items-center gap-2 text-sm text-neon-blue hover:text-neon-blue-light transition-colors w-fit mt-1"
+            >
+              <FacebookIcon className="w-4 h-4" />
+              <span>Facebook</span>
+            </a>
           </div>
 
           {/* Szolgáltatások column */}
@@ -230,20 +236,6 @@ export function AppFooter({ siteData }: LayoutShellProps) {
                 </li>
               )}
             </ul>
-            <a
-              href="https://www.facebook.com/profile.php?id=61554864909316"
-              target="_blank"
-              rel="noopener noreferrer"
-              data-ui-type="link"
-              data-ui-id="footer-facebook-link"
-              data-ui-action="external"
-              data-ui-trigger="click"
-              aria-label="Benett Car Facebook"
-              className="flex items-center gap-2 text-sm text-neon-blue hover:text-neon-blue-light transition-colors w-fit mt-2"
-            >
-              <FacebookIcon className="w-4 h-4" />
-              <span>Facebook</span>
-            </a>
           </div>
         </div>
       </div>

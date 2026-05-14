@@ -288,7 +288,8 @@ function spektra_build_bc_service( string $p, int $pid ): ?array {
 	$title    = spektra_get_field( $p . 'title', $pid );
 	$desc     = spektra_get_field( $p . 'description', $pid );
 
-	if ( $title === null || $desc === null ) {
+	// P14.2: description is optional in the schema — only title is required.
+	if ( $title === null ) {
 		return null;
 	}
 

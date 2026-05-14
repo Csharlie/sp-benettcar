@@ -15,9 +15,15 @@ dist
 # Lokális munkafájl — nem kerül remote-ra
 docs/bc-tasks.md
 
+# === Deployment runbook (KONKRÉT CREDENTIALS!) ===
+# FTP / WP admin / DB jelszavak inline — SOHA ne kerüljön remote-ra
+docs/deployment-runbook.md
+docs/deployment-guide.md
+
 # === Office lock files ===
 # Temporary lock files created by Word/Excel while a file is open
 ~$*.doc
 ~$*.docx
 ~$*.xlsx
 ~$*.xls
+.local-deploy/

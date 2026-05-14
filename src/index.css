@@ -3,6 +3,15 @@
 @tailwind utilities;
 
 @layer base {
+  /* Prevent horizontal overflow from triggering mobile browser zoom-out.
+     Any single element wider than viewport (wide uppercase eyebrow, long URL,
+     etc.) otherwise makes iOS Safari / Android Chrome render the entire page
+     at ~980px (tablet-like) instead of device-width. */
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
   :root {
     /* Benettcar dark theme — graphite base, neon-blue accent */
     --background: 240 14% 7%;

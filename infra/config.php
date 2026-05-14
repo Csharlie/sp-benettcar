@@ -21,6 +21,8 @@ return [
 	// Vite dev server uses port 5174 (explicit in vite.config.ts).
 	'allowed_origins' => [
 		'http://localhost:5174',
+		'https://benettcar.hu',
+		'https://www.benettcar.hu',
 	],
 
 	// ── Site defaults ────────────────────────────────────────────
@@ -43,52 +45,17 @@ return [
 	// Used only until the WordPress menus above are created.
 	'navigation' => [
 		'primary' => [
-			[
-				'label' => 'Galéria',
-				'href'  => '#gallery',
-			],
-			[
-				'label' => 'Szolgáltatások',
-				'href'  => '#services',
-			],
-			[
-				'label' => 'Szerviz',
-				'href'  => '#car-service',
-			],
-			[
-				'label' => 'Rólunk',
-				'href'  => '#about',
-			],
-			[
-				'label' => 'Útmenti segítség',
-				'href'  => '#roadside',
-			],
+			[ 'label' => 'Galéria',         'href' => '#gallery' ],
+			[ 'label' => 'Szolgáltatások',  'href' => '#services' ],
+			[ 'label' => 'Rólunk',          'href' => '#about' ],
+			[ 'label' => 'Útmenti segítség', 'href' => '#roadside' ],
 		],
 		'footer' => [
-			[
-				'label' => 'Autószerviz',
-				'href'  => '#car-service',
-			],
-			[
-				'label' => 'Útmenti segítség',
-				'href'  => '#roadside',
-			],
-			[
-				'label' => 'Rólunk',
-				'href'  => '#about',
-			],
-			[
-				'label' => 'Kapcsolat',
-				'href'  => '#contact',
-			],
-			[
-				'label' => 'Adatvédelem',
-				'href'  => '#privacy',
-			],
-			[
-				'label' => 'ÁSZF',
-				'href'  => '#terms',
-			],
+			[ 'label' => 'Rólunk',     'href' => '#about' ],
+			[ 'label' => 'Galéria',    'href' => '#gallery' ],
+			[ 'label' => 'Kapcsolat',  'href' => '#contact' ],
+			[ 'label' => 'Adatvédelem', 'href' => '#privacy' ],
+			[ 'label' => 'ÁSZF',       'href' => '#terms' ],
 		],
 	],
 

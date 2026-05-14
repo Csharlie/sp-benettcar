@@ -17,7 +17,7 @@ export function BcHero({
       data-ui-role="hero"
       data-ui-state="default"
       data-ui-variant="primary"
-      className="relative min-h-screen pt-24 pb-20 flex items-center overflow-hidden"
+      className="relative min-h-screen pt-32 md:pt-24 pb-20 flex items-start md:items-center overflow-hidden"
     >
       {/* Background image */}
       <div className="absolute inset-0">
@@ -124,9 +124,9 @@ export function BcHero({
         </div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator — hidden on mobile to free vertical space */}
       <div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+        className="hidden md:block absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
         data-ui-role="scroll-indicator"
       >
         <div className="w-6 h-10 border-2 border-neon-blue/40 rounded-full flex justify-center">
